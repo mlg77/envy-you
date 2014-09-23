@@ -14,12 +14,13 @@ The increase of \gls{K} in the SC results in an increased \gls{K} uptake by the 
 
 The AC model contains different types of active and passive ion channels. These ion channels and pumps are captured in a set of differential equations to describe the conservation of mass for the corresponding species concentrations in the SC, the \gls{AC} and the \gls{PVS}. The ion channels for potassium ($ J_{KCC1}$, $ J_{NKCC1} $, $ J_{K}$, $ J_{NaK} $ and $J_{BK}$), sodium ($ J_{NBC} $, $ J_{NKCC1} $,  $ J_{NaK} $ and  $ J_{Na} $), chloride ($ J_{KCC1}$, $ J_{NKCC1} $ and $ J_{Cl} $) and bicarbonate ($ J_{HCO_3}$) are included. Note that the bicarbonate and chlorine fluxes are coupled with the \gls{Na} and \gls{K} fluxes to obtain a neutral in- or efflux membrane voltage-wise.\\
 
+The release of glutamate from the neuron in the synaptic cleft is simulated by creating a smooth pulse function $\rho$ that describes the ratio of bound to total glutamate receptors on the synapse end of the astrocyte. This induces an $IP_3$ release into the cell, causing the release of Calcium from the \gls{ER} into the cytosol, which then leads to the production of EET. The \gls{K} release into the \gls{PVS} is controled by the BK-channels. The opening of the BK-channels is regulated by the membrane voltage, as wel as the EET and \gls{Ca} concentration.
 %\citep{Iadecola1993}. \\
 \begin{figure}[h!]
   \centering
   \def\svgwidth{450pt} %400pt
   \scriptsize
-  \import{pics/}{ACmodel.pdf_tex}
+  \import{pics/}{ACmodel_1pt1.pdf_tex}
   \caption{\textbf{Illustration of the astrocyte model.} All modelled fluxes are pictured, note that the indices (k - Astrocyte (AC), s - Synaptic Cleft (SC), p - Perivascular Space (PVS)) are left out for clarity reasons.}
 \label{fig:ACmodel}
 \end{figure}
@@ -161,7 +162,7 @@ Summarising, the neuronal input signal leads to a decrease of \gls{Ca} influx by
   \centering
   \def\svgwidth{450pt}
   \scriptsize 
-  \import{pics/}{All_models.pdf_tex}
+  \import{pics/}{All_models_1pt1.pdf_tex}
   \caption{\textbf{All Models.}}
 \label{Overview}
 \end{figure}
