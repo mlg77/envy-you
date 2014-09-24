@@ -14,10 +14,16 @@ while value==0
         saveas(figure(5),'5 Myosin-Crosbbridge_Model.fig');
         saveas(figure(6),'6 Neuron_to_Radius.fig');
         saveas(figure(7),'7 Calcium_and_Radius.fig');
-        A  = rand(10,1);
-        B = rand(10,1);
-        header1 = 'Hello';
-        header2 = 'World!';
+        saveas(figure(8),'8 Neuron Membrane potentials.fig');
+        saveas(figure(9),'9 Neuron Gating variables.fig');
+        saveas(figure(10),'10 Neuron Concentration of ions.fig');
+        saveas(figure(11),'11 Neuron Fluxes1-20.fig');
+        saveas(figure(12),'12 Neuron Fluxes21-40.fig');
+        saveas(figure(13),'13 Neuron Fluxes41-60.fig');
+        saveas(figure(14),'14 Neuron Fluxes61-63.fig');
+        saveas(figure(15),'15 Extrcellular potassium and Potassium pump current.fig');
+      
+       
         file1=fopen('Parameters.txt','w');
         fprintf(file1, ['Parameters of "' filename '":\r\n\r\n']);
         fprintf(file1, 't_start      = %.0f      (s)\r\n', t_start);

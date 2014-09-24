@@ -5,16 +5,18 @@ all_constants();
 
 linestylle = ':';
 
+n = zeros(1,66);
 a = zeros(1,25);
 s = zeros(1,25);
 e = zeros(1,17);
-f= zeros(1,24);
-dfdt= zeros(1,24);
+f= zeros(1,49);
+dfdt= zeros(1,49);
 t= zeros(1,1);
 % input= zeros(1,2);
 
-acoff   =          0;
-smcoff  =          length(a);
+neoff   =          0;
+acoff   =         length(n);
+smcoff  = acoff + length(a);
 ecoff   = smcoff + length(s);
 stoff   = ecoff  + length(e);
 dfdtoff = stoff   + length(f);
@@ -271,6 +273,7 @@ hold all
 
 % close all;
 figure(6)
+set(gcf,'Name','Neuron_to_Radius')
 % subplot(5,1,1)
 % plot( time,DATA(:,inputoff+1)*k_C);
 % title('Input signal from the neuron into the synaptic cleft')
@@ -295,7 +298,7 @@ subplot(4,2,3)
 plot(time,0.001*DATA(:,stoff+ind.K_p))
 title('[K^+] in perivascular space')
 xlabel('Time [s]')
-ylabel('[K^+]_s [mM]')
+ylabel('[K^+]_p [mM]')
 hold all
 
 subplot(4,2,4)
@@ -347,6 +350,7 @@ hold all
 
 
 figure(7)
+set(gcf,'Name','Calcium_and_Radius')
 subplot(2,1,1)
 plot(time, state(:,ind.Ca_i) )
 xlabel('time in s')

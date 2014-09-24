@@ -33,6 +33,35 @@ function STATES = InitCond()
     STATES(ind.AM)      = 0.25;
     
     STATES(ind.R)       = 15e-6;
-
-        
+    STATES(ind.N_O2)    = 2e-2;
+   
+    
+    
+    STATES(ind.N_sa_Em)             = -70   ;    %mV membrane potential of soma
+    STATES(ind.N_d_Em)              = -70   ;    %mV membrane potential of dendrite
+    STATES(ind.N_sa_Na_NaP_m1_GHK)  = 0.012869;
+    STATES(ind.N_sa_Na_NaP_h1_GHK)  = 0.9718;
+    STATES(ind.N_sa_K_KDR_m2_GHK)   = 0.0012175;
+    STATES(ind.N_sa_K_KA_m3_GHK)    = 0.1193;
+    STATES(ind.N_sa_K_KA_h2_GHK)    = 0.12053;
+    STATES(ind.N_d_Na_NaP_m4_GHK)   = 0.012869;
+    STATES(ind.N_d_Na_NaP_h3_GHK)   = 0.9718;
+    STATES(ind.N_d_Na_NMDA_m5_GHK)  = 0.00087339;
+    STATES(ind.N_d_Na_NMDA_h4_GHK)  = 0.9898;
+    STATES(ind.N_d_K_KDR_m6_GHK)    = 0.0012175;
+    STATES(ind.N_d_K_KA_m7_GHK)     = 0.1193;
+    STATES(ind.N_d_K_KA_h5_GHK)     = 0.12053;
+%     STATES(ind.N_d_K_NMDA_m8_GHK)   = 0.0008;
+%     STATES(ind.N_d_K_NMDA_h6_GHK)   = 0.9898;
+    STATES(ind.N_sa_Na)             = 10    ;    %mM concentration of Na inside the soma
+    STATES(ind.N_sa_K)              = 133.5 ;    %mM concentration of K inside the soma
+    STATES(ind.N_sa_Cl)             = 10.4287  ;    %mM concentration of Cl inside the soma
+    STATES(ind.N_d_Na)              = 10    ;    %mM concentration of Na inside the dendrite
+    STATES(ind.N_d_K)               = 133.5 ;    %mM concentration of K inside the dendrite
+    STATES(ind.N_d_Cl)              = 10.4287  ;    %mM concentration of Cl inside the dendrite
+    STATES(ind.N_e_K_buffer)        = 134.9701;    %mM free buffer concentration   
+    STATES(ind.N_e_Na)              = 140   ;    %mM concentration of Na in the extracellular space    
+    STATES(ind.N_e_K)               = 3.5   ;    %mM concentration of K in the extracellular space
+    STATES(ind.N_e_Cl)              = 143.5 ;    %mM concentration of Cl in the extracellular space
+   
 end

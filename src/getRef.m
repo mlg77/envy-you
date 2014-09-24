@@ -14,7 +14,7 @@ function [out] = getRef(t,name)
         
         
      
-        % Compute gamma distribution as done in Ostby:
+        % Compute beta distribution as done in Ostby:
         alpha =  2;
         beta  =  5;
         f_input = 2.5;
@@ -40,20 +40,20 @@ function [out] = getRef(t,name)
 
 %% Hannah's Input
 
- pulse_start = 100;
- pulse_end   = 200;
- 
- elseif strcmp('rho',name)
-     out = createPulse(t,pulse_start,pulse_end,0.1,0.7,1,1); %[-] fraction between zero and one
- elseif strcmp('J_K_s',name)
-     out = createPulse(t,pulse_start,pulse_end,1,8,1); % [microMs-1]
-    
- elseif strcmp('fthannah',name)
-     if t>=100 && t<160
-        out =0.35*(1+tanh((t-101)/3));        
-     else
-        out =0; 
-     end
+%  pulse_start = 100;
+%  pulse_end   = 200;
+%  
+%  elseif strcmp('rho',name)
+%      out = createPulse(t,pulse_start,pulse_end,0.1,0.7,1,1); %[-] fraction between zero and one
+%  elseif strcmp('J_K_s',name)
+%      out = createPulse(t,pulse_start,pulse_end,1,8,1); % [microMs-1]
+%     
+%  elseif strcmp('fthannah',name)
+%      if t>=100 && t<160
+%         out =0.35*(1+tanh((t-101)/3));        
+%      else
+%         out =0; 
+%      end
  else
      fprintf('Error reference input unknown set to zero\n')
      out = 0;

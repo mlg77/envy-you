@@ -26,7 +26,53 @@ K_Na_k      = 10e3          ;% [uM]
 K_K_s       = 1.5e3         ;% [uM]
 k_C         = 7.35e-5       ;% [muM s-1]
 
+% Constants of Neuron Model
 
+Ra          = 1.83e5     ;% [ohms] Input reisitance of dendritic tree 
+dhod        = 4.5e-2     ;% [cm] Half length of dendrite
+As          = 1.586e-5   ;% [cm2] Surface area of soma 
+Ad          = 2.6732e-4  ;% [cm2] Surface area of dendrite
+Vs          = 2.160e-9   ;% [cm3] Volume of soma
+Vd          = 5.614e-9   ;% [cm3] Volume of dendrite
+Cm          = 7.5e-5     ;% [s/Ohmcm2] Membrane capacitance
+Imax        = 1.48e-3    ;% [mA/cm2] Na+/K+ -ATPase rate
+R           = 8.31       ;% [mV coulomb/mmol K] Universal gas constant
+T           = 310        ;% [K] Absolute temperature
+F           = 96.485     ;% [coulomn/mmol] Faraday constant
+ph          = 26.6995    ;% R*T/F
+fe1         = (0.15*Vs)/(Vs+Vd)  ;% ve/(Vs+Vd)
+fe2         = (0.15*Vd)/(Vs+Vd) ;
+gNaP_GHk    = 0.5e-6       ;% [mA cm]
+gKDR_GHk    = 2.5e-5      ;% [mA cm]
+gKA_GHk     = 0.25e-5       ;% [mA cm]
+gNMDA_GHk   = 0.25e-5       ;% [mA cm]
+% gNaP_GHk    = 2e-6       ;% [mA cm]
+% gKDR_GHk    = 10e-5      ;% [mA cm]
+% gKA_GHk     = 1e-5       ;% [mA cm]
+% gNMDA_GHk   = 1e-5       ;% [mA cm]
+gNaleak_sa  = 9.6605e-7  ;
+gKleak_sa   = 3.1292e-6  ;
+gClleak_sa  = 10*gNaleak_sa;
+gNaleak_d   = 9.6064e-7  ;
+gKleak_d    = 3.1279e-6 ;
+gClleak_d   = 10*gNaleak_d;
+O2_0          = 2e-2       ;% [mM]
+alph        = 0.05       ;% Percentage of ATP production that is independent of Oxygen
+D_Na        = 1.33e-5   ;% cm^2/s
+D_K         = 1.96e-5   ;% cm^2/s
+D_Cl        = 2.03e-5   ;% cm^2/s
+N_e_K_init  = 3.5        ;% mM concentration of K in the extracellular space
+N_sa_Na_init= 10         ;% mM concentration of Na inside the soma
+N_d_Na_init = 10         ;% mM concentration of Na inside the dendrite
+Mu          = 8e-6          ;%ms-1
+B0          = 200           ;%mM Effective total buffer concentration
+
+%%Oxygen Depndency
+
+LU_R_init  =15e-6;
+CBF_init      =2.5e-2;
+O2_b         =4e-2;
+gam =0.1;
 
 %% Constants of the BK-channel
 

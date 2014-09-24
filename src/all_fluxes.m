@@ -1,13 +1,203 @@
-function [NE,AC,SMC,EC] = all_fluxes (t,state)
+           function [NE,AC,SMC,EC] = all_fluxes (t,state)
 %% load the constants for the fluxes and pointers:
     all_indices();
     all_constants();
     global stretch_ch only_Koenig
+% Fluxes for Neuron Model
+
+%Nernst potential for Na,K,Cl ions in soma and dendrite
+
+NE(flu.N_sa_E_Na)= ph.*log(state(ind.N_e_Na)./state(ind.N_sa_Na));
+NE(flu.N_sa_E_K)= ph.*log(state(ind.N_e_K)./state(ind.N_sa_K));
+NE(flu.N_sa_E_Cl)= -70;
+NE(flu.N_d_E_Na)= ph.*log(state(ind.N_e_Na)./state(ind.N_d_Na));
+NE(flu.N_d_E_K)= ph.*log(state(ind.N_e_K)./state(ind.N_d_K));
+NE(flu.N_d_E_Cl)= -70;
+% %Nernst potential for Na,K,Cl ions in soma and dendrite
+% 
+% NE(flu.N_sa_E_Na)= 70.4615;
+% NE(flu.N_sa_E_K)= -97.2219;
+% NE(flu.N_sa_E_Cl)= -69.8181;
+% NE(flu.N_d_E_Na)= 70.4615;
+% NE(flu.N_d_E_K)= -97.2219;
+% NE(flu.N_d_E_Cl)= -69.8181;
+
+%Na flux through NaP channel in soma using GHK
+
+NE(flu.N_sa_Na_NaP_m1a1_GHK)=1./(6*(1+exp(-((0.143.*state(ind.N_sa_Em))+5.67))));
+NE(flu.N_sa_Na_NaP_m1b1_GHK)=exp(-((0.143.*state(ind.N_sa_Em))+5.67))./(6.*(1+exp(-((0.143.*state(ind.N_sa_Em))+5.67))));
+% NE(flu.N_sa_Na_NaP_m1_GHK)=NE(flu.N_sa_Na_NaP_m1a1_GHK)/(NE(flu.N_sa_Na_NaP_m1a1_GHK)+NE(flu.N_sa_Na_NaP_m1b1_GHK));
+NE(flu.N_sa_Na_NaP_h1a1_GHK)=5.12e-8.*exp(-((0.056.*state(ind.N_sa_Em))+2.94));
+NE(flu.N_sa_Na_NaP_h1b1_GHK)=1.6e-6./(1+exp(-(((0.2.*state(ind.N_sa_Em)))+8)));
+% NE(flu.N_sa_Na_NaP_h1_GHK)=NE(flu.N_sa_Na_NaP_h1a1_GHK)/(NE(flu.N_sa_Na_NaP_h1a1_GHK)+NE(flu.N_sa_Na_NaP_h1b1_GHK));
+NE(flu.N_sa_Na_NaP_GHK)=((state(ind.N_sa_Na_NaP_m1_GHK)).^2.*state(ind.N_sa_Na_NaP_h1_GHK).*gNaP_GHk.*F.*state(ind.N_sa_Em).*(state(ind.N_sa_Na)-(exp(-state(ind.N_sa_Em)./ph).*state(ind.N_e_Na))))./(ph.*(1-exp(-state(ind.N_sa_Em)./ph)));
+% NE(flu.N_sa_Na_NaP_GHK)=(state(ind.N_sa_Na_NaP_m1_GHK)).^2.*state(ind.N_sa_Na_NaP_h1_GHK).*gNaP_GHk .*(state(ind.N_sa_Em)-NE(flu.N_sa_E_Na));
+
+%K flux through KDR channel in soma using GHK
+
+NE(flu.N_sa_K_KDR_m2a2_GHK)=0.016.*(((state(ind.N_sa_Em))+34.9)./(1-exp(-((0.2.*state(ind.N_sa_Em))+6.98))));
+NE(flu.N_sa_K_KDR_m2b2_GHK)=0.25.*exp(-((0.025.*state(ind.N_sa_Em))+1.25));
+% NE(flu.N_sa_K_KDR_m2_GHK)=NE(flu.N_sa_K_KDR_m2a2_GHK)/(NE(flu.N_sa_K_KDR_m2a2_GHK)+NE(flu.N_sa_K_KDR_m2b2_GHK));
+NE(flu.N_sa_K_KDR_GHK)=((state(ind.N_sa_K_KDR_m2_GHK)).^2.*gKDR_GHk*F*state(ind.N_sa_Em).*(state(ind.N_sa_K)-(exp(-state(ind.N_sa_Em)./ph).*state(ind.N_e_K))))./(ph.*(1-exp(-state(ind.N_sa_Em)./ph)));
+% NE(flu.N_sa_K_KDR_GHK)=(state(ind.N_sa_K_KDR_m2_GHK)).^2.*gKDR_GHk.*(state(ind.N_sa_Em)-NE(flu.N_sa_E_K));
+
+%K flux through KA channel in soma using GHK
+
+NE(flu.N_sa_K_KA_m3a3_GHK)=0.02.*(((state(ind.N_sa_Em))+56.9)./(1-exp(-((0.1.*state(ind.N_sa_Em))+5.69))));
+NE(flu.N_sa_K_KA_m3b3_GHK)=0.0175.*(((state(ind.N_sa_Em))+29.9)./(exp(((0.1.*state(ind.N_sa_Em))+2.99))-1));
+% NE(flu.N_sa_K_KA_m3_GHK)=NE(flu.N_sa_K_KA_m3a3_GHK)/(NE(flu.N_sa_K_KA_m3a3_GHK)+NE(flu.N_sa_K_KA_m3b3_GHK));
+NE(flu.N_sa_K_KA_h2a2_GHK)=0.016.*exp(-((0.056.*state(ind.N_sa_Em))+4.61));
+NE(flu.N_sa_K_KA_h2b2_GHK)=0.5./(1+exp(-((0.2.*state(ind.N_sa_Em))+11.98)));
+% NE(flu.N_sa_K_KA_h2_GHK)=NE(flu.N_sa_K_KA_h2a2_GHK)/(NE(flu.N_sa_K_KA_h2a2_GHK)+NE(flu.N_sa_K_KA_h2b2_GHK));
+NE(flu.N_sa_K_KA_GHK)=((state(ind.N_sa_K_KA_m3_GHK)).^2.*state(ind.N_sa_K_KA_h2_GHK).*gKA_GHk.*F.*state(ind.N_sa_Em).*(state(ind.N_sa_K)-(exp(-state(ind.N_sa_Em)./ph).*state(ind.N_e_K))))./(ph.*(1-exp(-state(ind.N_sa_Em)./ph)));
+% NE(flu.N_sa_K_KA_GHK)=(state(ind.N_sa_K_KA_m3_GHK)).^2.*state(ind.N_sa_K_KA_h2_GHK).*gKA_GHk.*(state(ind.N_sa_Em)-NE(flu.N_sa_E_K));
+
+%Na flux through NaP channel in dendrite using GHK
+
+NE(flu.N_d_Na_NaP_m4a4_GHK)=1./(6.*(1+exp(-((0.143.*state(ind.N_d_Em))+5.67))));
+NE(flu.N_d_Na_NaP_m4b4_GHK)=exp(-((0.143.*state(ind.N_d_Em))+5.67))./(6.*(1+exp(-((0.143.*state(ind.N_d_Em))+5.67))));
+% NE(flu.N_d_Na_NaP_m4_GHK)=NE(flu.N_d_Na_NaP_m4a4_GHK)/(NE(flu.N_d_Na_NaP_m4a4_GHK)+NE(flu.N_d_Na_NaP_m4b4_GHK));
+NE(flu.N_d_Na_NaP_h3a3_GHK)=5.12e-8.*exp(-((0.056.*state(ind.N_d_Em))+2.94));
+NE(flu.N_d_Na_NaP_h3b3_GHK)=1.6e-6./(1+exp(-(((0.2.*state(ind.N_d_Em)))+8)));
+% NE(flu.N_d_Na_NaP_h3_GHK)=NE(flu.N_d_Na_NaP_h3a3_GHK)/(NE(flu.N_d_Na_NaP_h3a3_GHK)+NE(flu.N_d_Na_NaP_h3b3_GHK));
+NE(flu.N_d_Na_NaP_GHK)=((state(ind.N_d_Na_NaP_m4_GHK)).^2.*state(ind.N_d_Na_NaP_h3_GHK).*gNaP_GHk.*F.*state(ind.N_d_Em).*(state(ind.N_d_Na)-(exp(-state(ind.N_d_Em)./ph).*state(ind.N_e_Na))))./(ph.*(1-exp(-state(ind.N_d_Em)./ph)));
+% NE(flu.N_d_Na_NaP_GHK)=(state(ind.N_d_Na_NaP_m4_GHK)).^2.*state(ind.N_d_Na_NaP_h3_GHK).*gNaP_GHk.*(state(ind.N_d_Em)-NE(flu.N_d_E_Na));
+
+%Na flux through NMDA channel in dendrite using GHK
+
+NE(flu.N_d_Na_NMDA_m5a5_GHK)=0.5./(1+exp((13.5-state(ind.N_e_K))./1.42));
+NE(flu.N_d_Na_NMDA_m5b5_GHK)=0.5-NE(flu.N_d_Na_NMDA_m5a5_GHK);
+% NE(flu.N_d_Na_NMDA_m5_GHK)=NE(flu.N_d_Na_NMDA_m5a5_GHK)/(NE(flu.N_d_Na_NMDA_m5a5_GHK)+NE(flu.N_d_Na_NMDA_m5b5_GHK));
+NE(flu.N_d_Na_NMDA_h4a4_GHK)=1./(2000.*(1+exp(((state(ind.N_e_K))-6.75)/0.71)));
+NE(flu.N_d_Na_NMDA_h4b4_GHK)=1/2e3 - NE(flu.N_d_Na_NMDA_h4a4_GHK);
+% NE(flu.N_d_Na_NMDA_h4_GHK)=NE(flu.N_d_Na_NMDA_h4a4_GHK)/(NE(flu.N_d_Na_NMDA_h4a4_GHK)/NE(flu.N_d_Na_NMDA_h4b4_GHK));
+NE(flu.N_d_Na_NMDA_GHK)=((state(ind.N_d_Na_NMDA_m5_GHK).*state(ind.N_d_Na_NMDA_h4_GHK).*gNMDA_GHk.*F.*state(ind.N_d_Em).*(state(ind.N_d_Na)-(exp(-state(ind.N_d_Em)./ph).*state(ind.N_e_Na))))./(ph.*(1-exp(-state(ind.N_d_Em)./ph))))./ 108.0889;
+% NE(flu.N_d_Na_NMDA_GHK)=state(ind.N_d_Na_NMDA_m5_GHK).*state(ind.N_d_Na_NMDA_h4_GHK).*gNMDA_GHk.*(state(ind.N_d_Em)-NE(flu.N_d_E_Na));
+
+%K flux through KDR channel in dendrite using GHK
+
+NE(flu.N_d_K_KDR_m6a6_GHK)=0.016.*(((state(ind.N_d_Em))+34.9)./(1-exp(-((0.2.*state(ind.N_d_Em))+6.98))));
+NE(flu.N_d_K_KDR_m6b6_GHK)=0.25.*exp(-((0.025.*state(ind.N_d_Em))+1.25));
+% NE(flu.N_d_K_KDR_m6_GHK)=NE(flu.N_d_K_KDR_m6a6_GHK)/(NE(flu.N_d_K_KDR_m6a6_GHK)+NE(flu.N_d_K_KDR_m6b6_GHK));
+NE(flu.N_d_K_KDR_GHK)=((state(ind.N_d_K_KDR_m6_GHK)).^2.*gKDR_GHk.*F.*state(ind.N_d_Em).*(state(ind.N_d_K)-(exp(-state(ind.N_d_Em)./ph).*state(ind.N_e_K))))./(ph.*(1-exp(-state(ind.N_d_Em)./ph)));
+% NE(flu.N_d_K_KDR_GHK)=(state(ind.N_d_K_KDR_m6_GHK)).^2.*gKDR_GHk.*(state(ind.N_d_Em)-NE(flu.N_d_E_K));
+
+%K flux through KA channel in dendrite using GHK
+
+NE(flu.N_d_K_KA_m7a7_GHK)=0.02.*(((state(ind.N_d_Em))+56.9)./(1-exp(-((0.1.*state(ind.N_d_Em))+5.69))));
+NE(flu.N_d_K_KA_m7b7_GHK)=0.0175.*(((state(ind.N_d_Em))+29.9)./(exp(((0.1.*state(ind.N_d_Em))+2.99))-1));
+% NE(flu.N_d_K_KA_m7_GHK)=NE(flu.N_d_K_KA_m7a7_GHK)/(NE(flu.N_d_K_KA_m7a7_GHK)+NE(flu.N_d_K_KA_m7b7_GHK));
+NE(flu.N_d_K_KA_h5a5_GHK)=0.016.*exp(-((0.056.*state(ind.N_d_Em))+4.61));
+NE(flu.N_d_K_KA_h5b5_GHK)=0.5./(1+exp(-((0.2.*state(ind.N_d_Em))+11.98)));
+% NE(flu.N_d_K_KA_h5_GHK)=NE(flu.N_d_K_KA_h5a5_GHK)/(NE(flu.N_d_K_KA_h5a5_GHK)+NE(flu.N_d_K_KA_h5b5_GHK));
+NE(flu.N_d_K_KA_GHK)=((state(ind.N_d_K_KA_m7_GHK)).^2.*state(ind.N_d_K_KA_h5_GHK).*gKA_GHk.*F.*state(ind.N_d_Em).*(state(ind.N_d_K)-(exp(-state(ind.N_d_Em)./ph).*state(ind.N_e_K))))./(ph.*(1-exp(-state(ind.N_d_Em)./ph)));
+% NE(flu.N_d_K_KA_GHK)=(state(ind.N_d_K_KA_m7_GHK)).^2.*state(ind.N_d_K_KA_h5_GHK).*gKA_GHk.*(state(ind.N_d_Em)-NE(flu.N_d_E_K));
+
+%K flux through NMDA channel in dendrite using GHK
+
+% NE(flu.N_d_K_NMDA_m8a8_GHK)=0.5./(1+exp((13.5-state(ind.N_e_K))/1.42));
+% NE(flu.N_d_K_NMDA_m8b8_GHK)=0.5-NE(flu.N_d_K_NMDA_m8a8_GHK);
+% NE(flu.N_d_K_NMDA_m8_GHK)=NE(flu.N_d_K_NMDA_m8a8_GHK)/(NE(flu.N_d_K_NMDA_m8a8_GHK)+NE(flu.N_d_K_NMDA_m8b8_GHK));
+% NE(flu.N_d_K_NMDA_h6a6_GHK)=1./(2000.*(1+exp(((state(ind.N_e_K))-6.75)/0.71)));
+% NE(flu.N_d_K_NMDA_h6b6_GHK)=5e-5 - NE(flu.N_d_K_NMDA_h6a6_GHK);
+% NE(flu.N_d_K_NMDA_h6_GHK)=NE(flu.N_d_K_NMDA_h6a6_GHK)/(NE(flu.N_d_K_NMDA_h6a6_GHK)+NE(flu.N_d_K_NMDA_h6b6_GHK));
+NE(flu.N_d_K_NMDA_GHK)=((state(ind.N_d_Na_NMDA_m5_GHK).*state(ind.N_d_Na_NMDA_h4_GHK).*gNMDA_GHk.*F.*state(ind.N_d_Em).*(state(ind.N_d_K)-(exp(-state(ind.N_d_Em)./ph).*state(ind.N_e_K))))./(ph.*(1-exp(-state(ind.N_d_Em)./ph))))./ 108.0889;
+% NE(flu.N_d_K_NMDA_GHK)=state(ind.N_d_Na_NMDA_m5_GHK).*state(ind.N_d_Na_NMDA_h4_GHK).*gNMDA_GHk.*(state(ind.N_d_Em)-NE(flu.N_d_E_K));
+
+%Flux of Na and K ions through pumps in soma and dendrite
+
+NE(flu.N_sa_r1_pump)=(1+(N_e_K_init./state(ind.N_e_K))).^-2.*(1+(N_sa_Na_init./state(ind.N_sa_Na))).^-3;
+NE(flu.N_sa_r1_pump_init)=(1+(N_e_K_init./N_e_K_init)).^-2.*(1+(N_sa_Na_init./N_sa_Na_init)).^-3;
+NE(flu.N_d_r1_pump)=(1+(N_e_K_init./state(ind.N_e_K))).^-2.*(1+(N_d_Na_init./state(ind.N_d_Na))).^-3;
+NE(flu.N_d_r1_pump_init)=(1+(N_e_K_init./N_e_K_init)).^-2.*(1+(N_d_Na_init./N_d_Na_init)).^-3;
+NE(flu.N_O2_r2_pump)=2.*(1+O2_0./(((1-alph).*(O2_0))+alph.*O2_0)).^-1;
+NE(flu.N_sa_pump)=Imax.*NE(flu.N_sa_r1_pump).*NE(flu.N_O2_r2_pump);
+NE(flu.N_d_pump)=Imax.*NE(flu.N_d_r1_pump).*NE(flu.N_O2_r2_pump);
+NE(flu.N_sa_Napump)= 3.*NE(flu.N_sa_pump);
+NE(flu.N_sa_Kpump)= -2.*NE(flu.N_sa_pump);
+NE(flu.N_d_Napump)= 3.*NE(flu.N_d_pump);
+NE(flu.N_d_Kpump)= -2.*NE(flu.N_d_pump);  
+% NE(flu.N_P_O2)=(2.*(1+O2_0./((1-alph).*(state(ind.N_O2))+alph.*O2_0)).^-1)-(2.*(1+(O2_0./(alph.*O2_0))).^-1)./(2.*(1+O2_0./((1-alph).*O2_0+alph.*O2_0)).^-1)-(2.*(1+(O2_0./(alph.*O2_0))).^-1);
+NE(flu.N_P_O2)=(2.*(1+O2_0./((1-alph).*(state(ind.N_O2))+alph.*O2_0)).^-1)-(2.*(1+(O2_0./(alph.*O2_0))).^-1)./(2.*(1+O2_0./((1-alph).*O2_0+alph.*O2_0)).^-1)-(2.*(1+(O2_0./(alph.*O2_0))).^-1);
+NE(flu.V_CBF)=CBF_init.*((state(ind.R))^4./(LU_R_init)^4);
+NE(flu.V_Supply)=(NE(flu.V_CBF).*((O2_b-state(ind.N_O2))./(O2_b-O2_0)));
+NE(flu.N_Backgroundoxygen)=(CBF_init.*NE(flu.N_P_O2).*(1-gam));
+NE(flu.N_Pumpoxygen)=(CBF_init.*NE(flu.N_P_O2).*gam.*((NE(flu.N_sa_r1_pump)+NE(flu.N_d_r1_pump))./(NE(flu.N_sa_r1_pump_init)+NE(flu.N_d_r1_pump_init))));
+
+% % Leak conductance of Na and K in soma and dendrite using HH 
+% NE(flu.N_sa_tempNatot)=NE(flu.N_sa_Na_NaP_GHK)+NE(flu.N_sa_Napump);
+% NE(flu.N_sa_tempKtot)=NE(flu.N_sa_K_KDR_GHK)+NE(flu.N_sa_K_KA_GHK)+NE(flu.N_sa_Kpump);
+% NE(flu.N_d_tempNatot)=NE(flu.N_d_Na_NaP_GHK)+NE(flu.N_d_Napump)+NE(flu.N_d_Na_NMDA_GHK);
+% NE(flu.N_d_tempKtot)=NE(flu.N_d_K_KDR_GHK)+NE(flu.N_d_K_KA_GHK)+NE(flu.N_d_Kpump)+NE(flu.N_d_K_NMDA_GHK);
+% %     
+% NE(flu.N_sa_gNaleak)  = (NE(flu.N_sa_tempNatot))/(NE(flu.N_sa_E_Na) - state(ind.N_sa_Em));
+% NE(flu.N_sa_gKleak)   = (NE(flu.N_sa_tempKtot))/(NE(flu.N_sa_E_K) - state(ind.N_sa_Em));
+% NE(flu.N_d_gNaleak)   = (NE(flu.N_d_tempNatot))/(NE(flu.N_d_E_Na)  - state(ind.N_d_Em));
+% NE(flu.N_d_gKleak)    = (NE(flu.N_d_tempKtot))/(NE(flu.N_d_E_K)  - state(ind.N_d_Em)) ;
+% % 
+% % 
+% % Leak fluxes of Na,K,Cl in soma and dendrite using HH
+% NE(flu.N_sa_Naleak_HH)=NE(flu.N_sa_gNaleak)*(state(ind.N_sa_Em) - NE(flu.N_sa_E_Na));
+% NE(flu.N_sa_Kleak_HH)=NE(flu.N_sa_gKleak)*(state(ind.N_sa_Em) - NE(flu.N_sa_E_K));
+% NE(flu.N_d_Naleak_HH)=NE(flu.N_d_gNaleak)*(state(ind.N_d_Em) - NE(flu.N_d_E_Na));
+% NE(flu.N_d_Kleak_HH)=NE(flu.N_d_gKleak)*(state(ind.N_d_Em) - NE(flu.N_d_E_K));
+% NE(flu.N_sa_Cl_tot)=10.*NE(flu.N_sa_gNaleak)*(state(ind.N_sa_Em)- NE(flu.N_sa_E_Cl));
+% NE(flu.N_d_Cl_tot)=10.*NE(flu.N_d_gNaleak)*(state(ind.N_d_Em) - NE(flu.N_d_E_Cl));
+
+% % Leak fluxes of Na,K,Cl in soma and dendrite using HH
+NE(flu.N_sa_Naleak_HH)=gNaleak_sa*(state(ind.N_sa_Em) - NE(flu.N_sa_E_Na));
+NE(flu.N_sa_Kleak_HH)=gKleak_sa *(state(ind.N_sa_Em) - NE(flu.N_sa_E_K));
+NE(flu.N_d_Naleak_HH)=gNaleak_d*(state(ind.N_d_Em) - NE(flu.N_d_E_Na));
+NE(flu.N_d_Kleak_HH)=gKleak_d*(state(ind.N_d_Em) - NE(flu.N_d_E_K));
+NE(flu.N_sa_Cl_tot)= gClleak_sa*(state(ind.N_sa_Em)- NE(flu.N_sa_E_Cl));
+NE(flu.N_d_Cl_tot)=gClleak_d *(state(ind.N_d_Em) - NE(flu.N_d_E_Cl));
+
+
+
+%Total Na and K ion fluxes in soma
+
+NE(flu.N_sa_Na_tot)= (NE(flu.N_sa_Na_NaP_GHK)+ NE(flu.N_sa_Naleak_HH)+ NE(flu.N_sa_Napump));
+
+%  if NE(flu.N_sa_Na_tot)<1e-8
+%      NE(flu.N_sa_Na_tot)=0;
+%  end
+NE(flu.N_sa_K_tot)=(NE(flu.N_sa_K_KDR_GHK)+ NE(flu.N_sa_K_KA_GHK)+NE(flu.N_sa_Kleak_HH)+ NE(flu.N_sa_Kpump));
+%      NE(flu.N_sa_K_tot)=0;
+%  end
+
+% Total Na and K ion fluxes in dendrite
+NE(flu.N_d_Na_tot)= NE(flu.N_d_Na_NaP_GHK)+NE(flu.N_d_Naleak_HH)+ NE(flu.N_d_Na_NMDA_GHK)+ NE(flu.N_d_Napump);%
+%  if NE(flu.N_d_Na_tot)<1e-8
+%      NE(flu.N_d_Na_tot)=0;
+%  end
+NE(flu.N_d_K_tot)= NE(flu.N_d_K_KDR_GHK)+ NE(flu.N_d_K_KA_GHK)+NE(flu.N_d_Kleak_HH)+ NE(flu.N_d_K_NMDA_GHK)+ NE(flu.N_d_Kpump);
+%  if NE(flu.N_d_K_tot)<1e-8
+%      NE(flu.N_d_K_tot)=0;
+%  end
+
+
+%Total ion fluxes in soma and dendrite
+NE(flu.N_sa_tot) =NE(flu.N_sa_Na_tot)+ NE(flu.N_sa_K_tot)+ NE(flu.N_sa_Cl_tot);
+% if NE(flu.N_sa_tot)<1e-8
+%     NE(flu.N_sa_tot)=0;
+% end
+NE(flu.N_d_tot) = NE(flu.N_d_Na_tot)+ NE(flu.N_d_K_tot)+ NE(flu.N_d_Cl_tot);
+% if NE(flu.N_d_tot)<1e-8
+%     NE(flu.N_d_tot)=0;
+% end
+
+
+
+
+
+
+
+    
 %% Calculate the fluxes for the Astrocyte (AC)
 
-% Below all the additional equations are calculated and stores in AC, SMC
+% Below all the additional equations are calculated and stores in NE, AC, SMC
 % and EC
-NE=[];
+% NE=[];
 
 AC(flu.R_s)    = R_tot - state(ind.R_k);                               % m
 
@@ -27,9 +217,13 @@ AC(flu.K_k   ) = negCheck(state(ind.N_K_k)   ,state(ind.R_k));  % uM
 AC(flu.HCO3_k) = negCheck(state(ind.N_HCO3_k),state(ind.R_k));  % uM
 AC(flu.Cl_k  ) = negCheck(state(ind.N_Cl_k)  ,state(ind.R_k));  % uM
 AC(flu.Na_s  ) = negCheck(state(ind.N_Na_s)  ,AC(flu.R_s));     % uM
+% AC(flu.Na_s   ) = state(ind.N_e_Na)*1000; 
 AC(flu.K_s   ) = negCheck(state(ind.N_K_s)   ,AC(flu.R_s));     % uM
+% AC(flu.K_s   ) = state(ind.N_e_K)*1000; 
 AC(flu.HCO3_s) = negCheck(state(ind.N_HCO3_s),AC(flu.R_s));     % uM
-AC(flu.Cl_s  ) = negCheck(AC(flu.N_Cl_s)     ,AC(flu.R_s));     % uM
+% AC(flu.Cl_s  ) = negCheck(AC(flu.N_Cl_s)     ,AC(flu.R_s));     % uM
+AC(flu.Cl_s  ) = state(ind.N_e_Cl)*1000; 
+
 
 AC(flu.E_Na_k ) = (R_gas * Temp) / (z_Na * Farad) * log(AC(flu.Na_s)/AC(flu.Na_k)); % V
 AC(flu.E_K_k )  = (R_gas * Temp) / (z_K  * Farad) * log(AC(flu.K_s )/AC(flu.K_k )); % V
