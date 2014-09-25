@@ -25,32 +25,32 @@ The smooth pulse function $\rho$
 
 \subsubsection{Conservation Equations}
 \gls{Ca} concentration in the astrocytic cytosol:
-\begin{equation} \label{eq:ckInt}
+\begin{equation} \label{eqRN:ckInt}
 \dfrac{\mathrm{d}c_k}{\mathrm{d}t}= B_{\mathrm{cyt}}(J_{\mathrm{IP_3}}-J_{\mathrm{pump}}+J_{\mathrm{ER_leak}})
 \end{equation}
 %
 \gls{Ca} concentration in the astrocytic \gls{ER}:
-\begin{equation} \label{eq:skInt}
+\begin{equation} \label{eqRN:skInt}
 \dfrac{\mathrm{d}s_k}{\mathrm{d}t}= \frac{1}{VR_{\mathrm{ER_cyt}}}(\frac{dc_k}{dt})
 \end{equation}
 %
 The inactivation variable for \gls{IP3}:
-\begin{equation} \label{eq:hkInt}
+\begin{equation} \label{eqRN:hkInt}
 \dfrac{\mathrm{d}h_k}{\mathrm{d}t}= k_{\mathrm{on}}[K_{\mathrm{inh}}-(c_k+K_{\mathrm{inh}})h_k]
 \end{equation}
 %
 The \gls{IP3} concentration:
-\begin{equation} \label{eq:ikInt}
+\begin{equation} \label{eqRN:ikInt}
 \dfrac{\mathrm{d}i_k}{\mathrm{d}t}= r_hG-k_{\mathrm{deg}}i_k
 \end{equation}
 %
 The EET concentration:
-\begin{equation} \label{eq:eetkInt}
+\begin{equation} \label{eqRN:eetkInt}
 \dfrac{\mathrm{d}eetk_k}{\mathrm{d}t}= V_{\mathrm{eet}}(c_k-c_{\mathrm{k,min}})-k_{\mathrm{eet}}eet_k
 \end{equation}
 %
 Open probability of the BK channel (\pers):
-\begin{equation} \label{eq:dwkdt}
+\begin{equation} \label{eqRN:dwkdt}
 \frac{\mathrm{d}w_{k}}{\mathrm{d}t} = \phi_{w} \left(w_{\infty}-w_{k} \right) 
 \end{equation}
 
@@ -72,17 +72,17 @@ Open probability of the BK channel (\pers):
 		
 \subsubsection{Fluxes}
 \gls{Ca} flux from the ER to the cytosol in the astrocyte through \gls{IP3} Receptors (\gls{IP3}R) by \gls{IP3}: 
-\begin{equation} \label{eq:J_ip3}
+\begin{equation} \label{eqRN:J_ip3}
 J_{\mathrm{IP3}}=J_{\mathrm{max}}[(\frac{i_k}{i_k+K_i})(\frac{c_k}{c_k+K_{\mathrm{act}}})h_k]^3\times [1-\frac{c_k}{s_k}] 
 \end{equation}
 %
 The leakage \gls{Ca}  flux from the \gls{ER} to the cytosol in the astrocyte:
-\begin{equation} \label{eq:J_ER_leak}
+\begin{equation} \label{eqRN:J_ER_leak}
 J_{\mathrm{ER_leak}} = P_L(1-\frac{c_k}{s_k})
 \end{equation}	
 %
 The ATP dependent \gls{Ca}  pump flux from the cytoplasm to the ER in the astrocyte:
-\begin{equation} \label{eq:J_pump}
+\begin{equation} \label{eqRN:J_pump}
 J_{\mathrm{pump}} = V_{\mathrm{max}}\frac{c_k^2}{c_k^2+k_pump^2}
 \end{equation}
 \begin{table}[h!]
@@ -100,24 +100,24 @@ J_{\mathrm{pump}} = V_{\mathrm{max}}\frac{c_k^2}{c_k^2+k_pump^2}
 \end{table}
 \subsubsection{Additional equations}
 The Calcium buffering parameter in the astrocytic cytosol (-)
-\begin{equation} \label{eq:B_cyt}
+\begin{equation} \label{eqRN:B_cyt}
 B_{cyt}=\left(1+BK_{end}+ \frac{K_{ex}B_{ex}}{(K_{ex}+c_k)^2}\right)^{-1} 
 \end{equation}
 The ratio of active to total G-protein (-)
-\begin{equation} \label{eq:G}
+\begin{equation} \label{eqRN:G}
 G=\frac{\rho+\delta}{K_g+\rho+\delta}
 \end{equation}
 Equilibrium state BK-channel (-):
-\begin{equation} \label{eq:winf}
+\begin{equation} \label{eqRN:winf}
 w_{\infty}=0.5 \left(1+\mathrm{tanh}\left(\frac{v_{k}+(eet_{\mathrm{shift}}eet_k)-v_{3} }{v_{4}} \right)  \right) 
 \end{equation}
 %
 The time constant associated with the opening of BK channels	 (in \pers):
-\begin{equation} \label{eq:phin}
+\begin{equation} \label{eqRN:phin}
 \phi_{w}=\psi_{w}\mathrm{cosh}\left( \frac{v_{k}-v_{3}}{2v_{4}}\right) 
 \end{equation}
 \gls{Ca} dependent shift of the opening of the BK-channels
-\begin{equation} \label{eq:v_3}
+\begin{equation} \label{eqRN:v_3}
 v_{3}=\frac{v_5}{2}\mathrm{tanh}\left( \frac{c_k-Ca_3}{Ca_4}\right)+v_6 
 \end{equation}
 

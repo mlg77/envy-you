@@ -16,7 +16,7 @@
    id="svg4282"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="ACmodel_1pt1.pdf">
+   sodipodi:docname="ACmodel_1pt1.svg">
   <title
      id="title6830">LOESH</title>
   <defs
@@ -3014,7 +3014,7 @@
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1680"
-     inkscape:window-height="988"
+     inkscape:window-height="1028"
      inkscape:window-x="1672"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -13946,13 +13946,13 @@
      style="display:inline"
      transform="translate(-1023.1914,-107.01782)">
     <rect
-       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.5106864;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.57216513;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
        id="rect7197"
        width="192.51501"
-       height="198.47308"
+       height="214.95586"
        x="1588.8617"
-       y="229.10959"
-       ry="10.11746" />
+       y="212.62682"
+       ry="10.957694" />
     <g
        id="g8626"
        transform="translate(-64.503584,-235.00286)">
@@ -14024,7 +14024,7 @@
     </g>
     <g
        id="g5876"
-       transform="translate(-1.5727425,-3.9318562)">
+       transform="translate(-0.78637126,-23.591137)">
       <g
          transform="translate(-63.717213,-145.2199)"
          id="g8269">
@@ -14167,5 +14167,37 @@
          x="1632.1512"
          y="342.33884"
          style="font-size:16px">\footnotesize glutamate</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text8256-3"
+       y="321.63419"
+       x="1630.1871"
+       style="font-size:20px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       xml:space="preserve"><tspan
+         style="font-size:16px"
+         y="321.63419"
+         x="1630.1871"
+         id="tspan8258-8"
+         sodipodi:role="line">\footnotesize IP$_{3}$<tspan
+   id="tspan8275-7"
+   style="font-size:65.00091553%;baseline-shift:sub" /></tspan></text>
+    <path
+       transform="matrix(1.7477415,-0.2844874,0.2844874,1.7477415,316.50045,-646.86317)"
+       inkscape:transform-center-y="-1.1453717"
+       inkscape:transform-center-x="-0.032682514"
+       d="m 635.22217,656.41 c -0.37325,0.45754 -2.36642,-0.0396 -2.94928,-0.13405 -0.58286,-0.0945 -2.63101,-0.25244 -2.84062,-0.80445 -0.20961,-0.55201 1.21748,-2.0296 1.59073,-2.48714 0.37325,-0.45753 1.53413,-2.15229 2.11699,-2.05782 0.58286,0.0945 1.14895,2.06918 1.35856,2.62119 0.2096,0.55201 1.09687,2.40474 0.72362,2.86227 z"
+       inkscape:randomized="0"
+       inkscape:rounded="0.2"
+       inkscape:flatsided="false"
+       sodipodi:arg2="1.7314923"
+       sodipodi:arg1="0.68429479"
+       sodipodi:r2="2.0327964"
+       sodipodi:r1="3.3864338"
+       sodipodi:cy="654.26935"
+       sodipodi:cx="632.59814"
+       sodipodi:sides="3"
+       id="path4982-2-5"
+       style="fill:#666666;fill-opacity:1;stroke:#000000;stroke-width:0.31999999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;display:inline"
+       sodipodi:type="star" />
   </g>
 </svg>
