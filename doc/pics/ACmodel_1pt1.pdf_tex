@@ -71,11 +71,12 @@
     \put(0.0442827,0.33630725){\color[rgb]{0.12941176,0.47058824,0.40392157}\makebox(0,0)[lb]{\smash{$\rho$}}}%
     \put(0.78465059,0.23633503){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize ion channel}}}%
     \put(0.78465059,0.20414188){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize ion pump}}}%
-    \put(0.78363488,0.40918699){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize K$^+$ ion }}}%
-    \put(0.78363488,0.38081356){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize Na$^+$ ion}}}%
-    \put(0.78363488,0.35104348){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize Cl$^-$ ion}}}%
-    \put(0.78353308,0.32176065){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize HCO$^-_3$ ion}}}%
+    \put(0.78465059,0.43457976){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize K$^+$ ion }}}%
+    \put(0.78465059,0.40620633){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize Na$^+$ ion}}}%
+    \put(0.78465059,0.37643625){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize Cl$^-$ ion}}}%
+    \put(0.78454879,0.34715342){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize HCO$^-_3$ ion}}}%
     \put(0.787779,0.2637981){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize EET}}}%
     \put(0.78655863,0.29238122){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize glutamate}}}%
+    \put(0.7840217,0.31912423){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\footnotesize IP$_{3}$}}}%
   \end{picture}%
 \endgroup%
