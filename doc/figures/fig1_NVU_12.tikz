@@ -4383,6 +4383,8 @@ ymax=5000,
 ytick={-5000,     0,  5000},
 ylabel={$\text{J}_{\text{BK}}\text{ [}\mu\text{M/s]}$},
 name=plot5,
+at=(plot3.below south west),
+anchor=above north west,
 title={$\text{The contribution of the BK- and KIR-channel to K}_\text{p}\text{ NVU2}$}
 ]
 \addplot [
@@ -5126,6 +5128,8 @@ ymin=0,
 ymax=100,
 ytick={  0,  50, 100},
 ylabel={$\text{J}_{\text{KIR}}\text{ [}\mu\text{M/s]}$},
+at=(plot3.below south west),
+anchor=above north west,
 axis x line*=bottom,
 axis y line*=right
 ]

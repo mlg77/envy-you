@@ -82,7 +82,7 @@ $\theta_R$      & Left ramp of smooth pulse function & 1 & ME\\
 %
 \gls{K} concentration in the \gls{SC} (times the \gls{SC} volume-area ratio $R_s$; in \uMm):
 \begin{equation} \label{eq:KEx}
-\dfrac{\mathrm{d}N_{K_s}}{\mathrm{d}t}= k_C f(t) -\dfrac{\mathrm{d}N_{K_k}}{\mathrm{d}t}
+\dfrac{\mathrm{d}N_{K_s}}{\mathrm{d}t}= k_C f(t) -\dfrac{\mathrm{d}N_{K_k}}{\mathrm{d}t} - J_{BK_k} 
 \end{equation}
 %
 \gls{Na} concentration in the \gls{SC}  (times the \gls{SC} volume-area ratio $R_s$; in \uMm):
@@ -247,7 +247,7 @@ J_{\mathrm{pump}} = V_{\mathrm{max}}\frac{c_k^2}{c_k^2+k_pump^2}
 \begin{tabular}{| p{0.09\linewidth} | >{\footnotesize} p{0.6\linewidth} | >{\footnotesize} p{0.17\linewidth} | >{\footnotesize} p{0.02\linewidth} |}
 \arrayrulecolor{lightgrey}\hline	
 $F$ 			& Faradays constant														& 9.649e4 \Cmol 	& \\
-$R$ 			& Gas constant 															& 8.315 \JmolK		& \\
+$R_g$ 			& Gas constant 															& 8.315 \JmolK		& \\
 $T$ 	    	& Temperature 															& 300 \Kelvin		& \\
 $g_{K_{k}}$ 	& Specific ion conductance of potassium 								& 40 \perOhmm 		& \cite{Ostby2009}  \\
 $g_{Na_k}$ 		& Specific ion conductance of sodium 									& 1.314  \perOhmm 	& \cite{Ostby2009}  \\
@@ -288,26 +288,26 @@ v_k=\frac{g_{Na_k}E_{Na_k}+g_{K_k}E_{K_k}+g_{Cl_k}E_{Cl_k}+g_{NBC_k}E_{NBC_k} + 
 %
 Nernst potential for the potassium channel (in mV):
 \begin{equation} \label{eq:E_K}
-E_{K_k}=\frac{RT}{z_K F}ln\left( \frac{K_s}{K_k}\right) 
+E_{K_k}=\frac{R_gT}{z_K F}ln\left( \frac{K_s}{K_k}\right) 
 \end{equation}
 %
 Nernst potential for the sodium channel (in mV):
 \begin{equation} \label{eq:E_Na}
-E_{Na_k}=\frac{RT}{z_{Na} F}ln\left( \frac{Na_s}{Na_k}\right) 
+E_{Na_k}=\frac{R_gT}{z_{Na} F}ln\left( \frac{Na_s}{Na_k}\right) 
 \end{equation}
 %
 Nernst potential for the chloride channel (in mV):
 \begin{equation} \label{eq:E_Cl}
-E_{Cl_k}=\frac{RT}{z_{Cl} F}ln\left( \frac{Cl_s}{Cl_k}\right) 
+E_{Cl_k}=\frac{R_gT}{z_{Cl} F}ln\left( \frac{Cl_s}{Cl_k}\right) 
 \end{equation}
 %
 Nernst potential for the NBC channel (in mV):
 \begin{equation} \label{eq:E_NBC}
-E_{NBC_k}=\frac{RT}{z_{NBC} F}ln\left( \frac{Na_s {HCO_{3_s}}^2}{Na_k {HCO_{3_k}}^2}\right) 
+E_{NBC_k}=\frac{R_gT}{z_{NBC} F}ln\left( \frac{Na_s {HCO_{3_s}}^2}{Na_k {HCO_{3_k}}^2}\right) 
 \end{equation}
 Nernst potential for the BK channel (in mV):
 \begin{equation} \label{eq:E_BK}
-E_{BK_k}=\frac{RT}{z_K F}ln\left( \frac{K_p}{K_k}\right) 
+E_{BK_k}=\frac{R_gT}{z_K F}ln\left( \frac{K_p}{K_k}\right) 
 \end{equation}
 The Calcium buffering parameter in the astrocytic cytosol (-)
  \begin{equation} \label{eq:B_cyt}
@@ -335,7 +335,7 @@ v_{3}=\frac{v_5}{2}\mathrm{tanh}\left( \frac{c_k-Ca_3}{Ca_4}\right)+v_6
 \centering
 \begin{tabular}{| p{0.09\linewidth} | >{\footnotesize} p{0.6\linewidth} | >{\footnotesize} p{0.17\linewidth} | >{\footnotesize} p{0.02\linewidth} |}
 \arrayrulecolor{lightgrey}\hline
-$g_{Cl_k}$ 		& Specific ion conductance of chloride 									& 8.797e-1 \perOhmm & \cite{Ostby2009}  \\
+$g_{Cl_k}$ 		& Specific ion conductance of chloride 									& 8.797e-1 [\perOhmm] & \cite{Ostby2009}  \\
 $z_K$			& Valence of a potassium ion										& 1  [-] & \\ 
 $z_Na$			& Valence of a sodium ion											& 1  [-] & \\ 
 $z_Cl$			& Valence of a chloride ion											& -1 [-] & \\ 
@@ -343,13 +343,13 @@ $z_{NBC}$ 		& Effective valence of the NBC cotransporter complex 				& -1 [-] & 
 $BK_{end}$      & Cytosolic endogenous buffer constant                              & 40 [-] & \cite{LoesEvert} \\
 $K_{ex}$        & Cytosolic exogenous buffer dissociation constant                  & 0.26 [\uM] & \cite{LoesEvert} \\
 $B_{ex}$        & Concentration of cytosolic exogenous buffer                       & 11.35 [\uM] & \cite{LoesEvert} \\
-$\delta$        & Ratio of the activities of the bound and unbound receptors        & 1.235e-3 [\uM] & \cite{LoesEvert}\\
-$K_G$           & The G-protein dissociation constant                               & 8.82  [uM] & \cite{LoesEvert}\\
+$\delta$        & Ratio of the activities of the bound and unbound receptors        & 1.235e-3 [-] & \cite{Farr2011}\\
+$K_G$           & The G-protein dissociation constant                               & 8.82  [uM] & \cite{Farr2011}\\
 $v_{4}$			& A measure of the spread of the distribution of the open probability of the BK channel	& 14.5e-3 [\Volt]   &  \cite{Gonzalez1994}  
 \\
-$v_{5}$			& Determines the range of the shift of $n_{\inf}$ as calcium varies    		& 8e-3 [\Volt]  & \cite{LoesEvert}  \\
-$v_{6}$			& The voltage associated with the opening of half the population		& -15e-3 [\Volt]  & \cite{LoesEvert}  \\
-$ \psi_{w}$    	& A characteristic time for the open probability of the BK channel		& 2.664 [\pers] & \cite{Gonzalez1994} \\
+$v_{5}$			& Determines the range of the shift of $n_{\inf}$ as calcium varies    		& 8e-3 [\Volt]  & \cite{Farr2011}  \\
+$v_{6}$			& The voltage associated with the opening of half the population		& -15e-3 [\Volt]  & \cite{Farr2011}  \\
+$ \psi_{w}$    	& A characteristic time for the open probability of the BK channel		& 2.664 [$s^{-1}$] & \cite{Gonzalez1994} \\
 
 \hline
 \end{tabular}
@@ -367,7 +367,7 @@ The cytosolic [\gls{Ca}] in the \gls{SMC} (in \uM):
 \begin{equation}\label{eq:ci}
 \begin{split}
 \dfrac{\mathrm{d}\CaConsc}{\mathrm{d}t} = J_{IP_{3i}} - J_{SR_{uptake_{i}}} + J_{CICR_{i}} - J_{extrusion_{i}} +  J_{SR_{leak_{i}}}\dots \\
- - J_{VOCC_{i}} + J_{Na/Ca_{i}}  - 0.1J_{stretch_{i}} + J_{Ca^{2+}-coupling_{i}}^{SMC-EC}
+ - J_{VOCC_{i}} + J_{Na/Ca_{i}}  + 0.1J_{stretch_{i}} + J_{Ca^{2+}-coupling_{i}}^{SMC-EC}
 \end{split} 
 \end{equation}
 %
@@ -417,7 +417,7 @@ The cytosolic \gls{Ca} concentration in the \gls{EC} (in \uM):
 \begin{equation} \label{eq:cj}
 \begin{split}
 \dfrac{\mathrm{d}\CaConec}{\mathrm{d}t} = J_{IP_{3j}} - J_{ER_{uptake_{j}}} + J_{CICR_{j}} - J_{extrusion_{j}}\dots \\
- + J_{ER_{leak_{j}}} + J_{cation_{j}} + J_{0_{j}}- 0.1J_{stretch_{j}} - J_{Ca^{2+}-coupling_{j}}^{SMC-EC}
+ + J_{ER_{leak_{j}}} + J_{cation_{j}} + J_{0_{j}} + J_{stretch_{j}} - J_{Ca^{2+}-coupling_{j}}^{SMC-EC}
 \end{split}
 \end{equation}
 %
@@ -548,7 +548,7 @@ J_{VOCC_{i}} = G_{Cai} \frac{v_{i}-v_{Ca_{1i}}}     {1+ exp(-\left[ \left(  v_{i
 \arrayrulecolor{lightgrey}\hline
 $G_{Cai}$      	& Whole-cell conductance for VOCCs	 					& 1.29e-3  \uMpmVs					& \cite{Koenigsberger2006} \\
 $v_{Ca_{1i}}$   & Reversal potential for VOCCs	 						& 100.0 \mV							& \cite{Koenigsberger2006} \\
-$v_{Ca_{2i}}$  	& Half-point of the VOCC activation sigmoidal		 	& -35.0 \mV							& ME \\
+$v_{Ca_{2i}}$  	& Half-point of the VOCC activation sigmoidal		 	& -24.0 \mV							& ME \\
 $R_{Cai}$      	& Maximum slope of the VOCC	activation sigmoidal		& 8.5 \mV							& \cite{Koenigsberger2006} \\
 \hline
 \end{tabular}
@@ -959,17 +959,17 @@ $z_{5}$      			& Model estimation for the KIR channel conductance			& -7.4e-2 \
 %
 The fraction of free phosphorylated cross-bridges (dimensionless):
 \begin{equation} \label{eq:dMpdt}
-\frac{\dd[Mp]}{\dd t} = K_{4_{i}}[AMp] +K_{1_{i}} [M] - ( K_{2_{i}} + K_{3_{i}} ) [Mp]
+\frac{\dd[Mp]}{\dd t} = K_{4}[AMp] +K_{1} [M] - ( K_{2} + K_{3} ) [Mp]
 \end{equation}
 %
 The fraction of attached phosphorylated cross-bridges (dimensionless):
 \begin{equation} \label{eq:dAMpdt}
-\frac{\dd[AMp]}{\dd t} =K_{3_{i}} [Mp] + K_{6_{i}} [AM] - ( K_{4_{i}} + K_{5_{i}} )[AMp]
+\frac{\dd[AMp]}{\dd t} =K_{3} [Mp] + K_{6} [AM] - ( K_{4} + K_{5} )[AMp]
 \end{equation} 
 %
 The fraction of attached dephosphorylated cross-bridges (dimensionless):
 \begin{equation} \label{eq:dAMdt}
-\frac{\dd[AM]}{\dd t} = K_{5_{i}} [AMp]-(K_{7_{i}}+K_{6_{i}})[AM]
+\frac{\dd[AM]}{\dd t} = K_{5} [AMp]-(K_{7}+K_{6})[AM]
 \end{equation}
 %
 The fraction of free non-phosphorylated cross-bridges (dimensionless):
@@ -980,7 +980,7 @@ The fraction of free non-phosphorylated cross-bridges (dimensionless):
 %
 The rate constants that represent phosphorylation of M to Mp and of AM to AMp by the active myosin light chain kinase (MLCK), respectively (in \pers):
 \begin{equation} \label{eq:gamma}
-K_{1_{i}} = K_{6_{i}} = \gamma_{cross} \CaConsc ^{3}
+K_{1} = K_{6} = \gamma_{cross} \CaConsc ^{3}
 \end{equation}
 %
 %Note that:
@@ -992,11 +992,11 @@ K_{1_{i}} = K_{6_{i}} = \gamma_{cross} \CaConsc ^{3}
 \centering
 \begin{tabular}{| p{0.09\linewidth} | >{\footnotesize} p{0.6\linewidth} | >{\footnotesize} p{0.17\linewidth} | >{\footnotesize} p{0.02\linewidth} |}
 \arrayrulecolor{lightgrey}\hline
-$K_{2_{i}}$      	& The rate constant for dephosphorylation (of Mp to M) by myosin light-chain phosphatase (MLCP)																			 & 0.5 \pers & \cite{Hai1989} \\
-$K_{3_{i}}$      	& The rate constants representing the attachment/detachment of fast cycling phosphorylated crossbridges																	 & 0.4 \pers	& \cite{Hai1989} \\
-$K_{4_{i}}$      	& The rate constants representing the attachment/detachment of fast cycling phosphorylated crossbridges 																	 & 0.1 \pers	& \cite{Hai1989} \\
-$K_{5_{i}}$      & The rate constant for dephosphorylation (of AMp to AM) by myosin light-chain phosphatase (MLCP)																			 & 0.5 \pers	& \cite{Hai1989} \\
-$K_{7_{i}}$      	& The rate constant for latch-bridge detachment					& 0.1 \pers	& \cite{Hai1989} \\
+$K_{2}$      	& The rate constant for dephosphorylation (of Mp to M) by myosin light-chain phosphatase (MLCP)																			 & 0.5 \pers & \cite{Hai1989} \\
+$K_{3}$      	& The rate constants representing the attachment/detachment of fast cycling phosphorylated crossbridges																	 & 0.4 \pers	& \cite{Hai1989} \\
+$K_{4}$      	& The rate constants representing the attachment/detachment of fast cycling phosphorylated crossbridges 																	 & 0.1 \pers	& \cite{Hai1989} \\
+$K_{5}$      & The rate constant for dephosphorylation (of AMp to AM) by myosin light-chain phosphatase (MLCP)																			 & 0.5 \pers	& \cite{Hai1989} \\
+$K_{7}$      	& The rate constant for latch-bridge detachment					& 0.1 \pers	& \cite{Hai1989} \\
 $\gamma_{cross}$      	& The sensitivity of the contractile apparatus to calcium		& 17 \puMdries	& \cite{Hai1989} \\
 %$n_{cross}$      		& A constant for further explanation see reference				& 3 \Dless	& \cite{Hai1988} \\
 \hline
@@ -1009,7 +1009,8 @@ $\gamma_{cross}$      	& The sensitivity of the contractile apparatus to calcium
 
 The wall thickness of the vessel (in \um):
 \begin{equation} \label{eq:h2}
-h=-R+\sqrt{R^2+2R_{0_{pas}}h_{0_{pas}}+h_{0_{pas}}^2}
+h=-0.1R
+% h = -R+\sqrt{R^2+2R_{0_{pas}}h_{0_{pas}}+h_{0_{pas}}^2}
 \end{equation}
 %
 The fraction of attached myosin cross-bridges (dimensionless):
@@ -1035,12 +1036,12 @@ R_0(F_r)=R_{0_{pas}} + F_r (\alpha -1) R_{0_{pas}}
 \centering
 \begin{tabular}{| p{0.09\linewidth} | >{\footnotesize} p{0.6\linewidth} | >{\footnotesize} p{0.17\linewidth} | >{\footnotesize} p{0.02\linewidth} |}
 \arrayrulecolor{lightgrey}\hline
-$\eta   $				& viscosity															& 1e4 Pa m 		&  \cite{Koenigsberger2006}\\
+$\eta   $				& viscosity															& 1e4 Pa s 		&  \cite{Koenigsberger2006}\\
 $R_{0_{pas}}$			& Radius of the vessel when passive and no stress is applied		& 20  \um 		& ME \\
 $h_{0_{pas}}$			& Wall thickness when passive and no stress is applied				& 3   \um		& ME \\
 $P_T$					& Transmural pressure												& 4000 \Pa		& ME \\
 ${E}_{pas}$				& Young's moduli for the passive vessel								& 66e3 \Pa 		&  \cite{Gore}\\
-${E}_{act}$				& Additional component of the Young's moduli when vessel is active	& 167e3 \Pa 	& \cite{Gore}\\
+${E}_{act}$				&  Young's moduli for the active vessel	& 233e3 \Pa 	& \cite{Gore}\\
 $\alpha$				& Scaling factor initial radius										& 0.6    		& \cite{Gore}\\
 \hline
 \end{tabular}
