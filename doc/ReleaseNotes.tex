@@ -142,7 +142,7 @@ v_{3}=\frac{v_5}{2}\mathrm{tanh}\left( \frac{c_k-Ca_3}{Ca_4}\right)+v_6
 \end{table}
 
 \subsection{Corrections}
-A mistake was discovered in NVU1.0 for the equation used to describe the \gls{K} concentration in the synaptic cleft. The orignal equation substracted the change in astrocytic \gls{K} concentration from the \gls{K} influx from the neuron. This was incorrect since not all channels lead from the astrocyte to the synaptic cleft. The BK-channel describes the flux from the astrocyte to the perivascular space, and therefore this flux was added to the equation, resulting in (\ref{eq:KEx}). Fortunately this mistake led to very small changes, and it did not significantly change the model outcomes. Figure \ref{fig:cordif} shows the old and the corrected results for the flux through the BK-channel, and it is clear that they practacally overlap. 
+A mistake was discovered in NVU1.0 for the equation used to describe the \gls{K} concentration in the synaptic cleft. The original equation subtracted the change in astrocytic \gls{K} concentration from the \gls{K} influx from the neuron. This was incorrect since not all channels lead from the astrocyte to the synaptic cleft. The BK-channel describes the flux from the astrocyte to the perivascular space, and therefore this flux was added to the equation, resulting in (\ref{eq:KEx}). Fortunately this mistake led to very small changes, and it did not significantly change the model outcomes. Figure \ref{fig:cordif} shows the old and the corrected results for the flux through the BK-channel, and it is clear that they practically overlap. 
 
 \begin{figure}[h!]
 	\centering
