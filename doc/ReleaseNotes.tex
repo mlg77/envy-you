@@ -3,6 +3,7 @@
 \subsection{Adaptations to the astrocyte model}
 In the creation of NVU 1.1 the work of Farr\& David(2011) \cite{Farr2011} was implemented in NVU 1.0. This means that several pathways were added and equations were combined. First a glutamate release in the synaptic cleft was simulated by creating a smooth pulse function, $\rho$, describing the ratio of bound to total glutamate receptors on the synapse end of the astrocyte. This induces an \gls{IP3} release into the cell, causing the release of Calcium from the \gls{ER} into the cytosol, which on his turn leads to the production of EET. The open state of the BK-channels in NVU 1.0 depends only on the membrane voltage, in NVU 1.1 the opening of BK-channels is regulated by the membrane voltage as well as the EET and \gls{Ca} concentration. Furthermore, several corrections, proposed by de Kock \& van der Donck (2013) \cite{LoesEvert}, on the model by Farr were included. These corrections include an equation to describe the buffering parameter in the \gls{Ca} conservation equation (Farr \cite{Farr2011} used a constant to describe this parameter) and some changes in parameter values.
 
+
 \subsection{New/changed equations \& parameters for the astrocyte model}
 \paragraph{$\rho$ input signal}
 
@@ -15,7 +16,7 @@ The smooth pulse function $\rho$
 	\centering
 	\begin{tabular}{| p{0.09\linewidth} | >{\footnotesize} p{0.6\linewidth} | >{\footnotesize} p{0.17\linewidth} | >{\footnotesize} p{0.02\linewidth} |}
 		\arrayrulecolor{lightgrey}\hline
-		$Amp$           & Amplitude of smooth pulse function & 0.7 & ME\\
+		$Amp$           & Amplitude of smooth pulse function & 0.5 & ME\\
 		$base$          & Baseline of smooth pulse function & 0.1 & ME\\
 		$\theta_L$      & Left ramp of smooth pulse function & 1 & ME\\
 		$\theta_R$      & Left ramp of smooth pulse function & 1 & ME\\
@@ -139,3 +140,18 @@ v_{3}=\frac{v_5}{2}\mathrm{tanh}\left( \frac{c_k-Ca_3}{Ca_4}\right)+v_6
 		\hline
 	\end{tabular}
 \end{table}
+
+\subsection{Corrections}
+A mistake was discovered in NVU1.0 for the equation used to describe the \gls{K} concentration in the synaptic cleft. The orignal equation substracted the change in astrocytic \gls{K} concentration from the \gls{K} influx from the neuron. This was incorrect since not all channels lead from the astrocyte to the synaptic cleft. The BK-channel describes the flux from the astrocyte to the perivascular space, and therefore this flux was added to the equation, resulting in (\ref{eq:KEx}). Fortunately this mistake led to very small changes, and it did not significantly change the model outcomes. Figure \ref{fig:cordif} shows the old and the corrected results for the flux through the BK-channel, and it is clear that they practacally overlap. 
+
+\begin{figure}[h!]
+	\centering
+	\tiny 
+				\newlength\figureheight 
+				\newlength\figurewidth 
+	\setlength\figureheight{5 cm} 
+	\setlength\figurewidth{15 cm}
+	\input{figures/diff_cor.tikz}
+	\caption{The flux through the BK-channel in \uM m/s for the old (blue) and corrected (red) simulation }
+	\label{fig:cordif}
+\end{figure}
