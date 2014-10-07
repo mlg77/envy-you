@@ -21,18 +21,25 @@ dy(ind.N_K_k   ) = -AC(flu.J_K_k ) + 2 * AC(flu.J_NaK_k) + AC(flu.J_NKCC1_k) + A
 dy(ind.N_HCO3_k) = 2 * AC(flu.J_NBC_k);                                                 % uMm s-1
 dy(ind.N_Cl_k  ) = dy(ind.N_Na_k) + dy(ind.N_K_k) - dy(ind.N_HCO3_k);                           % uMm s-1, modified equation compared to the one of Ostby
 dy(ind.N_Na_s  ) = - k_C * getRef(time,'ft') - dy(ind.N_Na_k);                         % uMm s-1
-dy(ind.N_K_s   ) = k_C * getRef(time,'ft') - dy(ind.N_K_k) +AC(flu.J_BK_k) ;                          % uMm s-1
+dy(ind.N_K_s   ) = k_C * getRef(time,'ft') - dy(ind.N_K_k) + AC(flu.J_BK_k) ;                          % uMm s-1
 dy(ind.N_HCO3_s) = - dy(ind.N_HCO3_k);                                                  % uMm s-1
 dy(ind.K_p     ) = AC(flu.J_BK_k) / (VR_pa*state(ind.R_k)) + (SMC(flu.J_KIR_i))/(VR_ps);     % uM s-1
+dy(ind.Ca_p     ) = -AC(flu.J_TRPV_k)/ (VR_pa)  - SMC(flu.J_Ca)/(VR_ps) - Ca_dec*(AC(flu.Ca_p)-Ca_p0) ;
+%- Ca_dec*(AC(flu.Ca_p)-Ca_p0);
+%
+%
 dy(ind.w_k     ) = AC(flu.phi_w) * (AC(flu.w_inf) - state(ind.w_k));                            % s-1
+dy(ind.z_k     ) = 1/(AC(flu.t_Ca)*AC(flu.Ca_p))*(AC(flu.z_inf)-state(ind.z_k));
 
 
 % %astr. DE for Ca2+ (Hannah)
 %dy(ind.ck)=B_cyt*(AC(flu.J_ip3)-AC(flu.J_pump)+AC(flu.J_ERleak)); % FARR astrocytic calcium concentration
-dy(ind.ck)=AC(flu.B_cyt)*(AC(flu.J_ip3)-AC(flu.J_pump)+AC(flu.J_ERleak)); %L&E astrocytic calcium concentration
-dy(ind.sk)=-1/VR_ERcyt*dy(ind.ck); % ER calcium concentration
+dy(ind.ck)=AC(flu.B_cyt)*(AC(flu.J_ip3)-AC(flu.J_pump)+AC(flu.J_TRPV_k)+AC(flu.J_ERleak)); %L&E astrocytic calcium concentration
+%
+%dy(ind.sk)=-1/VR_ERcyt*dy(ind.ck); % ER calcium concentration
+dy(ind.sk)=-1/VR_ERcyt*(dy(ind.ck)-AC(flu.B_cyt)*AC(flu.J_TRPV_k)); % ER calcium concentration
 dy(ind.hk)=k_on*(k_inh-(AC(flu.ck)+k_inh)*AC(flu.hk));  %the action of  the IP3 receptors that have not been inactivated by Calcium
-dy(ind.ik)=r_h*AC(flu.G_pr)-k_deg*AC(flu.ik);  %IP3 concentration
+dy(ind.ik)=r_h*AC(flu.G_pr)-k_deg*AC(flu.ik);  %IP3 concentration 
 %dy(ind.eetk)=V_eet*(AC(flu.ck)-ck_min)-k_eet*AC(flu.eetk);  % FARR EET concentration
 if AC(flu.ck)> ck_min
     dy(ind.eetk)=V_eet*(AC(flu.ck)-ck_min)-k_eet*AC(flu.eetk);  % L&E EET concentration
@@ -41,10 +48,12 @@ else
 end
 
 % Smooth muscle cell
-dy(ind.Ca_i)    = SMC(flu.Ca_coup_i) + SMC(flu.rho_i) * (SMC(flu.J_CICR_i) + SMC(flu.J_IP3_i) + SMC(flu.J_leak_i) - SMC(flu.J_SRuptake_i) - SMC(flu.J_extrusion_i)...
-    - SMC(flu.J_VOCC_i) + SMC(flu.J_NaCa_i) + 0.1*SMC(flu.J_stretch_i));
+dy(ind.Ca_i)    = (SMC(flu.Ca_coup_i) + SMC(flu.rho_i) * (SMC(flu.J_CICR_i) + SMC(flu.J_IP3_i) + SMC(flu.J_leak_i) - SMC(flu.J_SRuptake_i) - SMC(flu.J_extrusion_i)...
+    - SMC(flu.J_VOCC_i) + SMC(flu.J_NaCa_i)- SMC(flu.J_Ca) + 0.1*SMC(flu.J_stretch_i)));
+% 
 dy(ind.s_i) 	= - SMC(flu.J_CICR_i) - SMC(flu.J_leak_i) + SMC(flu.J_SRuptake_i) ;
-dy(ind.v_i)     = SMC(flu.v_coup_i) + gam * (-SMC(flu.J_NaK_i) - SMC(flu.J_Cl_i) - 2*SMC(flu.J_VOCC_i) - SMC(flu.J_NaCa_i) - SMC(flu.J_K_i) - SMC(flu.J_stretch_i) - SMC(flu.J_KIR_i));
+dy(ind.v_i)     = SMC(flu.v_coup_i) + gam * (-SMC(flu.J_NaK_i) - SMC(flu.J_Cl_i) - 2*SMC(flu.J_VOCC_i) - SMC(flu.J_NaCa_i) - SMC(flu.J_K_i) - SMC(flu.J_stretch_i)-SMC(flu.J_Ca) - SMC(flu.J_KIR_i));
+%
 dy(ind.w_i) 	= lab * (SMC(flu.Kactivation_i) - state(ind.w_i));
 dy(ind.I_i) 	= SMC(flu.IP3_coup_i) - SMC(flu.J_degrad_i)  ; 
 

@@ -5,11 +5,11 @@ all_constants();
 
 linestylle = ':';
 
-a = zeros(1,36);%25 %35 Farr
-s = zeros(1,25);
+a = zeros(1,43);%25 %35 Farr %41 BM
+s = zeros(1,27); %27 BM %25L&E
 e = zeros(1,17);
-f= zeros(1,27); %24
-dfdt= zeros(1,29);%24
+f= zeros(1,29); %24 
+dfdt= zeros(1,31);%24 %29 L&E %31 BM
 t= zeros(3,1);
 % input= zeros(1,2);
 

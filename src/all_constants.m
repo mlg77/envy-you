@@ -17,6 +17,7 @@ z_Na        = 1             ;% [-]
 z_K         = 1             ;% [-]
 z_Cl        = -1            ;% [-]
 z_NBC       = -1            ;% [-]
+z_Ca        = 2             ;
 g_K_k       = 40            ;% [ohm-1m-2]40e3
 g_KCC1_k    = 1e-2          ;% [ohm-1m-2]10e-2
 g_NBC_k     = 7.57e-1       ;% [ohm-1m-2] 7.57e2
@@ -165,6 +166,25 @@ else
     P_L      = 0.0804;  %uMs-1L&E      5.2uM (Farr)    concentration factor based on steady state calcium balance
 end
 
+%constants for BM
+Ca_dec      = 0.5;  %s-1
+Ca_p0       = 2000; %uM
+G_trpv      = 4000;  %pS 200 
+g_trpv      = G_trpv*10e-12/A_ef_k;
+v_trpv      = 6;    %mV
+C_ast       = 40;   %pF
+g_Ca        = 157;  %pS
+%g_Ca        = 157/A_ef_k;
+C_smc       = 19.635; %pF
+v_Ca        = 80;   %mV
+t_trpv      = 0.9;  %s-1
+eps_h       = 0.16; %  []
+k           = 0.04; %[]
+R0          = 20e-6;%m
+gam_cai     = 0.2;  %uM
+gam_cae     = 0.2;  %mM
+v_1i        = -21;  %mV
+v_2i        = 25;   %mV
 
 
 global CASE J_PLC g_hat p_hat p_hatIP3

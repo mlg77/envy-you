@@ -35,6 +35,9 @@ ind.sk      = 26;
 ind.hk      = 27;
 ind.ik      = 28;
 ind.eetk    = 29;
+%indices for BM
+ind.Ca_p     = 30;
+ind.z_k     = 31;
 
 %% Astrocyte indices
 flu.R_s     = 1;%R_tot- R_k;
@@ -81,6 +84,14 @@ flu.vh_3    = 34;
 flu.G_pr    = 35;
 flu.B_cyt   = 36; %L&E
 
+%fluxes for BM
+flu.Ca_p       =37;
+flu.E_TRPV_k    = 38;
+flu.t_Ca    = 39;
+flu.H_Ca   = 40;
+flu.z_inf   = 41;
+flu.h_r   = 42;
+flu.J_TRPV_k = 43;
 %% SMC-pointers
 
 flu.v_coup_i        = 1;
@@ -111,6 +122,10 @@ flu.E_K_i           = 23;
 
 flu.K1_c            = 24;
 flu.K6_c            = 25;
+
+%fluxes for BM
+flu.m_inf           = 26;
+flu.J_Ca            = 27;
 %% EC-pointers
 
 flu.v_coup_j         = 1;

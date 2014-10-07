@@ -37,6 +37,8 @@ AC(flu.hk)     = state(ind.hk);
 AC(flu.ik)     = state(ind.ik);
 AC(flu.eetk)   = state(ind.eetk);
 
+AC(flu.Ca_p)   = state(ind.Ca_p);
+
 AC(flu.E_Na_k ) = (R_gas * Temp) / (z_Na * Farad) * log(AC(flu.Na_s)/AC(flu.Na_k)); % V
 AC(flu.E_K_k )  = (R_gas * Temp) / (z_K  * Farad) * log(AC(flu.K_s )/AC(flu.K_k )); % V
 AC(flu.E_Cl_k ) = (R_gas * Temp) / (z_Cl * Farad) * log(AC(flu.Cl_s)/AC(flu.Cl_k)); % V
@@ -47,15 +49,21 @@ AC(flu.E_BK_k)  = (R_gas * Temp) / (z_K  * Farad) * log(state(ind.K_p)/AC(flu.K_
 
 AC(flu.J_NaK_k  ) = J_NaK_max * Hill(AC(flu.Na_k), K_Na_k, 1.5) * ...
                 Hill(AC(flu.K_s),K_K_s,1);              % uMm s-1 
+%Flux for BM
+%AC(flu.E_TRPV_k) = 0.5;
+AC(flu.E_TRPV_k) = (R_gas * Temp) / (z_Ca * Farad) * log(AC(flu.Ca_p)/AC(flu.ck));
 
 AC(flu.v_k )   = ( g_Na_k  * AC(flu.E_Na_k )...
              + g_K_k   * AC(flu.E_K_k  )...
              + g_Cl_k  * AC(flu.E_Cl_k )...
              + g_NBC_k * AC(flu.E_NBC_k)...
              - AC(flu.J_NaK_k)*Farad/unitcon...
-             + g_BK_k *state(ind.w_k) * AC(flu.E_BK_k)          )...
-            /(g_Na_k + g_K_k + g_Cl_k + g_NBC_k + g_BK_k*state(ind.w_k));  % V
+             + g_BK_k *state(ind.w_k) * AC(flu.E_BK_k)        ...
+             + g_trpv*state(ind.z_k)*AC(flu.E_TRPV_k) )...  
+           /(g_Na_k + g_K_k + g_Cl_k + g_NBC_k + g_BK_k*state(ind.w_k)+g_trpv*state(ind.z_k));  % V
 
+         %       %  
+         %
        
 AC(flu.J_KCC1_k ) = getRef(t,'fluxft')*...
                 (R_gas * Temp * g_KCC1_k) / (Farad^2) * log((AC(flu.K_s)...
@@ -101,6 +109,12 @@ else
     AC(flu.B_cyt)=(1+BK_end+(K_ex*B_ex)/(K_ex+AC(flu.ck))^2)^-1;  %Loes and Evert determined extra equation
 end
 
+%Fluxes for BM
+AC(flu.t_Ca)=t_trpv/AC(flu.Ca_p);
+AC(flu.H_Ca)= AC(flu.ck)/gam_cai+AC(flu.Ca_p)/gam_cae;
+AC(flu.z_inf) = (1/(1+exp(-((state(ind.R)-R0)/R0-eps_h)/k)))*(1/(1+AC(flu.H_Ca)))*(AC(flu.H_Ca)+tanh((AC(flu.v_k)-v_1i)/v_2i));
+AC(flu.J_TRPV_k)= (g_trpv*state(ind.z_k)*(AC(flu.v_k)-v_trpv)/(C_ast*gam));
+
 %% SMC
 
 SMC(flu.M)                   = 1 - state(ind.Mp) - state(ind.AM) - state(ind.AMp);                         
@@ -143,6 +157,10 @@ end
 
 SMC(flu.K1_c)       = gam_cross*state(ind.Ca_i)^3;
 SMC(flu.K6_c)       = SMC(flu.K1_c);
+
+%Fluxes for BM
+SMC(flu.m_inf) = 0.5*(1+tanh((state(ind.v_i)-v_1i)/v_2i));
+SMC(flu.J_Ca) =  (g_Ca*SMC(flu.m_inf)*(AC(flu.v_k)-v_Ca)/(C_smc*gam));
 
 %% EC
 
