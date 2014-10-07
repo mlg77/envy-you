@@ -1,7 +1,7 @@
 Envy-You: Neurovascular Unit (NVU) Model
 ========================================
 
-Neurovascular coupling NVC, or functional hyperaemia, describes the local vasodilation and-contraction due to neuronal activation. The change in the vessel diameter (vasoreactivity) controls the blood flow and thereby the cerebral supply of oxygen and glucose.
+Neurovascular coupling (NVC), or functional hyperaemia, describes the local vasodilation and-contraction due to neuronal activation. The change in the vessel diameter (vasoreactivity) controls the blood flow and thereby the cerebral supply of oxygen and glucose.
 
 The model includes the cells of the following types: neurons, astrocytes, smooth muscle cells and endothelial cells. Each cell type plays an important specific role in the NVC dynamics. Communication between cells is based on an exchange of ions through pumps and channels. These ion fluxes contribute to changes in cytosolic and intercellular species concentration and cell membrane potentials.
 
