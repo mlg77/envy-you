@@ -169,12 +169,12 @@ end
 %constants for BM
 Ca_dec      = 0.5;  %s-1
 Ca_p0       = 2000; %uM
-G_trpv      = 4000;  %pS 200 
+G_trpv      = 200;  %pS 200 
 g_trpv      = G_trpv*10e-12/A_ef_k;
 v_trpv      = 6;    %mV
 C_ast       = 40;   %pF
-g_Ca        = 157;  %pS
-%g_Ca        = 157/A_ef_k;
+%g_Ca        = 157;  %pS
+g_Ca        = 157*10e-12/A_ef_k;
 C_smc       = 19.635; %pF
 v_Ca        = 80;   %mV
 t_trpv      = 0.9;  %s-1
