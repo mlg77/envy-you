@@ -1,3 +1,10 @@
+%% This is the non-dimensionalised version of the envy-you model - version 1.1
+% Characteristic dimensional quantities are:
+% Ca_0 = 0.8 microM
+% v_0 = -40 mV
+% I_0 = 3 microM
+% characteristic time scale: T = Ca_0/C_i = 0.0145 s
+
 clean
 tic
 
