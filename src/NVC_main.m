@@ -1,30 +1,34 @@
-%% This is the non-dimensionalised version of the envy-you model - version 1.1
-% Characteristic dimensional quantities are:
-% Ca_0 = 0.8 microM
-% v_0 = -40 mV
-% I_0 = 3 microM
-% characteristic time scale: T = Ca_0/C_i = 0.0145 s
-
 clean
 tic
 
-% global variables
+%% This is the non-dimensionalised version of the envy-you model - version 1.1
+% Characteristic dimensional quantities are:
+Ca_0 = 0.8; % microM (Ca2+ concentration)
+v_0  = -40; % mV     (membrane potential)
+I_0  = 3;   % microM (IP3 concentration)
+
+%% load the constants for the fluxes and pointers:
+all_indices();
+all_constants();
+
+%% characteristic time scale:
+T_c  = Ca_0/C_i; % = 0.0145 s
+
+%% global variables
 global CASE J_PLC startpulse lengthpulse C_Hillmann stretch_ch only_Koenig NVU
 
 %% Parameters to adjust the model:
-t_start = 0;
-t_end = 500;
-startpulse  = 200;  % (s) 
-lengthpulse = 200;  % (s) 
+t_start = 0/T_c;
+t_end = 500/T_c;
+startpulse  = 200/T_c;  % (s) 
+lengthpulse = 200/T_c;  % (s) 
 CASE        = 2;    % (see all_constants.m for details)
 J_PLC 		= 0.18;  % 0.18(steady) %0.4(fluctuating) (muM s-1) EC agonist concentration  
 C_Hillmann  = 1;    % scaling factor for the Hai&Murphy rate constants (see all_constants.m for details)
 stretch_ch  = 'ON'; % choose 'ON'/'OFF' to activate/deactivate stretch-activated channels in EC and SMC
 only_Koenig = 'OFF';% choose 'ON'/'OFF' to simulate only the Koenigsberger model (other sub-models will still be considered, but the KIR channel is set to 0)
 NVU         = 1;     % 1=NVU 1.0 , 2=NVU 1.1, 3=NVU 1.0 + EET, 4= NVU 1.0 + Ca2+
-%% load the constants for the fluxes and pointers:
-all_indices();
-all_constants();
+
 %% load the initial conditions of the system:
 state0 = InitCond();
 %% Ensure single filenames for the writing of data in other files

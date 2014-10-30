@@ -13,23 +13,14 @@ AC(flu.R_s)    = R_tot - state(ind.R_k);                               % m
 
 AC(flu.N_Cl_s) = state(ind.N_Na_s) + state(ind.N_K_s) - state(ind.N_HCO3_s);   % uMm
 
-% AC(flu.Na_k  ) = negCheck(state(ind.N_Na_k)  ,6.1e-8);  % uM
-% AC(flu.K_k   ) = negCheck(state(ind.N_K_k)   ,6.1e-8);  % uM
-% AC(flu.HCO3_k) = negCheck(state(ind.N_HCO3_k),6.1e-8);  % uM
-% AC(flu.Cl_k  ) = negCheck(state(ind.N_Cl_k)  ,6.1e-8);  % uM
-% AC(flu.Na_s  ) = negCheck(state(ind.N_Na_s)  ,2.69e-8);     % uM
-% AC(flu.K_s   ) = negCheck(state(ind.N_K_s)   ,2.69e-8);     % uM
-% AC(flu.HCO3_s) = negCheck(state(ind.N_HCO3_s),2.69e-8);     % uM
-% AC(flu.Cl_s  ) = negCheck(AC(flu.N_Cl_s)     ,2.69e-8);     % uM
-
-AC(flu.Na_k  ) = negCheck(state(ind.N_Na_k)  ,state(ind.R_k));  % uM
-AC(flu.K_k   ) = negCheck(state(ind.N_K_k)   ,state(ind.R_k));  % uM
-AC(flu.HCO3_k) = negCheck(state(ind.N_HCO3_k),state(ind.R_k));  % uM
-AC(flu.Cl_k  ) = negCheck(state(ind.N_Cl_k)  ,state(ind.R_k));  % uM
-AC(flu.Na_s  ) = negCheck(state(ind.N_Na_s)  ,AC(flu.R_s));     % uM
-AC(flu.K_s   ) = negCheck(state(ind.N_K_s)   ,AC(flu.R_s));     % uM
-AC(flu.HCO3_s) = negCheck(state(ind.N_HCO3_s),AC(flu.R_s));     % uM
-AC(flu.Cl_s  ) = negCheck(AC(flu.N_Cl_s)     ,AC(flu.R_s));     % uM
+AC(flu.Na_k  ) = state(ind.N_Na_k)/state(ind.R_k);  % uM
+AC(flu.K_k   ) = state(ind.N_K_k)/state(ind.R_k);   % uM
+AC(flu.HCO3_k) = state(ind.N_HCO3_k)/state(ind.R_k);% uM
+AC(flu.Cl_k  ) = state(ind.N_Cl_k)/state(ind.R_k);  % uM
+AC(flu.Na_s  ) = state(ind.N_Na_s)/AC(flu.R_s);     % uM
+AC(flu.K_s   ) = state(ind.N_K_s) /AC(flu.R_s);     % uM
+AC(flu.HCO3_s) = state(ind.N_HCO3_s)/AC(flu.R_s);   % uM
+AC(flu.Cl_s  ) = AC(flu.N_Cl_s)/AC(flu.R_s);        % uM
 
 AC(flu.ck)     = state(ind.ck);
 AC(flu.sk)     = state(ind.sk);
@@ -112,21 +103,24 @@ SMC(flu.v_coup_i)            = - g_hat * ( state(ind.v_i) - state(ind.v_j) );
 SMC(flu.Ca_coup_i)           = - p_hat * ( state(ind.Ca_i) - state(ind.Ca_j) );
 SMC(flu.IP3_coup_i)          = - p_hatIP3 * ( state(ind.I_i) - state(ind.I_j) );
 SMC(flu.rho_i)              = 1;%( K_d + state(ind.Ca_i ))^2 / ( ( K_d + state(ind.Ca_i) )^2 + ( K_d * B_T ) );
-SMC(flu.J_IP3_i)            = Fmax_i * ( state(ind.I_i)^2 ) / ( Kr_i^2 + state(ind.I_i)^2 );
-SMC(flu.J_SRuptake_i)       = B_i * ( state(ind.Ca_i)^2 ) / ( state(ind.Ca_i)^2 + cb_i^2 );
-SMC(flu.J_CICR_i)           = C_i *  ( state(ind.s_i)^2 ) / ( sc_i^2 + state(ind.s_i)^2 ) *  ( state(ind.Ca_i)^4 ) / ( cc_i^4 + state(ind.Ca_i)^4 );
-SMC(flu.J_extrusion_i)      = D_i * state(ind.Ca_i) * ( 1 + ( state(ind.v_i) - vd_i ) / ( Rd_i ) );
+   SMC(flu.J_IP3_i_star)            = Fmax_i / C_i * ( state(ind.I_i_star)^2 ) / ( (Kr_i/I_0)^2 + state(ind.I_i_star)^2 );
+   SMC(flu.J_SRuptake_i_star)       = B_i / C_i * ( state(ind.Ca_i_star)^2 ) / ( state(ind.Ca_i_star)^2 + (cb_i/Ca_0)^2 );
+   SMC(flu.J_CICR_i_star)           = ( state(ind.s_i_star)^2 ) / ( (sc_i/Ca_0)^2 + state(ind.s_i_star)^2 ) * ( state(ind.Ca_i_star)^4 ) / ( (cc_i/Ca_0)^4 + state(ind.Ca_i_star)^4 );
+   SMC(flu.J_extrusion_i_star)      = (D_i * Ca_0 / C_i) * state(ind.Ca_i_star) * ( 1 + (v_0 / Rd_i) * ( state(ind.v_i_star) - (vd_i/v_0) ));
 SMC(flu.J_leak_i)           = L_i * state(ind.s_i);
-SMC(flu.J_VOCC_i)           = G_Ca * ( state(ind.v_i) - v_Ca1) / ( 1 + exp( - ( state(ind.v_i) - v_Ca2 ) / ( R_Ca ) ) );
-SMC(flu.J_NaCa_i)           = G_NaCa * state(ind.Ca_i)* ( state(ind.v_i) - v_NaCa ) / ( state(ind.Ca_i) + c_NaCa );
-SMC(flu.J_NaK_i)            = F_NaK;
-SMC(flu.J_Cl_i)             = G_Cl * ( state(ind.v_i) - v_Cl );
+SMC(flu.J_VOCC_i_star_Ca_0)           = G_Ca * ( state(ind.v_i) - v_Ca1) / ( 1 + exp( - ( state(ind.v_i) - v_Ca2 ) / ( R_Ca ) ) );
+   SMC(flu.J_VOCC_i_star_v_0)           = G_Ca * gam * Ca_0 / C_i * ( state(ind.v_i_star) - (v_Ca1/v_0)) / ( 1 + exp( - ( state(ind.v_i_star) - (v_Ca2/v_0) ) / ( R_Ca/v_0 ) ) );
+SMC(flu.J_NaCa_i_star_Ca_0)           = G_NaCa * state(ind.Ca_i)* ( state(ind.v_i) - v_NaCa ) / ( state(ind.Ca_i) + c_NaCa );
+SMC(flu.J_NaCa_i_star_v_0)           = G_NaCa * state(ind.Ca_i)* ( state(ind.v_i) - v_NaCa ) / ( state(ind.Ca_i) + c_NaCa );
+    SMC(flu.J_NaK_i_star)            = gam * Ca_0 * F_NaK / (v_0 * C_i);
+    SMC(flu.J_Cl_i_star)             = gam * G_Cl * Ca_0 / C_i * ( state(ind.v_i_star) - v_Cl/v_0);
 SMC(flu.J_K_i)              = G_K * state(ind.w_i) * ( state(ind.v_i) - vK_i );
 SMC(flu.Kactivation_i)      = ( state(ind.Ca_i) + c_w )^2 / ( (state(ind.Ca_i) + c_w)^2 + bet*exp(-(state(ind.v_i) - v_Ca3)/R_K) );
 SMC(flu.J_degrad_i)         = k_i * state(ind.I_i);
 
 if strcmp(stretch_ch,'ON') == 1
-   SMC(flu.J_stretch_i)     = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * (state(ind.v_i) - Esac);
+   SMC(flu.J_stretch_i_star_Ca_0)     = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * (state(ind.v_i) - Esac);
+   SMC(flu.J_stretch_i_star_v_0)     = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * (state(ind.v_i) - Esac);
 elseif strcmp(stretch_ch,'OFF') == 1
    SMC(flu.J_stretch_i)     = 0;
 end
