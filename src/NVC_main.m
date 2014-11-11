@@ -12,7 +12,7 @@ all_indices();
 all_constants();
 
 %% characteristic time scale:
-T_c  = Ca_0/C_i; % = 0.0145 s
+T_c  = Ca_0/C_i; % = 0.0145 s  - can be changed!
 
 %% global variables
 global CASE J_PLC startpulse lengthpulse C_Hillmann stretch_ch only_Koenig NVU

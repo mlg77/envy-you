@@ -1,40 +1,40 @@
 
 %% ODE indices
-ind.R_k     = 1;  % 
-ind.N_Na_k  = 2;
-ind.N_K_k   = 3;
-ind.N_HCO3_k= 4;
-ind.N_Cl_k  = 5;
-ind.N_Na_s  = 6;
-ind.N_K_s   = 7;
-ind.N_HCO3_s= 8;
-ind.K_p     = 9;
-ind.w_k     = 10;
+ind.R_k_star     = 1;  % 
+ind.N_Na_k_star  = 2;
+ind.N_K_k_star   = 3;
+ind.N_HCO3_k_star= 4;
+ind.N_Cl_k_star  = 5;
+ind.N_Na_s_star  = 6;
+ind.N_K_s_star   = 7;
+ind.N_HCO3_s_star= 8;
+ind.K_p_star     = 9;
+ind.w_k_star     = 10;
 
-ind.Ca_i    = 11;
-ind.s_i     = 12;
-ind.v_i     = 13;
-ind.w_i     = 14;
-ind.I_i     = 15;
+ind.Ca_i_star    = 11;
+ind.s_i_star     = 12;
+ind.v_i_star     = 13;
+ind.w_i_star     = 14;
+ind.I_i_star     = 15;
 
-ind.K_i     = 16;
+ind.K_i_star     = 16;
 
-ind.Ca_j    = 17;
-ind.s_j     = 18;
-ind.v_j     = 19;
-ind.I_j     = 20;
+ind.Ca_j_star    = 17;
+ind.s_j_star     = 18;
+ind.v_j_star     = 19;
+ind.I_j_star     = 20;
 
-ind.Mp      = 21;
-ind.AMp     = 22;
-ind.AM      = 23;
+ind.Mp_star      = 21;
+ind.AMp_star     = 22;
+ind.AM_star      = 23;
 
 ind.R       = 24;
 %indices for astr. Ca2+
-ind.ck      = 25;
-ind.sk      = 26;
-ind.hk      = 27;
-ind.ik      = 28;
-ind.eetk    = 29;
+ind.Ca_k_star      = 25;
+ind.s_k_star      = 26;
+ind.h_k_star      = 27;
+ind.I_k_star      = 28;
+ind.eet_k_star    = 29;
 
 %% Astrocyte indices
 flu.R_s     = 1;%R_tot- R_k;
