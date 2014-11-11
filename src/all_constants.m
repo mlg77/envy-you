@@ -48,9 +48,9 @@ VR_ps       = 0.001       ;% [-]       The estimated volume ratio of perivascula
 %% SMC constants
 
 
-F_il = 7.5e2            ;%[-] scalingsfactor to fit the experimental data of Filosa
+F_il = 7.5e2           ;%[-] scalingsfactor to fit the experimental data of Filosa
 z_1 =4.5                ;%[-] parameter fitted on experimental data of Filosa
-z_2 =-1.12e2            ;%[-] parameter fitted on experimental data of Filosa
+z_2 = -1.12e2            ;%-1.12e2[-] parameter fitted on experimental data of Filosa
 z_3 =4.2e-1             ;%[-] parameter fitted on experimental data of Filosa
 z_4 =-1.26e1            ;%[-] parameter fitted on experimental data of Filosa
 z_5 =-7.4e-2            ;%[-] parameter fitted on experimental data of Filosa
@@ -146,7 +146,7 @@ r_h      = 4.8;     %uMs-1       max rate of IP3 production
 k_deg    = 1.25;    % s-1       rate constant for IP3 degrdation
 K_G      = 8.82;    %uM         G-protein dissociation constant
 sig      = 1.235*10e-3; %uM  ratio of activities of bound and unbound receptors
-ck_min   = 0.1;     %uM          minimum Ca2+ concentration for EET production
+ck_min   = 0.01;     %uM          minimum Ca2+ concentration for EET production
 V_eet    = 72;      %uM           rate constant for EET production
 k_eet    = 7.2;     %uM          rate constant for EET degrdation
 eet_shift =  2e-3;    %VuM-1
@@ -171,12 +171,12 @@ Ca_dec      = 0.5;  %s-1
 Ca_p0       = 2000; %uM
 G_trpv      = 200;  %pS 200 
 g_trpv      = G_trpv*10e-12/A_ef_k;
-v_trpv      = 6;    %mV
+v_trpv      = 6;    %V   %mV
 C_ast       = 40;   %pF
 %g_Ca        = 157;  %pS
 g_Ca        = 157*10e-12/A_ef_k;
 C_smc       = 19.635; %pF
-v_Ca        = 80;   %mV
+v_Ca        = 80e-3;   %V %mV
 t_trpv      = 0.9;  %s-1
 eps_h       = 0.16; %  []
 k           = 0.04; %[]

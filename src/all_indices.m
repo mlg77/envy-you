@@ -92,6 +92,8 @@ flu.H_Ca   = 40;
 flu.z_inf   = 41;
 flu.h_r   = 42;
 flu.J_TRPV_k = 43;
+
+rad.R2 = 44;
 %% SMC-pointers
 
 flu.v_coup_i        = 1;
@@ -124,8 +126,8 @@ flu.K1_c            = 24;
 flu.K6_c            = 25;
 
 %fluxes for BM
-flu.m_inf           = 26;
-flu.J_Ca            = 27;
+% flu.m_inf           = 26;
+% flu.J_Ca            = 27;
 %% EC-pointers
 
 flu.v_coup_j         = 1;
@@ -145,4 +147,5 @@ flu.J_K_j           = 14;
 flu.J_R_j           = 15;
 flu.J_degrad_j      = 16;
 flu.J_stretch_j     = 17;
+
 

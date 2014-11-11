@@ -1,4 +1,10 @@
 value=0;
+close all
+csvfilename = 'Data_simulation.csv';
+ data = csvread(csvfilename);
+ plot_all_noState()
+ hold all
+ 
 while value==0
     save1 = input('Would you like to save all figures and parameters in a separate folder? (yes [y] / no [n]): ', 's');
     if strcmp(save1,'y') || strcmp(save1,'yes')
@@ -14,6 +20,9 @@ while value==0
         saveas(figure(5),'5 Myosin-Crosbbridge_Model.fig');
         saveas(figure(6),'6 Neuron_to_Radius.fig');
         saveas(figure(7),'7 Calcium_and_Radius.fig');
+        saveas(figure(8),'8 Astrocyte_results.fig')
+        saveas(figure(9),'9 TRPV4_results.fig')
+      
         A  = rand(10,1);
         B = rand(10,1);
         header1 = 'Hello';
@@ -29,7 +38,8 @@ while value==0
         fprintf(file1, 'C_Hillmann   = %.0f      (dim.less)\r\n', C_Hillmann);
         fprintf(file1, 'stretch_ch   = %3s    (dim.less)\r\n', stretch_ch);
         fprintf(file1, 'only_Koenig  = %3s    (dim.less)\r\n', only_Koenig);
-        
+        %xlswrite('state',state)
+        csvwrite(csvfilename,data)
         
         fclose(file1);
         clc; fprintf('Figures and parameters have been saved in the folder "%s".\n', filename);
@@ -41,4 +51,5 @@ while value==0
     else
         clc; fprintf('Warning: "%s" is not a valid input!\n', save1);
     end
+    close all
 end

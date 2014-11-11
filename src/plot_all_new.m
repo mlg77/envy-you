@@ -5,11 +5,11 @@ all_constants();
 
 linestylle = ':';
 
-a = zeros(1,36);%25 %35 Farr
-s = zeros(1,25);
+a = zeros(1,43);%25 %35 Farr %43trpv
+s = zeros(1,27);
 e = zeros(1,17);
-f= zeros(1,27); %24
-dfdt= zeros(1,29);%24
+f= zeros(1,29); %24
+dfdt= zeros(1,31);%24
 t= zeros(3,1);
 % input= zeros(1,2);
 
@@ -26,13 +26,16 @@ time = DATA(:,length(DATA(1,:))-3);
 
 % plots report
 
-min(DATA(:,acoff+flu.J_BK_k)./(DATA(:,stoff+ind.R_k)))
+%min(DATA(:,acoff+flu.J_BK_k)./(DATA(:,stoff+ind.R_k)))
    
 total=4;
 
 
 figure(1)
 hold all
+set(gcf,'Position', [500 62 600 700],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
 
 subplot(total,1,1)
     plot( time,DATA(:,inputoff+1)*k_C);
@@ -71,55 +74,7 @@ ylabel('K_p  [\muM]')
 
 
 %%
-figure(8)
-hold all
-set(gcf,'Name','Astrocyte concentrations & BK-channel')
-% astrocyte K+ Ca2+ EET IP3 concentrations
-% openprobability BK-channel
-% flux through BK channel
 
-subplot(4,2,1)
-    plot( time,state(:,ind.N_K_k));
-title('Astrocyte Potassium concentration')
-xlabel('Time [s]')
-ylabel('[K] [\muM]')
-subplot(4,2,2)
-    plot( time,state(:,ind.ck));
-title('Astrocyte Calcium concentration')
-xlabel('Time [s]')
-ylabel('[Ca2+] [\muM]')
-subplot(4,2,3)
-    plot( time,state(:,ind.ik));
-title('Astrocyte IP3 concentration')
-xlabel('Time [s]')
-ylabel('[IP3] [\muM]')
-subplot(4,2,4)
-    plot( time,state(:,ind.eetk));
-title('Astrocyte EET concentration')
-xlabel('Time [s]')
-ylabel('[EET] [\muM]')
-subplot(4,2,5)
-    plot( time,state(:,ind.w_k));
-title('Open state of the BK-channel')
-xlabel('Time [s]')
-ylabel('[K] [\muM]')
-subplot(4,2,6)
-    plot( time,DATA(:,flu.J_BK_k));
-title('Flux through BK-channel')
-xlabel('Time [s]')
-ylabel('J_BK_k [\muM ps]')
-subplot(4,2,7)
-    plot( time,DATA(:,flu.w_inf));
-title('Equilibrium distribution op BK-channel openings')
-xlabel('Time [s]')
-ylabel('w_inf []')
-subplot(4,2,8)
-    plot( time,DATA(:,flu.v_k));
-title('Membrane potential of the astrocyte')
-xlabel('Time [s]')
-ylabel('v_k [V]')
-
-break
 
 SMCtitle{1}='v_ coup_i';
 SMCtitle{2}='Ca_ coup_i';
@@ -323,6 +278,9 @@ hold all
 
 % close all;
 figure(6)
+set(gcf,'Position', [24 62 1616 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
 % subplot(5,1,1)
 % plot( time,DATA(:,inputoff+1)*k_C);
 % title('Input signal from the neuron into the synaptic cleft')
@@ -395,7 +353,78 @@ ylabel('Radius [\mum]')
 hold all
 % axis([0 250 15 27])
 
+figure(8)
+hold all
+set(gcf,'Name','Astrocyte concentrations & BK-channel')
+set(gcf,'Position', [24 62 1616 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+% astrocyte K+ Ca2+ EET IP3 concentrations
+% openprobability BK-channel
+% flux through BK channel
 
+subplot(4,2,1)
+    plot( time,state(:,ind.N_K_k));
+title('Astrocyte Potassium concentration')
+xlabel('Time [s]')
+ylabel('[K] [\muM]')
+subplot(4,2,2)
+    plot( time,state(:,ind.ck));
+title('Astrocyte Calcium concentration')
+xlabel('Time [s]')
+ylabel('[Ca2+] [\muM]')
+subplot(4,2,3)
+    plot( time,state(:,ind.ik));
+title('Astrocyte IP3 concentration')
+xlabel('Time [s]')
+ylabel('[IP3] [\muM]')
+subplot(4,2,4)
+    plot( time,state(:,ind.eetk));
+title('Astrocyte EET concentration')
+xlabel('Time [s]')
+ylabel('[EET] [\muM]')
+subplot(4,2,5)
+    plot( time,state(:,ind.w_k));
+title('Open state of the BK-channel')
+xlabel('Time [s]')
+ylabel('[K] [\muM]')
+subplot(4,2,6)
+    plot( time,DATA(:,flu.J_BK_k));
+title('Flux through BK-channel')
+xlabel('Time [s]')
+ylabel('J_BK_k [\muM ps]')
+subplot(4,2,7)
+    plot( time,DATA(:,flu.w_inf));
+title('Equilibrium distribution op BK-channel openings')
+xlabel('Time [s]')
+ylabel('w_inf []')
+subplot(4,2,8)
+    plot( time,DATA(:,flu.v_k));
+title('Membrane potential of the astrocyte')
+xlabel('Time [s]')
+ylabel('v_k [V]')
+
+figure(9)
+hold all
+set(gcf,'Name','Astrocyte concentrations & BK-channel')
+set(gcf,'Position', [500 62 600 700],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+subplot(3,1,1)
+plot(time, state(:,ind.Ca_p) )
+xlabel('time in s')
+ylabel('Ca_i in uM')
+title('PVS [Ca^{2+}]')
+subplot(3,1,2)
+    plot( time,DATA(:,flu.J_TRPV_k));
+title('Flux through TRPV-channel')
+xlabel('Time [s]')
+ylabel('J_TRPV_k [\muM ps]')
+subplot(3,1,3)
+    plot( time,DATA(:,smcoff+flu.J_Ca));
+title('Flux through Ca-channel')
+xlabel('Time [s]')
+ylabel('J_Ca [\muM ps]')
 
 
 figure(7)
@@ -407,7 +436,8 @@ title('SMC [Ca^{2+}]')
 hold all
 
 subplot(2,1,2)
-plot(time,1e6*state(:,ind.R))
+%plot(time,1e6*state(:,ind.R))
+plot(time,1e6*DATA(:,rad.R2))
 title('Radius')
 xlabel('Time [s]')
 ylabel('Radius [\mum]')

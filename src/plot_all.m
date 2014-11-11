@@ -1,4 +1,4 @@
-DATA = csvread(csvfilename);
+%DATA = csvread(csvfilename);
 close all
 all_indices();
 all_constants();
@@ -105,170 +105,170 @@ ECtitle{14}='J_ K_j';
 ECtitle{15}='J_ R_j';
 ECtitle{16}='J_ degrad_j';
 
-figure(2)
-set(gcf,'Name','SMC fluxes')
-set(gcf,'Position', [24 62 1616 904],...
-        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
-        );
-for j = [1:3 5:16]
-subplot(4,4,j)
-plot(time,DATA(:,smcoff+j))
-% h101(j+2) = gca();
-xlabel('time in s')
-ylabel(SMCtitle{j})
-title(SMCtitle{j})
-hold all
-end
-
-subplot(4,4,4)
-plot(time,DATA(:,smcoff+flu.J_stretch_i))
-xlabel('time in s')
-ylabel('J stretch_i')
-title('J stretch_i')
-hold all
-
-figure(3)
-set(gcf,'Name','EC fluxes')
-set(gcf,'Position', [24 62 1616 904],...
-        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
-        );
-for k = [1:3 5:16]
-subplot(4,4,k)
-plot(time,DATA(:,ecoff+k))
-% h101(j+2) = gca();
-xlabel('time in s')
-ylabel(ECtitle{k}) 
-title(ECtitle{k})
-hold all
-end
-
-subplot(4,4,4)
-plot(time,DATA(:,ecoff+flu.J_stretch_j))
-ylabel('J stretch_j')
-title('J stretch_j')
-hold all
-
-%% DFDT plot
-
-figure(4)
-set(gcf,'Name','DFDT')
-set(gcf,'Position', [24 62 1616 904],...
-        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
-        );
-subplot(3,3,1)
-plot(time, state(:,ind.Ca_i) )
-h6(1) = gca();
-xlabel('time in s')
-ylabel('Ca_i in uM')
-title('SMC [Ca^{2+}]')
-hold all
-
-subplot(3,3,2)
-plot(time, state(:,ind.Ca_j) )
-h6(2) = gca();
-xlabel('time in s')
-ylabel('Ca_j in uM')
-title('EC [Ca^{2+}]')
-hold all
-
-subplot(3,3,3)
-plot(time, state(:,ind.I_i) )
-h6(8) = gca();
-xlabel('time in s')
-ylabel('I_i in uM')
-title('SMC [IP_{3}]')
-hold all
-
-subplot(3,3,4)
-plot(time, state(:,ind.I_j) )
-h6(9) = gca();
-xlabel('time in s')
-ylabel('I_j in uM')
-title('EC [IP_{3}]')
-hold all
-
-subplot(3,3,5)
-plot(time, state(:,ind.s_i) )
-h6(3) = gca();
-xlabel('time in s')
-ylabel('s_i in uM')
-title('SR [Ca^{2+}]')
-hold all
-
-subplot(3,3,6)
-plot(time, state(:,ind.s_j) )
-h6(4) = gca();
-xlabel('time in s')
-ylabel('s_j in uM')
-title('ER [Ca^{2+}]')
-hold all
-
-subplot(3,3,7)
-plot(time, state(:,ind.v_i) )
-h6(5) = gca();
-xlabel('time in s')
-ylabel('v_i in mV')
-title('SMC membrane voltage')
-hold all
-
-subplot(3,3,8)
-plot(time, state(:,ind.v_j) )
-h6(6) = gca();
-xlabel('time in s')
-ylabel('v_j in mV')
-title('EC membrane voltage')
-hold all
-
-subplot(3,3,9)
-plot(time, state(:,ind.w_i) )
-h6(7) = gca();
-xlabel('time in s')
-ylabel('w_i [-]')
-title('open probability K^+ channel')
-hold all
-
-
-linkaxes(h6, 'x');
-
-%% plot myosin crossbridge model
-
-MCtitle{1}='[M]';
-MCtitle{2}='[Mp]';
-MCtitle{3}='[AMp]';
-MCtitle{4}='[AM]';
-
-figure(5)
-set(gcf,'Name','Myosin model and radius')
-
-subplot(3,2,1)
-plot(time,DATA(:,smcoff+flu.M))
-xlabel('Time')
-ylabel('Fraction [-]')
-title(MCtitle{1})
-hold all
-
-for j = 2:4
-    subplot(3,2,j)
-    plot(time,state(:,ind.Mp+j-2))
-    xlabel('Time')
-    ylabel('Fraction [-]')
-    title(MCtitle{j})
-    hold all
-end
-
-subplot(3,2,5)
-plot(time,state(:,ind.AMp)+state(:,ind.AM))
-xlabel('Time')
-ylabel('Fraction [-]')
-title(' F_r')
-hold all
-
-subplot(3,2,6)
-plot(time,1e6*state(:,ind.R))
-xlabel('Time')
-ylabel('Radius in um')
-title('Radius')
-hold all
+% figure(2)
+% set(gcf,'Name','SMC fluxes')
+% set(gcf,'Position', [24 62 1616 904],...
+%         'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+%         );
+% for j = [1:3 5:16]
+% subplot(4,4,j)
+% plot(time,DATA(:,smcoff+j))
+% % h101(j+2) = gca();
+% xlabel('time in s')
+% ylabel(SMCtitle{j})
+% title(SMCtitle{j})
+% hold all
+% end
+% 
+% subplot(4,4,4)
+% plot(time,DATA(:,smcoff+flu.J_stretch_i))
+% xlabel('time in s')
+% ylabel('J stretch_i')
+% title('J stretch_i')
+% hold all
+% 
+% figure(3)
+% set(gcf,'Name','EC fluxes')
+% set(gcf,'Position', [24 62 1616 904],...
+%         'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+%         );
+% for k = [1:3 5:16]
+% subplot(4,4,k)
+% plot(time,DATA(:,ecoff+k))
+% % h101(j+2) = gca();
+% xlabel('time in s')
+% ylabel(ECtitle{k}) 
+% title(ECtitle{k})
+% hold all
+% end
+% 
+% subplot(4,4,4)
+% plot(time,DATA(:,ecoff+flu.J_stretch_j))
+% ylabel('J stretch_j')
+% title('J stretch_j')
+% hold all
+% 
+% %% DFDT plot
+% 
+% figure(4)
+% set(gcf,'Name','DFDT')
+% set(gcf,'Position', [24 62 1616 904],...
+%         'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+%         );
+% subplot(3,3,1)
+% plot(time, state(:,ind.Ca_i) )
+% h6(1) = gca();
+% xlabel('time in s')
+% ylabel('Ca_i in uM')
+% title('SMC [Ca^{2+}]')
+% hold all
+% 
+% subplot(3,3,2)
+% plot(time, state(:,ind.Ca_j) )
+% h6(2) = gca();
+% xlabel('time in s')
+% ylabel('Ca_j in uM')
+% title('EC [Ca^{2+}]')
+% hold all
+% 
+% subplot(3,3,3)
+% plot(time, state(:,ind.I_i) )
+% h6(8) = gca();
+% xlabel('time in s')
+% ylabel('I_i in uM')
+% title('SMC [IP_{3}]')
+% hold all
+% 
+% subplot(3,3,4)
+% plot(time, state(:,ind.I_j) )
+% h6(9) = gca();
+% xlabel('time in s')
+% ylabel('I_j in uM')
+% title('EC [IP_{3}]')
+% hold all
+% 
+% subplot(3,3,5)
+% plot(time, state(:,ind.s_i) )
+% h6(3) = gca();
+% xlabel('time in s')
+% ylabel('s_i in uM')
+% title('SR [Ca^{2+}]')
+% hold all
+% 
+% subplot(3,3,6)
+% plot(time, state(:,ind.s_j) )
+% h6(4) = gca();
+% xlabel('time in s')
+% ylabel('s_j in uM')
+% title('ER [Ca^{2+}]')
+% hold all
+% 
+% subplot(3,3,7)
+% plot(time, state(:,ind.v_i) )
+% h6(5) = gca();
+% xlabel('time in s')
+% ylabel('v_i in mV')
+% title('SMC membrane voltage')
+% hold all
+% 
+% subplot(3,3,8)
+% plot(time, state(:,ind.v_j) )
+% h6(6) = gca();
+% xlabel('time in s')
+% ylabel('v_j in mV')
+% title('EC membrane voltage')
+% hold all
+% 
+% subplot(3,3,9)
+% plot(time, state(:,ind.w_i) )
+% h6(7) = gca();
+% xlabel('time in s')
+% ylabel('w_i [-]')
+% title('open probability K^+ channel')
+% hold all
+% 
+% 
+% linkaxes(h6, 'x');
+% 
+% %% plot myosin crossbridge model
+% 
+% MCtitle{1}='[M]';
+% MCtitle{2}='[Mp]';
+% MCtitle{3}='[AMp]';
+% MCtitle{4}='[AM]';
+% 
+% figure(5)
+% set(gcf,'Name','Myosin model and radius')
+% 
+% subplot(3,2,1)
+% plot(time,DATA(:,smcoff+flu.M))
+% xlabel('Time')
+% ylabel('Fraction [-]')
+% title(MCtitle{1})
+% hold all
+% 
+% for j = 2:4
+%     subplot(3,2,j)
+%     plot(time,state(:,ind.Mp+j-2))
+%     xlabel('Time')
+%     ylabel('Fraction [-]')
+%     title(MCtitle{j})
+%     hold all
+% end
+% 
+% subplot(3,2,5)
+% plot(time,state(:,ind.AMp)+state(:,ind.AM))
+% xlabel('Time')
+% ylabel('Fraction [-]')
+% title(' F_r')
+% hold all
+% 
+% subplot(3,2,6)
+% plot(time,1e6*state(:,ind.R))
+% xlabel('Time')
+% ylabel('Radius in um')
+% title('Radius')
+% hold all
 
 
 % close all;
@@ -307,12 +307,12 @@ xlabel('Time [s]')
 ylabel('K^+ flux [\muM m/s]')
 hold all
 
-subplot(4,2,5)
-plot(time, state(:,ind.v_i) )
-xlabel('Time [s]')
-ylabel('v_i [mV]')
-title('Membrane voltage smooth muscle cell')
-hold all
+% subplot(4,2,5)
+% plot(time, state(:,ind.v_i) )
+% xlabel('Time [s]')
+% ylabel('v_i [mV]')
+% title('Membrane voltage smooth muscle cell')
+% hold all
 
 subplot(4,2,6)
 plot(time,DATA(:,smcoff+flu.J_VOCC_i))
@@ -322,12 +322,12 @@ ylabel('Ca^{2+} flux [\muM/s]')
 %axis([0 250 -0.15 0])
 hold all
 
-subplot(4,2,7)
-plot(time, state(:,ind.Ca_i) )
-title('[Ca^{2+}] in smooth muscle cell')
-xlabel('Time [s]')
-ylabel('[Ca^{2+}]_i [\muM]')
-hold all
+% subplot(4,2,7)
+% plot(time, state(:,ind.Ca_i) )
+% title('[Ca^{2+}] in smooth muscle cell')
+% xlabel('Time [s]')
+% ylabel('[Ca^{2+}]_i [\muM]')
+% hold all
 
 
 % subplot(5,1,4)
@@ -336,33 +336,83 @@ hold all
 % ylabel('Fraction [-]')
 % title(' F_r')
 
+% subplot(4,2,8)
+% plot(time,1e6*state(:,ind.R))
+% title('Radius')
+% xlabel('Time [s]')
+% ylabel('Radius [\mum]')
+% %axis([0 250 15 27])
+% hold all
+% % axis([0 250 15 27])
+
+
+
+
+% figure(7)
+% subplot(2,1,1)
+% plot(time, state(:,ind.Ca_i) )
+% xlabel('time in s')
+% ylabel('Ca_i in uM')
+% title('SMC [Ca^{2+}]')
+% hold all
+% 
+% subplot(2,1,2)
+% plot(time,1e6*state(:,ind.R))
+% title('Radius')
+% xlabel('Time [s]')
+% ylabel('Radius [\mum]')
+% hold all
+
+figure(8)
+hold all
+set(gcf,'Name','Astrocyte concentrations & BK-channel')
+set(gcf,'Position', [24 62 1616 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+% astrocyte K+ Ca2+ EET IP3 concentrations
+% openprobability BK-channel
+% flux through BK channel
+
+% subplot(4,2,1)
+%     plot( time,state(:,ind.N_K_k));
+% title('Astrocyte Potassium concentration')
+% xlabel('Time [s]')
+% ylabel('[K] [\muM]')
+% subplot(4,2,2)
+%     plot( time,state(:,ind.ck));
+% title('Astrocyte Calcium concentration')
+% xlabel('Time [s]')
+% ylabel('[Ca2+] [\muM]')
+% subplot(4,2,3)
+%     plot( time,state(:,ind.ik));
+% title('Astrocyte IP3 concentration')
+% xlabel('Time [s]')
+% ylabel('[IP3] [\muM]')
+% subplot(4,2,4)
+%     plot( time,state(:,ind.eetk));
+% title('Astrocyte EET concentration')
+% xlabel('Time [s]')
+% ylabel('[EET] [\muM]')
+% subplot(4,2,5)
+%     plot( time,state(:,ind.w_k));
+% title('Open state of the BK-channel')
+% xlabel('Time [s]')
+% ylabel('[K] [\muM]')
+subplot(4,2,6)
+    plot( time,DATA(:,flu.J_BK_k));
+title('Flux through BK-channel')
+xlabel('Time [s]')
+ylabel('J_BK_k [\muM ps]')
+subplot(4,2,7)
+    plot( time,DATA(:,flu.w_inf));
+title('Equilibrium distribution op BK-channel openings')
+xlabel('Time [s]')
+ylabel('w_inf []')
 subplot(4,2,8)
-plot(time,1e6*state(:,ind.R))
-title('Radius')
+    plot( time,DATA(:,flu.v_k));
+title('Membrane potential of the astrocyte')
 xlabel('Time [s]')
-ylabel('Radius [\mum]')
-%axis([0 250 15 27])
-hold all
-% axis([0 250 15 27])
-
-
-
-
-figure(7)
-subplot(2,1,1)
-plot(time, state(:,ind.Ca_i) )
-xlabel('time in s')
-ylabel('Ca_i in uM')
-title('SMC [Ca^{2+}]')
-hold all
-
-subplot(2,1,2)
-plot(time,1e6*state(:,ind.R))
-title('Radius')
-xlabel('Time [s]')
-ylabel('Radius [\mum]')
-hold all
-
+ylabel('v_k [V]')
 
 %% Potassium plots
 
