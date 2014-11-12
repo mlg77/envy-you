@@ -20,8 +20,8 @@ dy(ind.N_K_k   ) = -AC(flu.J_K_k ) + 2 * AC(flu.J_NaK_k) + AC(flu.J_NKCC1_k) + A
                 -AC(flu.J_BK_k);                                                    % uMm s-1
 dy(ind.N_HCO3_k) = 2 * AC(flu.J_NBC_k);                                                 % uMm s-1
 dy(ind.N_Cl_k  ) = dy(ind.N_Na_k) + dy(ind.N_K_k) - dy(ind.N_HCO3_k);                           % uMm s-1, modified equation compared to the one of Ostby
-dy(ind.N_Na_s  ) = -  k_C * 0*getRef(time,'ft') - dy(ind.N_Na_k);                         % uMm s-1
-dy(ind.N_K_s   ) = k_C *0* getRef(time,'ft') - dy(ind.N_K_k) + AC(flu.J_BK_k); % uMm s-1 ;     
+dy(ind.N_Na_s  ) = -  k_C *0* getRef(time,'ft') - dy(ind.N_Na_k);                         % uMm s-1
+dy(ind.N_K_s   ) = k_C *0*getRef(time,'ft') - dy(ind.N_K_k) + AC(flu.J_BK_k); % uMm s-1 ;     
 
 dy(ind.N_HCO3_s) = - dy(ind.N_HCO3_k);                                                  % uMm s-1
 dy(ind.K_p     ) = AC(flu.J_BK_k) / (VR_pa*state(ind.R_k)) + (SMC(flu.J_KIR_i))/(VR_ps);     % uM s-1
@@ -87,7 +87,8 @@ E_r = Epas_r + F_r*(Eact_r -Epas_r);
 R0_r= R0pas_r + F_r*R0pas_r*(0.6 - 1);
 
 
-dy(ind.R)= R0pas_r/nu_r *(state(ind.R)*P_r/SMC(flu.h_r) - E_r * ((state(ind.R) - R0_r)/R0_r));
+%dy(ind.R)= R0pas_r/nu_r *(state(ind.R)*P_r/SMC(flu.h_r) - E_r * ((state(ind.R) - R0_r)/R0_r));
+dy(ind.R)= R0pas_r/nu_r *(AC(rad.R2)*P_r/SMC(flu.h_r) - E_r * ((AC(rad.R2) - R0_r)/R0_r));
 
 % if F_r1 <= 0.4
 %     F_r = 0.4;

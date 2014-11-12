@@ -17,7 +17,8 @@ NE=[];
 %     AC(rad.R2)=0;
 % end
 
-AC(rad.R2)=(15+25*getRef(t,'rho'))*1e-6;
+AC(rad.R2)=state(ind.R)+25*getRef(t,'rho')*1e-6;
+%AC(rad.R2)=(15+25*getRef(t,'rho'))*1e-6;
 AC(flu.R_s)    = R_tot - state(ind.R_k);                               % m    
 AC(flu.N_Cl_s) = state(ind.N_Na_s) + state(ind.N_K_s) - state(ind.N_HCO3_s);   % uMm
 

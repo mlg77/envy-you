@@ -1,11 +1,11 @@
-Parameters of "Results-12-Nov-2014-1402":
+Parameters of "Results-12-Nov-2014-1314":
 
 t_start      = 0      (s)
 t_end        = 500    (s)
 startpulse   = 200    (s)
 lengthpulse  = 200    (s)
 CASE         = 2      (dim.less)
-J_PLC        = 0.180  (muM s-1)
+J_PLC        = 0.400  (muM s-1)
 C_Hillmann   = 1      (dim.less)
 stretch_ch   =  ON    (dim.less)
 only_Koenig  = OFF    (dim.less)

@@ -1,4 +1,4 @@
-Parameters of "Results-06-Nov-2014-1525":
+Parameters of "Results-12-Nov-2014-1340":
 
 t_start      = 0      (s)
 t_end        = 500    (s)
