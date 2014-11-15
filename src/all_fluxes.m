@@ -24,7 +24,7 @@ AC(flu.Cl_s  ) = AC(flu.N_Cl_s)/AC(flu.R_s);        % uM
 
 AC(flu.ck)     = state(ind.ck);
 AC(flu.sk)     = state(ind.sk);
-AC(flu.hk)     = state(ind.hk);
+AC(flu.hk)     = state(ind.h_k_star);
 AC(flu.ik)     = state(ind.ik);
 AC(flu.eetk)   = state(ind.eetk);
 
