@@ -14,7 +14,7 @@ all_indices() ; % All indices used in this model
 
 % Astrocyte
 dy(ind.R_k_star) =      L_p * (AC(flu.Na_k) + AC(flu.K_k) + AC(flu.Cl_k) + AC(flu.HCO3_k)...
-                    - AC(flu.Na_s) - AC(flu.K_s) - AC(flu.Cl_s) - AC(flu.HCO3_s) + X_k / state(ind.R_k)); % m s-1
+                    - AC(flu.Na_s) - AC(flu.K_s) - AC(flu.Cl_s) - AC(flu.HCO3_s) + X_k / (state(ind.R_k_star)*Rk_0)); % m s-1
 dy(ind.N_Na_k_star) =   -AC(flu.J_Na_k) - 3 * AC(flu.J_NaK_k) + AC(flu.J_NKCC1_k) + AC(flu.J_NBC_k ); % uMm s-1
 dy(ind.N_K_k_star) =    -AC(flu.J_K_k ) + 2 * AC(flu.J_NaK_k) + AC(flu.J_NKCC1_k) + AC(flu.J_KCC1_k)...
                     -AC(flu.J_BK_k); % uMm s-1
@@ -23,7 +23,7 @@ dy(ind.N_Cl_k_star) =   dy(ind.N_Na_k) + dy(ind.N_K_k) - dy(ind.N_HCO3_k); % uMm
 dy(ind.N_Na_s_star) =   -k_C * getRef(time,'ft') - dy(ind.N_Na_k); % uMm s-1
 dy(ind.N_K_s_star) =    k_C * getRef(time,'ft') - dy(ind.N_K_k) +AC(flu.J_BK_k) ; % uMm s-1
 dy(ind.N_HCO3_s_star) =  - dy(ind.N_HCO3_k); % uMm s-1
-dy(ind.K_p_star) =      AC(flu.J_BK_k) / (VR_pa*state(ind.R_k)) + (SMC(flu.J_KIR_i))/(VR_ps); % uM s-1
+dy(ind.K_p_star) =      AC(flu.J_BK_k) / (VR_pa*(state(ind.R_k_star)*Rk_0)) + (SMC(flu.J_KIR_i))/(VR_ps); % uM s-1
 dy(ind.w_k_star) =      AC(flu.phi_w) * (AC(flu.w_inf) - state(ind.w_k_star)); % s-1
 
 % %astr. DE for Ca2+ (Hannah)
