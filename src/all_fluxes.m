@@ -3,6 +3,8 @@ function [NE,AC,SMC,EC] = all_fluxes (t,state)
     all_indices();
     all_constants();
     global stretch_ch only_Koenig NVU
+    global Ca_0 v_0 K_0 R_0 Rk_0 T_c
+
 %% Calculate the fluxes for the Astrocyte (AC)
 
 % Below all the additional equations are calculated and stores in AC, SMC
@@ -11,22 +13,22 @@ NE=[];
 
 AC(flu.R_s)    = R_tot - (state(ind.R_k_star)*Rk_0);                               % m
 
-AC(flu.N_Cl_s) = state(ind.N_Na_s) + state(ind.N_K_s) - state(ind.N_HCO3_s);   % uMm
+AC(flu.N_Cl_s) = (state(ind.N_Na_s_star)*Rk_0*K_0) + (state(ind.N_K_s_star)*Rk_0*K_0) - (state(ind.N_HCO3_s_star)*Rk_0*K_0);   % uMm
 
 AC(flu.Na_k  ) = (state(ind.N_Na_k_star)*Rk_0*K_0)/(state(ind.R_k_star)*Rk_0);  % uM ????????????????????
-AC(flu.K_k   ) = state(ind.N_K_k)/(state(ind.R_k_star)*Rk_0);   % uM
-AC(flu.HCO3_k) = state(ind.N_HCO3_k)/(state(ind.R_k_star)*Rk_0);% uM
+AC(flu.K_k   ) = (state(ind.N_K_k_star)*Rk_0*K_0)/(state(ind.R_k_star)*Rk_0);   % uM
+AC(flu.HCO3_k) = (state(ind.N_HCO3_k_star)*Rk_0*K_0)/(state(ind.R_k_star)*Rk_0);% uM
 AC(flu.Cl_k  ) = (state(ind.N_Cl_k_star)*Rk_0*K_0)/(state(ind.R_k_star)*Rk_0);  % uM
-AC(flu.Na_s  ) = state(ind.N_Na_s)/AC(flu.R_s);     % uM
-AC(flu.K_s   ) = state(ind.N_K_s) /AC(flu.R_s);     % uM
-AC(flu.HCO3_s) = state(ind.N_HCO3_s)/AC(flu.R_s);   % uM
+AC(flu.Na_s  ) = (state(ind.N_Na_s_star)*Rk_0*K_0)/AC(flu.R_s);     % uM
+AC(flu.K_s   ) = (state(ind.N_K_s_star)*Rk_0*K_0) /AC(flu.R_s);     % uM
+AC(flu.HCO3_s) = (state(ind.N_HCO3_s_star)*Rk_0*K_0)/AC(flu.R_s);   % uM
 AC(flu.Cl_s  ) = AC(flu.N_Cl_s)/AC(flu.R_s);        % uM
 
-AC(flu.ck)     = state(ind.ck);
-AC(flu.sk)     = state(ind.sk);
+AC(flu.ck)     = (state(ind.Ca_k_star)*Ca_0);
+AC(flu.sk)     = (state(ind.s_k_star)*Ca_0);
 AC(flu.hk)     = state(ind.h_k_star);
-AC(flu.ik)     = state(ind.ik);
-AC(flu.eetk)   = state(ind.eetk);
+AC(flu.ik)     = (state(ind.I_k_star)*Ca_0);
+AC(flu.eetk)   = (state(ind.eet_k_star)*Ca_0);
 
 AC(flu.E_Na_k ) = (R_gas * Temp) / (z_Na * Farad) * log(AC(flu.Na_s)/AC(flu.Na_k)); % V
 AC(flu.E_K_k )  = (R_gas * Temp) / (z_K  * Farad) * log(AC(flu.K_s )/AC(flu.K_k )); % V
@@ -44,22 +46,22 @@ AC(flu.v_k )   = ( g_Na_k  * AC(flu.E_Na_k )...
              + g_Cl_k  * AC(flu.E_Cl_k )...
              + g_NBC_k * AC(flu.E_NBC_k)...
              - AC(flu.J_NaK_k)*Farad/unitcon...
-             + g_BK_k *state(ind.w_k) * AC(flu.E_BK_k)          )...
-            /(g_Na_k + g_K_k + g_Cl_k + g_NBC_k + g_BK_k*state(ind.w_k));  % V
+             + g_BK_k *state(ind.w_k_star) * AC(flu.E_BK_k)          )...
+            /(g_Na_k + g_K_k + g_Cl_k + g_NBC_k + g_BK_k*state(ind.w_k_star));  % V
 
        
-AC(flu.J_KCC1_k ) = getRef(t,'fluxft')*...
-                (R_gas * Temp * g_KCC1_k) / (Farad^2) * log((AC(flu.K_s)...
-                *AC(flu.Cl_s))/(AC(flu.K_k)*AC(flu.Cl_k)))*unitcon;                  %uMm s-1
+% AC(flu.J_KCC1_k ) = getRef(t,'fluxft')*(R_gas * Temp * g_KCC1_k) / (Farad^2) * log((AC(flu.K_s)*AC(flu.Cl_s))/(AC(flu.K_k)*AC(flu.Cl_k)))*unitcon; %uMm s-1
+AC(flu.J_KCC1_k ) = 0*(R_gas * Temp * g_KCC1_k) / (Farad^2) * log((AC(flu.K_s)*AC(flu.Cl_s))/(AC(flu.K_k)*AC(flu.Cl_k)))*unitcon; %uMm s-1
 
 AC(flu.J_NBC_k  ) = g_NBC_k / Farad * (AC(flu.v_k) - AC(flu.E_NBC_k))*unitcon;       %uMm s-1
-AC(flu.J_NKCC1_k) = getRef(t,'fluxft')*...
-                (g_NKCC1_k * R_gas * Temp) / (Farad^2) ...
-                * log((AC(flu.K_s) * AC(flu.Na_s) * AC(flu.Cl_s)^2)...
-                     /(AC(flu.K_k) * AC(flu.Na_k) * AC(flu.Cl_k)^2))*unitcon;        %uMm s-1            
+
+% AC(flu.J_NKCC1_k) = getRef(t,'fluxft')*(g_NKCC1_k * R_gas * Temp) / (Farad^2) * log((AC(flu.K_s) * AC(flu.Na_s) * AC(flu.Cl_s)^2)/(AC(flu.K_k) * AC(flu.Na_k) * AC(flu.Cl_k)^2))*unitcon;        %uMm s-1      
+AC(flu.J_NKCC1_k) = 0*(g_NKCC1_k * R_gas * Temp) / (Farad^2) * log((AC(flu.K_s) * AC(flu.Na_s) * AC(flu.Cl_s)^2)/(AC(flu.K_k) * AC(flu.Na_k) * AC(flu.Cl_k)^2))*unitcon;        %uMm s-1      
+
+
 AC(flu.J_Na_k  ) = g_Na_k / Farad * (AC(flu.v_k) - AC(flu.E_Na_k))*unitcon;          %uMm s-1
 AC(flu.J_K_k   ) = g_K_k  / Farad * (AC(flu.v_k) - AC(flu.E_K_k ))*unitcon;          %uMm s-1
-AC(flu.J_BK_k)   = g_BK_k / Farad * state(ind.w_k)*(AC(flu.v_k)-AC(flu.E_BK_k))*unitcon; %uMm s-1
+AC(flu.J_BK_k)   = g_BK_k / Farad * state(ind.w_k_star)*(AC(flu.v_k)-AC(flu.E_BK_k))*unitcon; %uMm s-1
 
      %[-]
 %Hannah/NVU
@@ -96,14 +98,14 @@ end
 
 SMC(flu.M)                   = 1 - state(ind.Mp_star) - state(ind.AM_star) - state(ind.AMp_star);                         
 SMC(flu.E_K_i)              = (R_gas * Temp) / (z_K  * Farad)*unitcon*log((state(ind.K_p_star)*K_0)/(state(ind.K_i_star)*K_0));
-% SMC(flu.h_r)                 =  -state(ind.R) + sqrt(state(ind.R)^2 + 2*rb_r*h0_r + h0_r^2);
-SMC(flu.h_r)                 = 0.1* state(ind.R);
+% SMC(flu.h_r)                 =  -(state(ind.R_star)*R_0) + sqrt((state(ind.R_star)*R_0)^2 + 2*rb_r*h0_r + h0_r^2);
+SMC(flu.h_r)                 = 0.1* (state(ind.R_star)*R_0);
 
 SMC(flu.v_coup_i)            = - g_hat * ( (state(ind.v_i_star)*v_0) - (state(ind.v_j_star)*v_0) );   
 SMC(flu.Ca_coup_i)           = - p_hat * ( (state(ind.Ca_i_star)*Ca_0) - (state(ind.Ca_j_star)*Ca_0) );
-SMC(flu.IP3_coup_i)          = - p_hatIP3 * ( (state(ind.I_i_star)*C_0) - (state(ind.I_j_star)*C_0) );
-SMC(flu.rho_i)               = 1;%( K_d + state(ind.Ca_i ))^2 / ( ( K_d + (state(ind.Ca_i_star)*Ca_0) )^2 + ( K_d * B_T ) );
-SMC(flu.J_IP3_i)             = Fmax_i * ( (state(ind.I_i_star)*C_0)^2 ) / ( Kr_i^2 + (state(ind.I_i_star)*C_0)^2 );
+SMC(flu.IP3_coup_i)          = - p_hatIP3 * ( (state(ind.I_i_star)*Ca_0) - (state(ind.I_j_star)*Ca_0) );
+SMC(flu.rho_i)               = 1;%( K_d + (state(ind.Ca_i_star)*Ca_0))^2 / ( ( K_d + (state(ind.Ca_i_star)*Ca_0) )^2 + ( K_d * B_T ) );
+SMC(flu.J_IP3_i)             = Fmax_i * ( (state(ind.I_i_star)*Ca_0)^2 ) / ( Kr_i^2 + (state(ind.I_i_star)*Ca_0)^2 );
 SMC(flu.J_SRuptake_i)        = B_i * ( (state(ind.Ca_i_star)*Ca_0)^2 ) / ( (state(ind.Ca_i_star)*Ca_0)^2 + cb_i^2 );
 SMC(flu.J_CICR_i)            = C_i * ( (state(ind.s_i_star)*Ca_0)^2 ) / ( sc_i^2 + (state(ind.s_i_star)*Ca_0)^2 ) * ( (state(ind.Ca_i_star)*Ca_0)^4 ) / ( cc_i^4 + (state(ind.Ca_i_star)*Ca_0)^4 );
 SMC(flu.J_extrusion_i)       = D_i * (state(ind.Ca_i_star)*Ca_0) * ( 1 + ( (state(ind.v_i_star)*v_0) - vd_i ) / ( Rd_i ) );
@@ -112,12 +114,12 @@ SMC(flu.J_VOCC_i)            = G_Ca * ( (state(ind.v_i_star)*v_0) - v_Ca1) / ( 1
 SMC(flu.J_NaCa_i)            = G_NaCa * (state(ind.Ca_i_star)*Ca_0)* ( (state(ind.v_i_star)*v_0) - v_NaCa ) / ( (state(ind.Ca_i_star)*Ca_0) + c_NaCa );
 SMC(flu.J_NaK_i)             = F_NaK;
 SMC(flu.J_Cl_i)              = G_Cl * ( (state(ind.v_i_star)*v_0) - v_Cl );
-SMC(flu.J_K_i)              = G_K * state(ind.w_i) * ( (state(ind.v_i_star)*v_0) - vK_i );
+SMC(flu.J_K_i)              = G_K * state(ind.w_i_star) * ( (state(ind.v_i_star)*v_0) - vK_i );
 SMC(flu.Kactivation_i)      = ( (state(ind.Ca_i_star)*Ca_0) + c_w )^2 / ( ((state(ind.Ca_i_star)*Ca_0) + c_w)^2 + bet*exp(-((state(ind.v_i_star)*v_0) - v_Ca3)/R_K) );
-SMC(flu.J_degrad_i)         = k_i * (state(ind.I_i_star)*C_0);
+SMC(flu.J_degrad_i)         = k_i * (state(ind.I_i_star)*Ca_0);
 
 if strcmp(stretch_ch,'ON') == 1
- SMC(flu.J_stretch_i) = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * ((state(ind.v_i_star)*v_0) - Esac);
+ SMC(flu.J_stretch_i) = G_stretch/(1+exp(-alpha1*(P_str*(state(ind.R_star)*R_0)/SMC(flu.h_r) - sig0))) * ((state(ind.v_i_star)*v_0) - Esac);
 elseif strcmp(stretch_ch,'OFF') == 1
    SMC(flu.J_stretch_i)     = 0;
 end
@@ -139,23 +141,23 @@ SMC(flu.K6_c)       = SMC(flu.K1_c);
 
 EC(flu.v_coup_j)             = - g_hat * ( (state(ind.v_j_star)*v_0) - (state(ind.v_i_star)*v_0) );  
 EC(flu.Ca_coup_j)            = - p_hat * ( (state(ind.Ca_j_star)*Ca_0) - (state(ind.Ca_i_star)*Ca_0) );
-EC(flu.IP3_coup_j)           = - p_hatIP3 * ( (state(ind.I_j_star)*C_0) - (state(ind.I_i_star)*C_0) );
+EC(flu.IP3_coup_j)           = - p_hatIP3 * ( (state(ind.I_j_star)*Ca_0) - (state(ind.I_i_star)*Ca_0) );
 EC(flu.rho_j)               = 1;%( K_d + (state(ind.Ca_j_star)*Ca_0) )^2 / ( ( K_d + (state(ind.Ca_j_star)*Ca_0) )^2 + ( K_d * B_T ) );
 EC(flu.J_0_j)               = J0_j;
-EC(flu.J_IP3_j)             = Fmax_j * ( (state(ind.I_j_star)*C_0)^2 ) / ( Kr_j^2 + (state(ind.I_j_star)*C_0)^2 );
+EC(flu.J_IP3_j)             = Fmax_j * ( (state(ind.I_j_star)*Ca_0)^2 ) / ( Kr_j^2 + (state(ind.I_j_star)*Ca_0)^2 );
 EC(flu.J_ERuptake_j)        = B_j * ( (state(ind.Ca_j_star)*Ca_0)^2 ) / ( (state(ind.Ca_j_star)*Ca_0)^2 + cb_j^2 );
 EC(flu.J_CICR_j)            = C_j *  ( (state(ind.s_j_star)*Ca_0)^2 ) / ( sc_j^2 + (state(ind.s_j_star)*Ca_0)^2 ) *  ( (state(ind.Ca_j_star)*Ca_0)^4 ) / ( cc_j^4 + (state(ind.Ca_j_star)*Ca_0)^4 );
 EC(flu.J_extrusion_j)       = D_j * (state(ind.Ca_j_star)*Ca_0); 
 EC(flu.J_leak_j)            = L_j * (state(ind.s_j_star)*Ca_0);
 EC(flu.J_cation_j)          = G_cat * ( E_Ca - (state(ind.v_j_star)*v_0) )* 0.5 * ( 1 + tanh(( log10( (state(ind.Ca_j_star)*Ca_0) ) - m3cat )/( m4cat)) );
-EC(flu.J_BKCa_j) 			= 0.4/2 * ( 1 + tanh( ( (  log10((state(ind.Ca_j_star)*Ca_0)) - c) * ( (state(ind.v_j_star)*v_0) - b ) - a1 ) / ( m3b*( (state(ind.v_j_star)*v_0) + a2 * ( log10( state(ind.Ca_j )) - c ) - b )^2 + m4b ) ) );
+EC(flu.J_BKCa_j) 			= 0.4/2 * ( 1 + tanh( ( (  log10((state(ind.Ca_j_star)*Ca_0)) - c) * ( (state(ind.v_j_star)*v_0) - b ) - a1 ) / ( m3b*( (state(ind.v_j_star)*v_0) + a2 * ( log10( (state(ind.Ca_j_star)*Ca_0)  ) - c ) - b )^2 + m4b ) ) );
 EC(flu.J_SKCa_j) 			= 0.6/2 * ( 1 + tanh( ( log10((state(ind.Ca_j_star)*Ca_0)) - m3s ) / ( m4s ) ) );
 EC(flu.J_K_j)               = G_tot * ( (state(ind.v_j_star)*v_0) - vK_j ) * ( EC(flu.J_BKCa_j) + EC(flu.J_SKCa_j) );
 EC(flu.J_R_j)               = G_R * ( (state(ind.v_j_star)*v_0) - v_rest);
-EC(flu.J_degrad_j)          = k_j * (state(ind.I_j_star)*C_0);
+EC(flu.J_degrad_j)          = k_j * (state(ind.I_j_star)*Ca_0);
 
 if strcmp(stretch_ch,'ON') == 1
-   EC(flu.J_stretch_j)      = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * ((state(ind.v_j_star)*v_0) - Esac);
+   EC(flu.J_stretch_j)      = G_stretch/(1+exp(-alpha1*(P_str*(state(ind.R_star)*R_0)/SMC(flu.h_r) - sig0))) * ((state(ind.v_j_star)*v_0) - Esac);
 elseif strcmp(stretch_ch,'OFF') == 1
    EC(flu.J_stretch_j)      =  0;
 end

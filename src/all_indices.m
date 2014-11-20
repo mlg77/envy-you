@@ -28,7 +28,7 @@ ind.Mp_star      = 21;
 ind.AMp_star     = 22;
 ind.AM_star      = 23;
 
-ind.R       = 24;
+ind.R_star       = 24;
 %indices for astr. Ca2+
 ind.Ca_k_star      = 25;
 ind.s_k_star      = 26;

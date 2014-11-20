@@ -1,11 +1,13 @@
 clean
 tic
-
+global Ca_0 v_0 K_0 R_0 Rk_0 T_c
 %% This is the non-dimensionalised version of the envy-you model - version 1.1
 % Characteristic dimensional quantities are:
-Ca_0 = 0.8; % microM (Ca2+ concentration)
-v_0  = -40; % mV     (membrane potential)
-I_0  = 3;   % microM (IP3 concentration)
+Ca_0 = 0.8; % microM  (Ca2+ concentration)
+v_0  = -40; % mV      (membrane potential)
+K_0  = 1.4e4;% microM (K+ concentration)
+R_0  = 2.6e-5; % m    (Radius)
+Rk_0 = 0.7e-7; % m    (AC volume-area ratio)
 
 %% load the constants for the fluxes and pointers:
 all_indices();
@@ -20,8 +22,8 @@ global CASE J_PLC startpulse lengthpulse C_Hillmann stretch_ch only_Koenig NVU
 %% Parameters to adjust the model:
 t_start = 0/T_c;
 t_end = 500/T_c;
-startpulse  = 200/T_c;  % (s) 
-lengthpulse = 200/T_c;  % (s) 
+startpulse  = 2000000/T_c;  % (s) 
+lengthpulse = 2000000/T_c;  % (s) 
 CASE        = 2;    % (see all_constants.m for details)
 J_PLC 		= 0.18;  % 0.18(steady) %0.4(fluctuating) (muM s-1) EC agonist concentration  
 C_Hillmann  = 1;    % scaling factor for the Hai&Murphy rate constants (see all_constants.m for details)
@@ -38,7 +40,7 @@ try
 delete(csvfilename) % remove file, if present from older simulation.
 end
 %% Solve the proces from initial position tot Steady State:
-options = odeset('OutputFcn',@odeprogWD,'Events',@odeabort,'Stats','on','RelTol', 1e-03, 'AbsTol', 1e-03, 'MaxStep', 1); 
+options = odeset('OutputFcn',@odeprogWD,'Events',@odeabort,'Stats','on','RelTol', 1e-09, 'AbsTol', 1e-09, 'MaxStep', 1); 
 [t,state] = ode15s(@DEsyst,[t_start t_end],state0,options);
 
 %% Write output and info to file/cmd
@@ -46,14 +48,24 @@ output.info.completiontime = toc;
 fprintf('ODE solution time: %.3f seconds\n', output.info.completiontime)
 
 %% Plot statement:
-plot_all()
-hold all
+% plot_all()
+% hold all
 
 %% save figures & parameters
 %save_all()
+%%state:
+for i = 1:29
+   figure(ceil(i/9));
+   spl_no = mod(i,9);
+   if spl_no == 0
+      spl_no = 9;
+   end
+   subplot(3,3,spl_no)
+   plot(t,state(:,i))
+   ylabel(i)
+end
 
-
-% to create .tikz figures:
+%% to create .tikz figures:
 % matlab2tikz('test.tikz', 'height', '\figureheight', 'width', '\figurewidth');
 
 
@@ -62,6 +74,23 @@ hold all
 % legend('Total Myosin','[M]','[Mp]','[AMp]','[AM]')
 % title('New')
 
-% to plot a single flux, type in plot(time,DATA(:,flu.(name))     
-% to plot a single state variable, type in plot(time,DATA(:,ind.(name))
-%(don't forget to put the offset!! e.g. smcoff+flu.1_c)
+% to plot a single flux: plot(time,DATA(:,flu.(name))  - (don't forget the offset!! e.g. smcoff+flu.1_c)      
+% to plot a single state variable: plot(time,state(:,ind.(name))
+
+
+
+%%  plot getRef input:
+% startpulse = 20;
+% lengthpulse = 50;
+% 
+% for i = 1:100
+%     t(i) = i;
+%     y(i) = getRef(i,'ft');
+% end
+% figure; plot(t,y)
+% 
+% for i = 1:100
+%     t(i) = i;
+%     y(i) = getRef(i,'fluxft');
+% end
+% figure; plot(t,y)

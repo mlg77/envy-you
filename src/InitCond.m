@@ -3,8 +3,8 @@ function STATES = InitCond()
     % They are chosen, such that the system is in steady state at t=0
     
     all_indices()
-    
-    for i = 1:29 
+    STATES = zeros(size(fields(ind)));
+    for i = 1:size(fields(ind)) 
         STATES(i) = 1;
     end
     
