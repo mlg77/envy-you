@@ -21,7 +21,8 @@ The `figures` folder contains three `matlab2tikz.m` along with the other require
 Citing Envy-You Code
 ====================
 
-TODO: What paper?
+Dormanns, K., van Disseldorp, EMJ., Brown, RG., & David, T. (2015). Neurovascular coupling and the influence of luminal agonists via the endothelium. Journal of Theoretical Biology. 364, 49-70
+http://www.sciencedirect.com/science/article/pii/S0022519314004901
 
 How To Run
 ==========
