@@ -6,10 +6,10 @@ all_constants();
 linestylle = ':';
 
 a = zeros(1,43);%25 %35 Farr %43trpv
-s = zeros(1,25); %27TRPV
+s = zeros(1,29); %27TRPV
 e = zeros(1,17);
 f= zeros(1,30); %24
-dfdt= zeros(1,31);%24
+dfdt= zeros(1,32);%24
 t= zeros(3,1);
 % input= zeros(1,2);
 

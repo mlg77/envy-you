@@ -17,7 +17,7 @@ NE=[];
 %     AC(rad.R2)=0;
 % end
 
-AC(rad.R2)=state(ind.R)+25*getRef(t,'rho')*1e-6;
+%AC(rad.R2)=state(ind.R)+25*getRef(t,'rho')*1e-6;
 %AC(rad.R2)=(15+25*getRef(t,'rho'))*1e-6;
 AC(flu.R_s)    = R_tot - state(ind.R_k);                               % m    
 AC(flu.N_Cl_s) = state(ind.N_Na_s) + state(ind.N_K_s) - state(ind.N_HCO3_s);   % uMm
@@ -111,8 +111,8 @@ AC(flu.J_BK_k)   = g_BK_k / Farad * state(ind.w_k)*(AC(flu.v_k)-AC(flu.E_BK_k))*
 AC(flu.J_ERleak)=P_L*(1-AC(flu.ck)/AC(flu.sk)); %calcium leak flux from ER to the cytosol
 AC(flu.J_pump)=V_max*AC(flu.ck)^2/(AC(flu.ck)^2+k_pump^2); %ATP dependant calcium flux from cytoplasm to ER
 AC(flu.J_ip3)=J_max*((AC(flu.ik)/(AC(flu.ik)+K_I))*(AC(flu.ck)/(AC(flu.ck)+K_act))*AC(flu.hk))^3*(1-AC(flu.ck)/AC(flu.sk)); %calcium flux from ER to cytosolic by IP3 receptors!
-AC(flu.G_pr)=(0*getRef(t,'rho')+sig)/(K_G+0*getRef(t,'rho')+sig);
-%AC(flu.G_pr)=(getRef(t,'rho')+sig)/(K_G+getRef(t,'rho')+sig);
+%AC(flu.G_pr)=(0*getRef(t,'rho')+sig)/(K_G+0*getRef(t,'rho')+sig);
+AC(flu.G_pr)=(getRef(t,'rho')+sig)/(K_G+getRef(t,'rho')+sig);
 if NVU ==1
     AC(flu.B_cyt)= 0.0244; %NVU
 else
@@ -122,17 +122,17 @@ end
 %Fluxes for BM
 AC(flu.t_Ca)=t_trpv/AC(flu.Ca_p);
 AC(flu.H_Ca)= AC(flu.ck)/gam_cai+AC(flu.Ca_p)/gam_cae;
-%AC(flu.z_inf) = (1/(1+exp(-((state(ind.R)-R0)/R0-eps_h)/k)))*(1/(1+AC(flu.H_Ca)))*(AC(flu.H_Ca)+tanh((AC(flu.v_k)-v_1i)/v_2i));
-AC(flu.z_inf) = (1/(1+exp(-((AC(rad.R2)-R0)/R0-eps_h)/k)))*(1/(1+AC(flu.H_Ca)))*(AC(flu.H_Ca)+tanh((AC(flu.v_k)-v_1i)/v_2i));
-AC(flu.J_TRPV_k)= -(g_trpv*state(ind.z_k)*(AC(flu.v_k)-v_trpv)/(C_ast*gam));
+AC(flu.z_inf) = (1/(1+exp(-((state(ind.R)-R0)/R0-eps_h)/k)))*(1/(1+AC(flu.H_Ca)))*(AC(flu.H_Ca)+tanh((AC(flu.v_k)-v_1i)/v_2i));
+%AC(flu.z_inf) = (1/(1+exp(-((AC(rad.R2)-R0)/R0-eps_h)/k)))*(1/(1+AC(flu.H_Ca)))*(AC(flu.H_Ca)+tanh((AC(flu.v_k)-v_1i)/v_2i));
+AC(flu.J_TRPV_k)= -1/2*(g_trpv*state(ind.z_k)*(AC(flu.v_k)-v_trpv)/(C_ast*gam));
 
 %% SMC
 
 SMC(flu.M)                   = 1 - state(ind.Mp) - state(ind.AM) - state(ind.AMp);                         
 SMC(flu.E_K_i)              = (R_gas * Temp) / (z_K  * Farad)*unitcon*log(state(ind.K_p)/state(ind.K_i));
 % SMC(flu.h_r)                 =  -state(ind.R) + sqrt(state(ind.R)^2 + 2*rb_r*h0_r + h0_r^2);
-%SMC(flu.h_r)                 = 0.1* state(ind.R);
-SMC(flu.h_r)                 = 0.1* AC(rad.R2);
+SMC(flu.h_r)                 = 0.1* state(ind.R);
+%SMC(flu.h_r)                 = 0.1* AC(rad.R2);
 
 SMC(flu.v_coup_i)            = - g_hat * ( state(ind.v_i) - state(ind.v_j) );   
 SMC(flu.Ca_coup_i)           = - p_hat * ( state(ind.Ca_i) - state(ind.Ca_j) );
@@ -152,8 +152,8 @@ SMC(flu.Kactivation_i)      = ( state(ind.Ca_i) + c_w )^2 / ( (state(ind.Ca_i) +
 SMC(flu.J_degrad_i)         = k_i * state(ind.I_i);
 
 if strcmp(stretch_ch,'ON') == 1
-   %SMC(flu.J_stretch_i)     = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * (state(ind.v_i) - Esac);
-   SMC(flu.J_stretch_i)     = G_stretch/(1+exp(-alpha1*(P_str*AC(rad.R2)/SMC(flu.h_r) - sig0))) * (state(ind.v_i) - Esac);
+   SMC(flu.J_stretch_i)     = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * (state(ind.v_i) - Esac);
+   %SMC(flu.J_stretch_i)     = G_stretch/(1+exp(-alpha1*(P_str*AC(rad.R2)/SMC(flu.h_r) - sig0))) * (state(ind.v_i) - Esac);
 elseif strcmp(stretch_ch,'OFF') == 1
    SMC(flu.J_stretch_i)     = 0;
 end
@@ -162,25 +162,26 @@ if strcmp(only_Koenig,'OFF') == 1
    SMC(flu.v_KIR_i)    = z_1 * state(ind.K_p)/unitcon + z_2;                                               % mV
    SMC(flu.G_KIR_i)    = exp( z_5 * state(ind.v_i) + z_3 * state(ind.K_p)/unitcon + z_4 ); %exp( z_5 * state(ind.v_i) + z_3 * state(ind.K_p)/unitcon + z_4 );                     % pS pF-1 =s-1
    SMC(flu.J_KIR_i)    = (F_il/gam * SMC(flu.G_KIR_i)*(state(ind.v_i)-SMC(flu.v_KIR_i)));                                % mV s-1
-% elseif strcmp(only_Koenig,'ON') == 1
-%    SMC(flu.v_KIR_i)    = 57*log10(state(ind.K_p))-130;
-%    SMC(flu.G_KIR_i)    = 145e-9/A_ef_k*sqrt(state(ind.K_p));
-%    SMC(flu.J_KIR_i)    = (F_il/gam * SMC(flu.G_KIR_i)*(state(ind.v_i)-SMC(flu.v_KIR_i)));
-% end
 elseif strcmp(only_Koenig,'ON') == 1
-   SMC(flu.v_KIR_i)    = 0;
-   SMC(flu.G_KIR_i)    = 0;
-   SMC(flu.J_KIR_i)    = 0;
+   SMC(flu.v_KIR_i)    = 57*log10(state(ind.K_p)/unitcon)-130;
+   SMC(flu.G_KIR_i)    = 145*sqrt(state(ind.K_p)/unitcon^2);
+   SMC(flu.J_KIR_i)    = (state(ind.k_k)* SMC(flu.G_KIR_i)*(state(ind.v_i)-SMC(flu.v_KIR_i)));
 end
+% elseif strcmp(only_Koenig,'ON') == 1
+%    SMC(flu.v_KIR_i)    = 0;
+%    SMC(flu.G_KIR_i)    = 0;
+%    SMC(flu.J_KIR_i)    = 0;
+% end
 
 SMC(flu.K1_c)       = gam_cross*(state(ind.Ca_i))^3;
 SMC(flu.K6_c)       = SMC(flu.K1_c);
 
-%Fluxes for BM
+% %Fluxes for BM
 % SMC(flu.m_inf) = 0.5*(1+tanh((state(ind.v_i)-v_1i)/v_2i));
 % SMC(flu.J_Ca) =  (g_Ca*SMC(flu.m_inf)*(state(ind.v_i)-v_Ca)/(C_smc*gam));
-
-
+% 
+% SMC(flu.al) = 1020/(1+exp((state(ind.v_i)+18)/10.8));
+% SMC(flu.bet) = 26.9*exp(0.06*(state(ind.v_i)+18));
 %% EC
 
 EC(flu.v_coup_j)             = - g_hat * ( state(ind.v_j) - state(ind.v_i) );  
@@ -201,8 +202,8 @@ EC(flu.J_R_j)               = G_R * ( state(ind.v_j) - v_rest);
 EC(flu.J_degrad_j)          = k_j * state(ind.I_j);
 
 if strcmp(stretch_ch,'ON') == 1
-  %EC(flu.J_stretch_j)      = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * (state(ind.v_j) - Esac);
-  EC(flu.J_stretch_j)      = G_stretch/(1+exp(-alpha1*(P_str*AC(rad.R2)/SMC(flu.h_r) - sig0))) * (state(ind.v_j) - Esac);
+  EC(flu.J_stretch_j)      = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * (state(ind.v_j) - Esac);
+  %EC(flu.J_stretch_j)      = G_stretch/(1+exp(-alpha1*(P_str*AC(rad.R2)/SMC(flu.h_r) - sig0))) * (state(ind.v_j) - Esac);
 elseif strcmp(stretch_ch,'OFF') == 1
    EC(flu.J_stretch_j)      =  0;
 end

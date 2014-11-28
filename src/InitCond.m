@@ -46,5 +46,5 @@ function STATES = InitCond()
            % BM
     STATES(ind.Ca_p)       = 0.1e-3;
     STATES(ind.z_k)        = 0.1e-3;
-
+   % STATES(ind.k_k)        = 0.1e-3;
 end
