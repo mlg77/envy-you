@@ -1,10 +1,11 @@
 function [out] = getRef(t,name)
 
+global T_c
 
  %% OSTBY Input   
-        global lengthpulse startpulse
+        global lengthpulse startpulse 
         t0 = startpulse;    %10;
-        lengtht1 = 10;
+        lengtht1 = 10 / T_c;
         t1 = t0+lengtht1;    %20;
         t2 = t0+lengthpulse;    %30;
         t3 = t1+lengthpulse;    %40;

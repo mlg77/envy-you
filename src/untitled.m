@@ -3,13 +3,13 @@ startpulse = 20;
 lengthpulse = 50;
 
 for i = 1:100
-    t(i) = i;
-    y(i) = getRef(i,'ft');
+    tx(i) = i;
+    y(i) = getRef2(i,'ft');
 end
 figure; plot(t,y)
 
 for i = 1:100
-    t(i) = i;
-    y(i) = getRef(i,'fluxft');
+    tx(i) = i;
+    y(i) = getRef2(i,'fluxft');
 end
 figure; plot(t,y)

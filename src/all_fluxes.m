@@ -24,11 +24,11 @@ AC(flu.K_s   ) = (state(ind.N_K_s_star)*Rk_0*K_0) /AC(flu.R_s);     % uM
 AC(flu.HCO3_s) = (state(ind.N_HCO3_s_star)*Rk_0*K_0)/AC(flu.R_s);   % uM
 AC(flu.Cl_s  ) = AC(flu.N_Cl_s)/AC(flu.R_s);        % uM
 
-AC(flu.ck)     = (state(ind.Ca_k_star)*Ca_0);
-AC(flu.sk)     = (state(ind.s_k_star)*Ca_0);
-AC(flu.hk)     = state(ind.h_k_star);
-AC(flu.ik)     = (state(ind.I_k_star)*Ca_0);
-AC(flu.eetk)   = (state(ind.eet_k_star)*Ca_0);
+% AC(flu.ck)     = (state(ind.Ca_k_star)*Ca_0);
+% AC(flu.sk)     = (state(ind.s_k_star)*Ca_0);
+% AC(flu.hk)     = state(ind.h_k_star);
+% AC(flu.ik)     = (state(ind.I_k_star)*Ca_0);
+% AC(flu.eetk)   = (state(ind.eet_k_star)*Ca_0);
 
 AC(flu.E_Na_k ) = (R_gas * Temp) / (z_Na * Farad) * log(AC(flu.Na_s)/AC(flu.Na_k)); % V
 AC(flu.E_K_k )  = (R_gas * Temp) / (z_K  * Farad) * log(AC(flu.K_s )/AC(flu.K_k )); % V
@@ -50,22 +50,20 @@ AC(flu.v_k )   = ( g_Na_k  * AC(flu.E_Na_k )...
             /(g_Na_k + g_K_k + g_Cl_k + g_NBC_k + g_BK_k*state(ind.w_k_star));  % V
 
        
-% AC(flu.J_KCC1_k ) = getRef(t,'fluxft')*(R_gas * Temp * g_KCC1_k) / (Farad^2) * log((AC(flu.K_s)*AC(flu.Cl_s))/(AC(flu.K_k)*AC(flu.Cl_k)))*unitcon; %uMm s-1
-AC(flu.J_KCC1_k ) = 0*(R_gas * Temp * g_KCC1_k) / (Farad^2) * log((AC(flu.K_s)*AC(flu.Cl_s))/(AC(flu.K_k)*AC(flu.Cl_k)))*unitcon; %uMm s-1
+AC(flu.J_KCC1_k) = getRef(t,'fluxft')*(R_gas * Temp * g_KCC1_k) / (Farad^2) * log((AC(flu.K_s)*AC(flu.Cl_s))/(AC(flu.K_k)*AC(flu.Cl_k)))*unitcon; %uMm s-1
 
-AC(flu.J_NBC_k  ) = g_NBC_k / Farad * (AC(flu.v_k) - AC(flu.E_NBC_k))*unitcon;       %uMm s-1
+AC(flu.J_NBC_k) = g_NBC_k / Farad * (AC(flu.v_k) - AC(flu.E_NBC_k))*unitcon;       %uMm s-1
 
-% AC(flu.J_NKCC1_k) = getRef(t,'fluxft')*(g_NKCC1_k * R_gas * Temp) / (Farad^2) * log((AC(flu.K_s) * AC(flu.Na_s) * AC(flu.Cl_s)^2)/(AC(flu.K_k) * AC(flu.Na_k) * AC(flu.Cl_k)^2))*unitcon;        %uMm s-1      
-AC(flu.J_NKCC1_k) = 0*(g_NKCC1_k * R_gas * Temp) / (Farad^2) * log((AC(flu.K_s) * AC(flu.Na_s) * AC(flu.Cl_s)^2)/(AC(flu.K_k) * AC(flu.Na_k) * AC(flu.Cl_k)^2))*unitcon;        %uMm s-1      
+AC(flu.J_NKCC1_k) = getRef(t,'fluxft')*(g_NKCC1_k * R_gas * Temp) / (Farad^2) * log((AC(flu.K_s) * AC(flu.Na_s) * AC(flu.Cl_s)^2)/(AC(flu.K_k) * AC(flu.Na_k) * AC(flu.Cl_k)^2))*unitcon;        %uMm s-1      
 
 
 AC(flu.J_Na_k  ) = g_Na_k / Farad * (AC(flu.v_k) - AC(flu.E_Na_k))*unitcon;          %uMm s-1
 AC(flu.J_K_k   ) = g_K_k  / Farad * (AC(flu.v_k) - AC(flu.E_K_k ))*unitcon;          %uMm s-1
-AC(flu.J_BK_k)   = g_BK_k / Farad * state(ind.w_k_star)*(AC(flu.v_k)-AC(flu.E_BK_k))*unitcon; %uMm s-1
+    AC(flu.J_BK_k)   = g_BK_k / Farad * state(ind.w_k_star)*(AC(flu.v_k)-AC(flu.E_BK_k))*unitcon; %uMm s-1
 
      %[-]
 %Hannah/NVU
-  AC(flu.vh_3)     = vh_5/2*tanh((AC(flu.ck)-Ca_3)/Ca_4);
+%   AC(flu.vh_3)     = vh_5/2*tanh((AC(flu.ck)-Ca_3)/Ca_4);
  
  if NVU == 1
      AC(flu.w_inf)    = 0.5*(1+tanh((AC(flu.v_k)+v_6)/(v_4)));  %NVU
@@ -84,15 +82,15 @@ AC(flu.J_BK_k)   = g_BK_k / Farad * state(ind.w_k_star)*(AC(flu.v_k)-AC(flu.E_BK
 
 %astrocyte fluxes by Hannah
 
-AC(flu.J_ERleak)=P_L*(1-AC(flu.ck)/AC(flu.sk)); %calcium leak flux from ER to the cytosol
-AC(flu.J_pump)=V_max*AC(flu.ck)^2/(AC(flu.ck)^2+k_pump^2); %ATP dependant calcium flux from cytoplasm to ER
-AC(flu.J_ip3)=J_max*((AC(flu.ik)/(AC(flu.ik)+K_I))*(AC(flu.ck)/(AC(flu.ck)+K_act))*AC(flu.hk))^3*(1-AC(flu.ck)/AC(flu.sk)); %calcium flux from ER to cytosolic by IP3 receptors!
-AC(flu.G_pr)=(getRef(t,'rho')+sig)/(K_G+getRef(t,'rho')+sig);
-if NVU ==1
-    AC(flu.B_cyt)= 0.0244; %NVU
-else
-    AC(flu.B_cyt)=(1+BK_end+(K_ex*B_ex)/(K_ex+AC(flu.ck))^2)^-1;  %Loes and Evert determined extra equation
-end
+% AC(flu.J_ERleak)=P_L*(1-AC(flu.ck)/AC(flu.sk)); %calcium leak flux from ER to the cytosol
+% AC(flu.J_pump)=V_max*AC(flu.ck)^2/(AC(flu.ck)^2+k_pump^2); %ATP dependant calcium flux from cytoplasm to ER
+% AC(flu.J_ip3)=J_max*((AC(flu.ik)/(AC(flu.ik)+K_I))*(AC(flu.ck)/(AC(flu.ck)+K_act))*AC(flu.hk))^3*(1-AC(flu.ck)/AC(flu.sk)); %calcium flux from ER to cytosolic by IP3 receptors!
+% AC(flu.G_pr)=(getRef(t,'rho')+sig)/(K_G+getRef(t,'rho')+sig);
+% if NVU ==1
+%     AC(flu.B_cyt)= 0.0244; %NVU
+% else
+%     AC(flu.B_cyt)=(1+BK_end+(K_ex*B_ex)/(K_ex+AC(flu.ck))^2)^-1;  %Loes and Evert determined extra equation
+% end
 
 %% SMC
 
