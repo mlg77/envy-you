@@ -31,9 +31,9 @@ global CASE J_PLC startpulse lengthpulse C_Hillmann stretch_ch only_Koenig NVU
 
 %% Parameters to adjust the model:
 t_start = 0/T_c;
-t_end = 400/T_c;
-startpulse  = 200/T_c;  % (s) 
-lengthpulse = 100/T_c;  % (s) 
+t_end = 100/T_c;
+startpulse  = 50/T_c;  % (s) 
+lengthpulse = 20/T_c;  % (s) 
 CASE        = 2;    % (see all_constants.m for details)
 J_PLC 		= 0.18;  % 0.18(steady) %0.4(fluctuating) (muM s-1) EC agonist concentration  
 C_Hillmann  = 1;    % scaling factor for the Hai&Murphy rate constants (see all_constants.m for details)
@@ -50,7 +50,7 @@ try
 delete(csvfilename) % remove file, if present from older simulation.
 end
 %% Solve the proces from initial position tot Steady State:
-options = odeset('OutputFcn',@odeprogWD,'Events',@odeabort,'Stats','on','RelTol', 1e-03, 'AbsTol', 1e-03, 'MaxStep', 1); 
+options = odeset('OutputFcn',@odeprogWD,'Events',@odeabort,'Stats','on','RelTol', 1, 'AbsTol', 1, 'MaxStep', 1); 
 [t,state] = ode15s(@DEsyst,[t_start t_end],state0,options);
 
 %% Write output and info to file/cmd

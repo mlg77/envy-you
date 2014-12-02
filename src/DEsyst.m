@@ -19,9 +19,11 @@ dy(ind.N_Na_k_star) = (T_c/(Rk_0*K_0))*( -AC(flu.J_Na_k) - 3 * AC(flu.J_NaK_k) +
 dy(ind.N_K_k_star) = (T_c/(Rk_0*K_0))*( -AC(flu.J_K_k ) + 2 * AC(flu.J_NaK_k) + AC(flu.J_NKCC1_k) + AC(flu.J_KCC1_k) - AC(flu.J_BK_k)); % uMm s-1
 dy(ind.N_HCO3_k_star) = (T_c/(Rk_0*K_0))*( 2 * AC(flu.J_NBC_k)); % uMm s-1
 dy(ind.N_Cl_k_star) = (T_c/(Rk_0*K_0))*( (dy(ind.N_Na_k_star)/(T_c/(Rk_0*K_0))) + (dy(ind.N_K_k_star)/(T_c/(Rk_0*K_0))) - (dy(ind.N_HCO3_k_star)/(T_c/(Rk_0*K_0)))); % uMm s-1, modified equation compared to the one of Ostby
-dy(ind.N_Na_s_star) = (T_c/(Rk_0*K_0))*( -k_C * getRef(time,'ft')/(T_c/(Rk_0*K_0)) - (dy(ind.N_Na_k_star)/(T_c/(Rk_0*K_0)))); % uMm s-1
+% dy(ind.N_Na_s_star) = (T_c/(Rk_0*K_0))*( -k_C * getRef(time,'ft')/(T_c/(Rk_0*K_0)) - (dy(ind.N_Na_k_star)/(T_c/(Rk_0*K_0)))); % uMm s-1
+dy(ind.N_Na_s_star) = (T_c/(Rk_0*K_0))*( -k_C * getRef(time,'ft') - (dy(ind.N_Na_k_star)/(T_c/(Rk_0*K_0)))); % uMm s-1
 
-dy(ind.N_K_s_star) = (T_c/(Rk_0*K_0))*(    k_C * getRef(time,'ft')/(T_c/(Rk_0*K_0)) - (dy(ind.N_K_k_star)/(T_c/(Rk_0*K_0))) +AC(flu.J_BK_k)) ; % uMm s-1
+% dy(ind.N_K_s_star) = (T_c/(Rk_0*K_0))*(    k_C * getRef(time,'ft')/(T_c/(Rk_0*K_0)) - (dy(ind.N_K_k_star)/(T_c/(Rk_0*K_0))) +AC(flu.J_BK_k)) ; % uMm s-1
+dy(ind.N_K_s_star) = (T_c/(Rk_0*K_0))*(    k_C * getRef(time,'ft') - (dy(ind.N_K_k_star)/(T_c/(Rk_0*K_0))) +AC(flu.J_BK_k)) ; % uMm s-1
 
 dy(ind.N_HCO3_s_star) = (T_c/(Rk_0*K_0))*(  - (dy(ind.N_HCO3_k_star)/(T_c/(Rk_0*K_0)))); % uMm s-1
 dy(ind.K_p_star) = (T_c/K_0)*(      AC(flu.J_BK_k) / (VR_pa*(state(ind.R_k_star)*Rk_0)) + (SMC(flu.J_KIR_i))/(VR_ps)); % uM s-1
