@@ -8,8 +8,6 @@ Temp        = 300           ;% [K]
 unitcon    = 10^(3)         ;% [-]            Factor to convert equations to another unit
 
 %% Constants of Ostby, the values come from CELL ML
-%test change
-
 L_p         = 2.1e-9        ;% [m uM-1s-1]
 R_tot       = 8.79e-8       ;% [m]
 X_k         = 12.41e-3      ;% [uMm]
@@ -17,13 +15,13 @@ z_Na        = 1             ;% [-]
 z_K         = 1             ;% [-]
 z_Cl        = -1            ;% [-]
 z_NBC       = -1            ;% [-]
-g_K_k       = 40            ;% [ohm-1m-2]40e3
-g_KCC1_k    = 1e-2          ;% [ohm-1m-2]10e-2
-g_NBC_k     = 7.57e-1       ;% [ohm-1m-2] 7.57e2
-g_Cl_k      = 8.797e-1      ;% [ohm-1m-2] 
-g_NKCC1_k   = 5.54e-2       ;% [ohm-1m-2]55.4
-g_Na_k      = 1.314         ;% [ohm-1m-2] 1.314e3
-J_NaK_max   = 1.42e-3       ;% [uMm s-1] 
+g_K_k       = 40            ;% [ohm-1m-2]
+g_KCC1_k    = 1e-2          ;% [ohm-1m-2]
+g_NBC_k     = 7.57e-1       ;% [ohm-1m-2]
+g_Cl_k      = 8.797e-1      ;% [ohm-1m-2]
+g_NKCC1_k   = 5.54e-2       ;% [ohm-1m-2]
+g_Na_k      = 1.314         ;% [ohm-1m-2]
+J_NaK_max   = 1.42e-3       ;% [uMm s-1]
 K_Na_k      = 10e3          ;% [uM]
 K_K_s       = 1.5e3         ;% [uM]
 k_C         = 7.35e-5       ;% [muM s-1]
@@ -85,12 +83,12 @@ vK_i		= -94;
 lab 		= 45;
 c_w			= 0;
 bet			= 0.13;
-v_Ca3		= -27;
+
 R_K			= 12;
 k_i			= 0.1;
-K_d         = 1;            % = 1e3 nM Gonzalez
-B_T         = 100;          % = 1e5 nM Gonzalez
-Kinf_i      = 1e5;          % 100 mM K+ concentration in SMC
+% K_d         = 1;            % = 1e3 nM Gonzalez
+% B_T         = 100;          % = 1e5 nM Gonzalez
+% Kinf_i      = 1e5;          % 100 mM K+ concentration in SMC
 
 G_stretch   = 0.0061;       % uM mV-1 s-1
 P_str       = 30;
@@ -117,7 +115,7 @@ m3cat		= -0.18; %-6.18; %changed value!!!
 m4cat 		= 0.37;
 J0_j 		= 0.029; %constant Ca influx (EC)
 C_m 		= 25.8;
-G_tot		= 6927;
+G_tot		= 6927; %e-6; %changed
 vK_j 		= -80;
 a1			= 53.3;
 a2			= 53.3;
@@ -210,10 +208,10 @@ end
 
 %% Myosin crossbridge model
 global C_Hillmann
-K2_c        = 0.5 * C_Hillmann;
+% K2_c        = 0.5 * C_Hillmann;  % NO pathway: cGMP-dependend!
 K3_c        = 0.4 * C_Hillmann;
 K4_c        = 0.1 * C_Hillmann;
-K5_c        = 0.5 * C_Hillmann;
+% K5_c        = 0.5 * C_Hillmann;  % NO pathway: cGMP-dependend!
 K7_c        = 0.1 * C_Hillmann;
 gam_cross   = 17 * C_Hillmann;
 
@@ -241,3 +239,102 @@ R0act_r     = 12e-6;
 Eact_r      = 233e3;
 Epas_r      = 66e3;
 nu_r        = 1e4;
+%% NO pathway
+
+% NE********************
+LArg		= 100;			% Nochmal genauer ausrechnen! --> Ping paper! - wird spaeter variabel!
+%F           = 96500;        % [-] ; Faraday's constant (see above)
+v_spine     = 8e-8;         % [fL] ; the volume of the neuronal dendritic spine
+k_ex        = 1600;         % [s^{-1}] ; the decay rate constant of internal calcium concentration
+Ca_rest     = 0.1; 			% [\muM] ; the resting calcium concentration (in Comerford+David2008: 2.830 mM; in Santucci2008P: 0.1 \muM)
+lambda      = 20;           % [-] ; the buffer capacity
+V_maxNOS    = 25e-3;   		% [\muM] 1.683;%0.025; %2.5e-8;%2.5e-8; %1.683e-4; %1.324; %2.5e-5; % 0.025;% 2.5e-8; %2.4925e-8;  %0.025; %2.0265e-9; % 1.054e-7;  % 1.683;[mM s^{-1}] (Hayashi1999)
+
+V_nNOS      = 1.435;        % [-] ; NO production - nNOS concentration ratio (Chen+Popel2007)
+
+K_actNOS    = 9.27e-2;      % [microM]
+
+%tau_ni      = 0.01;       	% [s]; time for NO to diffuse the distance between the neuron and SMC ; estimation
+%tau_ji      = 0.01;        % [s]; time for NO to diffuse the distance between the EC and SMC ; estimation
+D_NO 		= 3300;			% [\muM^2 s^{-1}] ; NO diffusion coefficient 
+dist_ni		= 50;			% [\mu m] ; estimation
+dist_ji		= 3.75;			% [\mu m] ; Kavdia 2002
+tau_ni      = dist_ni^2/(2*D_NO);  % Einstein-Smoluchowski equation, Lancaster1997
+tau_ji      = dist_ji^2/(2*D_NO);  % Einstein-Smoluchowski equation, Lancaster1997
+
+k_O2        = 9.6e-6;       % [microM^{-2} s^{-1}] 
+On          = 200;         	% [microM] ; the tissue O2 concentration in the neuron
+v_n         = -40;          % [mV] ; the neuronal membrane potential , assumed to be approx constant in this model
+G_M         = 46;        	% [pS] ; the conductance of the NMDA channel to Ca2+ compaired  
+P_Ca_P_M    = 3.6;         	% [-] ; the relative conductance of the NMDA channel to Ca2+ compared to monovalent ions
+Ca_ex       = 2e3;          % [microM] ; the external calcium concentration (in Comerford+David2008: 1.5 mM!)
+M           = 1.3e5;        % [microM] ; the concentration of monovalent ions in the neuron
+R           = 8.314;      	% [Jmol^{-1}K^{-1}]
+T           = 310.65;     	% [K] ; temperature
+betA        = 650 ;       	% [uM] ; changed it!
+betB        = 2800 ;        % [uM] ; changed it!
+Q1          = 1.9e5;      	% [-]
+Q2          = 2.1e5;      	% [-]
+Q3          = 0.4e5;      	% [-]
+Q4          = 0.26e5;      	% [-]
+CaM_thresh = Ca_rest/( Ca_rest*(Q1 + 2*Q1*Q2*Ca_rest + 3*Q1*Q2*Q3*Ca_rest^2 + 4*Q1*Q2*Q3*Q4*Ca_rest^3)/ (1 + Q1*Ca_rest + Q1*Q2*Ca_rest^2 + Q1*Q2*Q3*Ca_rest^3 + Q1*Q2*Q3*Q4*Ca_rest^4) );
+% CaM_thresh  = 2.7764e-5;       %  [mM] 
+
+% EC**********************
+Oj          = 200;         	% [\muM]; the O2 concentration in the EC
+K_dis       = 9e-2;    		% [\muM s^{-1}]          % = 0.09 [\mu M s^{-1}]
+K_eNOS      = 4.5e-1;    	% [\muM]            % = 0.45 [\mu M] ; Michaelis constant for dx(eNOS_act)
+mu2         = 0.0167;       % [s^{-1}] ; the rate constant at which the eNOS is deactivated 
+g_max       = 0.3;    		% [microM s^{-1}], maximal wss activation - fitted on Kavdia2003; in Comerford2008: 0.06, in Hannahs thesis 17.6, because she mixed up qmax and gmax in Comerford2008 
+alp         = 2;            % [-] (in Wiesner1997: 3)
+W_0         = 1.4;        	% [Pa^{-1}]
+delt_wss    = 2.86 ;        % [Pa] ; the membrane shear modulus
+
+V_eNOS      = 0.24;         % [-] ; NO production - eNOS concentration ratio (Chen+Popel2006)
+
+% SMC*********************
+k_dno       = 0.01;         % [s^{-1}]  (Hannahs code)
+k1          = 2e3 ;    		% [\muM^{-1}s^{-1}] == 2000 muM^{-1}s^{-1}; a rate constant
+k2          = 0.1;          % [s^{-1}]; a rate constant
+k3          = 3;        	% [\muM^{-1}s^{-1}] == 3 muM^{-1}s^{-1}; a rate constant
+k_1         = 100;          % [s^{-1}]; a rate constant
+
+
+% m =2; % cGMP influence (0 - lowest influence)
+global m
+
+if m==0
+    V_max_sGC = 1.26;  % \muM s^{-1}; the maximum cGMP production rate
+    k_pde = 0.0695; % s^{-1}
+	C_4 = 0.4; % [s^{-1}] (note: the changing units are correct!)
+elseif m==1
+    V_max_sGC = 1.09;  % \muM s^{-1};
+	k_pde = 0.032;% s^{-1}
+	C_4 = 0.098; % [s^{-1} microM^{-1}] (note: the changing units are correct!)
+elseif m==2
+    V_max_sGC = 0.8520;  % \muM s^{-1};
+	k_pde = 0.0195;% s^{-1}
+	C_4 = 0.011; % [s^{-1} microM^{-2}] (note: the changing units are correct!)
+end
+%%
+
+K_m_pde = 2;           		% [microM]
+R_Kfit = 30.8; % 55;                  % [mV]
+V_cGMP = 66.9; % 68 ;               % [mV]
+V_NO = 100;                 % [mV]
+V_b = 283.7; % 215; (Hannah)                 % [mV]
+K_m_cGMP = 0.55;       		% [microM]
+K_m_NO = 0.2;     		    % [microM]
+k_mlcp_b = 0.0086;          % [s^{-1}]
+k_mlcp_c = 0.0327;          % [s^{-1}]
+K_m_mlcp = 5.5;        		% [microM]
+k_mlck = 1180;
+
+v_Ca3		= -27; % cGMP and NO dependent
+
+c_wi = 0; % translation factor for Ca dependence of KCa channel activation sigmoidal [microM] 
+bet_i= 0.13; % translation factor for membrane potential dependence of KCa channel activation sigmoidal [microM^2] 
+V_cmax = 1.22; % s^-1, maximum catalytic rate of NO production (Chen2006) - obtained from fig 6 & equ 17 & 18 - we might want to change this value! - Liu: 0.585 micromol / min / (mg of protein)
+K_mArg_j = 1.5; 
+K_mO2_j = 7.7;
+K_mO2_n = 243; % 140-145 uM Chen2007

@@ -1,7 +1,7 @@
 function STATES = InitCond()
     % Below the initial conditions of the differential equation are given.
     % They are chosen, such that the system is in steady state at t=0
-    
+    global vivi
     all_indices()
     
     STATES(ind.R_k)     = 0.061e-6;     %'wi in component wi (metre)'
@@ -30,11 +30,11 @@ function STATES = InitCond()
     STATES(ind.v_j)     = -75;            % mV celmembrane of EC
     STATES(ind.I_j)     = 0.1;            % IP3 concentration in EC
     
-    STATES(ind.Mp)      = 0.25;
+    STATES(ind.Mp)      = 0.25;  %Mp + M + AMp + AM = 1 !
     STATES(ind.AMp)     = 0.25;
     STATES(ind.AM)      = 0.25;
     
-    STATES(ind.R)       = 15e-6;
+    STATES(ind.R)       = 20e-6; % 15e-6;
 
           %Hannah:
     STATES(ind.Ca_k)      =0.05e-3;       % uM Bennet 2008
@@ -44,4 +44,17 @@ function STATES = InitCond()
     STATES(ind.EET_k)    =0.1e-3;         % uM
 %     
         
+    %% NO pathway 
+    STATES(ind.NOi)     = 0.05;
+    STATES(ind.NOj)     = 0.05;
+    STATES(ind.NOn)     = 0.1;
+    STATES(ind.eNOS_act)= 3;
+    STATES(ind.nNOS_act)= 0.3;
+    STATES(ind.Ca_n)    = 0.0001;
+    STATES(ind.E_b)     = 1/3; % E_b + E_6c + E_5c = 1 !
+    STATES(ind.E_6c)     = 1/3;
+    STATES(ind.E_5c)    = 1/3;
+    STATES(ind.cGMP)    = 8;
+    STATES(ind.M_Y)     = 0.5; %M_Y + Mp_Y = 1 !
+    STATES(ind.Mp_Y)    = 0.5; 
 end

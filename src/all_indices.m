@@ -37,6 +37,32 @@ ind.s_k     = 26; % uM - calcium concentration in the Astrocyte endoplasmic reti
 ind.h_k     = 27; % [-] - probability of Calcium occupying the inhibitory binding site ? :-) 
 ind.I_k     = 28; % uM - IP3 concentration in the Astrocyte cytosol
 ind.EET_k   = 29; % uM - EET concentration in the Astrocyte cytosol 
+%% NO pathway - ODE
+i = ind.EET_k ;
+ind.NOi             = i+1;        % NO concentration in the SMC
+ind.NOj             = i+2;        % NO concentration in the EC
+ind.NOn             = i+3;        % NO concentration in the neuron
+ind.cGMP            = i+4;  
+ind.eNOS_act        = i+5;        % activation and deactivation of eNOS
+ind.nNOS_act        = i+6;        % activation and deactivation of nNOS
+ind.Ca_n            = i+7;        % the calcium concentration in the neuron in n
+ind.E_b             = i+8;  
+ind.E_6c            = i+9;  
+ind.E_5c            = i+10;  
+ind.M_Y             = i+11; 
+ind.Mp_Y            = i+12; 
+
+%% NO pathway - fluxes NE
+j = 0;
+flu.P_NR2AO         = j+1 ;
+flu.P_NR2BO         = j+2 ; 
+flu.openProbTerm    = j+3 ;  
+flu.I_Ca            = j+4 ;  
+flu.phi_N           = j+5 ;
+flu.dphi_N          = j+6 ; 
+flu.N               = j+7 ;  
+flu.CaM             = j+8 ; 
+%flu.NOni              = j+9 ; % NO diffusion flux from the neuron to the SMC
 
 %% Astrocyte indices
 flu.R_s     = 1; % m -
@@ -108,6 +134,17 @@ flu.E_K_i           = 23;
 
 flu.K1_c            = 24;
 flu.K6_c            = 25;
+%% NO pathway - fluxes SMC
+k = flu.K6_c;
+flu.k4              = k+1;   
+flu.R_cGMP1         = k+2;   
+flu.R_NO            = k+3;   
+flu.v_Ca3           = k+4;  
+flu.P_O             = k+5;  
+flu.R_cGMP2         = k+6;  
+flu.K2_c            = k+7;  
+flu.K5_c            = k+8; 
+flu.kmlcp           = k+9; 
 %% EC-pointers
 
 flu.v_coup_j         = 1;
@@ -127,4 +164,12 @@ flu.J_K_j           = 14;
 flu.J_R_j           = 15;
 flu.J_degrad_j      = 16;
 flu.J_stretch_j     = 17;
+
+%% NO pathway - fluxes EC
+l = flu.J_stretch_j;
+flu.W_tau_w         = l+1;  
+flu.F_tau_w         = l+2;  
+% flu.NOji            = l+3; % NO diffusion flux from the EC into the SMC
+% flu.NOjl            = l+4; % NO diffusion flux from the EC into the lumen
+
 

@@ -1,8 +1,8 @@
 function [out] = getRef(t,name)
 
+    global lengthpulse startpulse Glu_start Glu_end wss_start wss_end
 
  %% OSTBY Input   
-        global lengthpulse startpulse
         t0 = startpulse;    %10;
         lengtht1 = 10;
         t1 = t0+lengtht1;    %20;
@@ -39,15 +39,15 @@ function [out] = getRef(t,name)
 
 
 %% Hannah's Input
-
-%  pulse_start = 100;
-%  pulse_end   = 200;
  
  elseif strcmp('rho',name)
      out = createPulse(t,t0,t2,0.1,0.7,1,1); %[-] fraction between zero and one
  elseif strcmp('J_K_s',name)
      out = createPulse(t,pulse_start,pulse_end,1,8,1); % [microMs-1]
-    
+ elseif strcmp('Glu',name)
+     out = createPulse(t,Glu_start,Glu_end,0,1846,3,3); % [microMs-1]
+ elseif strcmp('wss',name)
+     out = createPulse(t,wss_start,wss_end,1.82,4,3,3); 
  elseif strcmp('fthannah',name)
      if t>=100 && t<160
         out =0.35*(1+tanh((t-101)/3));        

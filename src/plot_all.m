@@ -5,21 +5,23 @@ all_constants();
 
 linestylle = ':';
 
-a = zeros(1,31);%25 %31 Farr
-s = zeros(1,25);
-e = zeros(1,17);
-f= zeros(1,27); %24
-dfdt= zeros(1,29);%24
+n = zeros(1,8);
+a = zeros(1,31);
+s = zeros(1,34);
+e = zeros(1,19);
+f= zeros(1,41); 
+dfdt= zeros(1,41);
 t= zeros(3,1);
-% input= zeros(1,2);
+input= zeros(1,3);
 
-acoff   =          0;
-smcoff  =          length(a);
+neoff   = 0;
+acoff   = neoff + length(n);
+smcoff  = acoff + length(a);
 ecoff   = smcoff + length(s);
 stoff   = ecoff  + length(e);
 dfdtoff = stoff   + length(f);
 tijdoff = dfdtoff+ length(dfdt);
-inputoff= tijdoff+ length(t);
+inputoff= tijdoff+ 1;
 
 
 time = DATA(:,length(DATA(1,:))-3);
@@ -379,3 +381,21 @@ hold all
 % subplot(2,2,4)
 % plot(time,DATA(:,smcoff+flu.J_NaK_i))
 % title('J NaK_i influx')
+
+
+
+
+%% presentation
+figure(99)
+set(gcf, 'Position', [1 1 573 475]);
+axes1 = axes('Position',[0.150779896013865 0.129554655870445 0.79896013864818 0.821862348178138],...
+    'FontSize',16,...
+    'FontName','Calibri',...
+    'Color',[0.933333333333333 0.933333333333333 0.933333333333333]);
+ylim(axes1,[15 30]);
+box(axes1,'on');
+hold(axes1,'all');
+xlabel('Time (s)','FontSize',24,'FontName','Calibri');
+ylabel('Vessel Radius (\mum)','FontSize',24,'FontName','Calibri');
+plot(time,1e6*state(:,ind.R),'LineWidth',2);
+% legend('Neuron','Endothelial Cell','Smooth Muscle Cell')
