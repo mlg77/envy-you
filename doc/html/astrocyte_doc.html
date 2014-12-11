@@ -1,0 +1,251 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Astrocyte model documentation</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-12-12"><meta name="DC.source" content="astrocyte_doc.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Astrocyte model documentation</h1><!--introduction--><p>This page describes the model components present in the astrocyte model.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Right hand side function</a></li><li><a href="#4">Sharing variables</a></li><li><a href="#7">State variables</a></li><li><a href="#8">Additional quantities</a></li><li><a href="#9">Parameters</a></li><li><a href="#10">Initial conditions</a></li></ul></div><h2>Right hand side function<a name="1"></a></h2><p>The RHS function for the astrocyte is of the following form</p><pre class="language-matlab"><span class="keyword">function</span> du = rhs(self, t, u, J_KIR_i)
+</pre><p>The important thing is that the astrocyte model requires J_KIR_i as a coupling variable. Note that currently the neuron model is incorporated within this model, it should in time be broken out as a separate class.</p><h2>Sharing variables<a name="4"></a></h2><p>The <tt>shared</tt> method generates the coupling variables that need to be sent to other components of the NVU model. The function form is</p><pre>   function K_p = shared(self, ~, u)</pre><p>If additional variables are required to pass to other model components, this is the method that you will need to edit.</p><h2>State variables<a name="7"></a></h2><p>The following state variables are present in the Astrocyte model. These can be retrieved from the NVU after simulation by doing <tt>nv.out(varname)</tt> where <tt>nv</tt> is an NVU object</p><pre class="codeoutput">R_k
+K_p
+N_Na_k
+N_K_k
+N_Cl_k
+N_HCO3_k
+N_Na_s
+N_K_s
+N_HCO3_s
+w_k
+i_k
+c_k
+h_k
+s_k
+eet_k
+</pre><h2>Additional quantities<a name="8"></a></h2><p>The following additional quantities can also be retrieved in the same way as the state variables after simulation. To add more of these, add more entries in the <tt>output_indices</tt> method, together with an associated entry at the end of the <tt>rhs</tt> method (inside the <tt>if nargout == 2</tt> clause).</p><pre class="codeoutput">ft
+v_k
+J_BK_k
+K_s
+K_p
+</pre><h2>Parameters<a name="9"></a></h2><p>The astrocyte model has the following parameters, with specified default values. To change these, these can be called at object creation with, for example</p><pre>   A = Astrocyte('g_K_k', 100)</pre><p>To change them later, they can simply be modified by, for example:</p><pre>   A.params.g_K_k = 100;</pre><pre class="codeoutput">A_ef_k :       3.7e-09
+alpha :        2
+Amp :          0.7
+B_ex :         11.35
+base :         0.1
+beta :         5
+BK_end :       40
+C_correction : 1000
+C_input :      0
+c_k_min :      0.1
+Ca_3 :         0.4
+Ca_4 :         0.15
+delta :        0.01235
+delta_t :      10
+eet_shift :    0.002
+F :            96500
+F_input :      2.5
+G_BK_k :       4300
+g_Cl_k :       0.8797
+g_K_k :        40
+g_KCC1_k :     0.01
+g_Na_k :       1.314
+g_NBC_k :      0.757
+g_NKCC1_k :    0.0554
+J_max :        2880
+J_NaK_max :    0.00142
+K_act :        0.17
+k_C :          7.35e-05
+k_deg :        1.25
+k_eet :        7.2
+K_ex :         0.26
+K_G :          8.82
+K_I :          0.03
+K_inh :        0.1
+K_K_s :        1500
+K_Na_k :       10000
+k_on :         2
+k_pump :       0.24
+L_p :          2.1e-09
+lengthpulse :  200
+lengtht1 :     10
+P_L :          0.0804
+psi_w :        2.664
+R_g :          8.315
+r_h :          4.8
+R_tot :        8.79e-08
+startpulse :   200
+T :            300
+theta_L :      1
+theta_R :      1
+v_4 :          0.0145
+v_5 :          0.008
+v_6 :          -0.015
+V_eet :        72
+V_max :        20
+VR_ER_cyt :    0.185
+VR_pa :        0.001
+VR_ps :        0.001
+X_k :          0.01241
+z_Cl :         -1
+z_K :          1
+z_Na :         1
+z_NBC :        -1
+g_BK_k :       1.16216
+t_0 :          200
+t_1 :          210
+t_2 :          400
+t_3 :          410
+gab :          720
+ga :           1
+gb :           24
+</pre><h2>Initial conditions<a name="10"></a></h2><p>The modeled initial conditions are as follows:</p><pre class="codeoutput">R_k :          6.1e-08
+K_p :          3000
+N_Na_k :       0.00099796
+N_K_k :        0.00552782
+N_Cl_k :       0.00032879
+N_HCO3_k :     0.00058804
+N_Na_s :       0.00430104
+N_K_s :        8.07e-05
+N_HCO3_s :     0.000432552
+w_k :          0.0001815
+i_k :          1e-05
+c_k :          5e-05
+h_k :          0.0001
+s_k :          0.0001
+eet_k :        0.0001
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Astrocyte model documentation
+% This page describes the model components present in the astrocyte model. 
+
+%% Right hand side function
+% The RHS function for the astrocyte is of the following form
+%%
+% 
+%   function du = rhs(self, t, u, J_KIR_i)
+% 
+%%
+% The important thing is that the astrocyte model requires J_KIR_i as a
+% coupling variable. Note that currently the neuron model is incorporated
+% within this model, it should in time be broken out as a separate class.
+
+%% Sharing variables
+% The |shared| method generates the coupling variables that need to be sent
+% to other components of the NVU model. The function form is
+%%
+%
+%     function K_p = shared(self, ~, u)
+%
+%%
+% If additional variables are required to pass to other model components,
+% this is the method that you will need to edit.
+
+A = Astrocyte();
+
+%% State variables
+% The following state variables are present in the Astrocyte model. These
+% can be retrieved from the NVU after simulation by doing |nv.out(varname)|
+% where |nv| is an NVU object
+vars = fieldnames(A.index);
+for i = 1:numel(vars)
+    fprintf('%s\n', vars{i});
+end
+
+%% Additional quantities
+% The following additional quantities can also be retrieved in the same way
+% as the state variables after simulation. To add more of these, add more
+% entries in the |output_indices| method, together with an associated entry
+% at the end of the |rhs| method (inside the |if nargout == 2| clause).
+vars = fieldnames(A.idx_out);
+for i = 1:numel(vars)
+    fprintf('%s\n', vars{i});
+end
+
+%% Parameters
+% The astrocyte model has the following parameters, with specified default
+% values. To change these, these can be called at object creation with, for
+% example
+%
+%     A = Astrocyte('g_K_k', 100)
+%
+% To change them later, they can simply be modified by, for example:
+%    
+%     A.params.g_K_k = 100;
+paramnames = fieldnames(A.params);
+for i = 1:numel(paramnames)
+   fprintf('%-15s%g\n', strcat(paramnames{i}, ' :'), A.params.(paramnames{i}))  
+end
+
+%% Initial conditions
+% The modeled initial conditions are as follows:
+vars = fieldnames(A.index);
+for i = 1:numel(vars)
+    fprintf('%-15s%g\n', strcat(vars{i}, ' :'), A.u0(A.index.(vars{i})));
+end
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
