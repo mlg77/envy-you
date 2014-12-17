@@ -1,7 +1,5 @@
 % Neuron class. Use with NVU2()
 
-% shared_params - work in progress
-
 classdef Neuron < handle
     properties
         params
@@ -10,13 +8,10 @@ classdef Neuron < handle
         n_out
         idx_out
         enabled
-        %shared_params
     end
     methods
         function self = Neuron(varargin)
             self.params = parse_inputs(varargin{:});
-            %self.shared_params = SharedParams();
-            %self.shared_params.parse_inputs(self.params, varargin{:});
             self.index = indices();
             self.u0 = initial_conditions(self.index);
             self.enabled = true(size(self.u0));
