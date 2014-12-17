@@ -1,3 +1,5 @@
+% Wall mechanics class, use with either NVU() or NVU2()  
+
 classdef WallMechanics < handle
     properties
         params

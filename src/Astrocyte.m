@@ -1,3 +1,5 @@
+% Astrocyte class for OLD model without neuron. Use with NVU()
+
 classdef Astrocyte < handle
     properties
         params

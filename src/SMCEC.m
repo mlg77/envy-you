@@ -1,3 +1,5 @@
+% SMC & EC class, use with either NVU() or NVU2()
+
 classdef SMCEC < handle
     properties
         params
