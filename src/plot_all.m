@@ -399,3 +399,241 @@ xlabel('Time (s)','FontSize',24,'FontName','Calibri');
 ylabel('Vessel Radius (\mum)','FontSize',24,'FontName','Calibri');
 plot(time,1e6*state(:,ind.R),'LineWidth',2);
 % legend('Neuron','Endothelial Cell','Smooth Muscle Cell')
+
+%% NO pathway
+
+figure(5)
+set(gcf,'Name','NO pathway')
+set(gcf,'Position', [24 62 1616 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+   
+subplot(4,2,1)
+    plot( time,DATA(:,inputoff+3)./1e3);
+xlabel('Time [s]')
+ylabel('[Glu] in mM s^{-1}')
+% [AX3,H56,H67] = plotyy( time,DATA(:,inputoff+4),time,DATA(:,inputoff+3)./1e3);
+% set(get(AX3(1),'Ylabel'),'String','wss in Pa') 
+% set(get(AX3(2),'Ylabel'),'String','[Glu] in mM s^{-1}') 
+
+subplot(4,2,2)
+    plot( time,DATA(:,inputoff+4));
+xlabel('Time [s]')
+ylabel('wss in Pa')
+
+subplot(4,2,3)
+plot(time, state(:,ind.Ca_n) )
+xlabel('time in s')
+ylabel('[Ca^{2+}]_n in \muM')
+
+subplot(4,2,6)
+plot(time, state(:,ind.eNOS_act))
+xlabel('time in s')
+ylabel('[eNOS_{act}] in \muM')
+
+subplot(4,2,5)
+plot(time, state(:,ind.nNOS_act))
+xlabel('time in s')
+ylabel('[nNOS_{act}] in \muM')
+
+subplot(4,2,7)
+plot(time, state(:,ind.NOn),time, state(:,ind.NOj),time, state(:,ind.NOi))
+xlabel('time in s')
+ylabel('[NO] in \muM')
+legend('[NO]_n','[NO]_j','[NO]_i','Location','NorthWest')
+
+subplot(4,2,8)
+plot(time, state(:,ind.cGMP))
+xlabel('time in s')
+ylabel('[cGMP] in \muM')
+
+
+figure(6)
+set(gcf,'Name','Report1 - NO pathway')
+set(gcf,'Position', [24 62 734 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+   
+subplot(4,2,1)
+% plot( time,DATA(:,inputoff+3)./1e3);
+% ylabel('[Glu] in mM s^{-1}')
+[AX4,H78,H89] = plotyy( time,DATA(:,inputoff+4),time,DATA(:,inputoff+3)./1e3);
+set(get(AX4(1),'Ylabel'),'String','wss in Pa') 
+set(get(AX4(2),'Ylabel'),'String','[Glu] in mM s^{-1}') 
+% set(get(AX4(1),'YLim'),[0 4]) 
+
+
+subplot(4,2,3)
+plot(time, state(:,ind.Ca_n) )
+%xlabel('time in s')
+ylabel('[Ca^{2+}]_n in \muM')
+
+subplot(4,2,5)
+plot(time, state(:,ind.nNOS_act))
+%xlabel('time in s')
+ylabel('[nNOS_{act}]_n in \muM')
+
+subplot(4,2,7)
+plot(time, state(:,ind.NOn),time, state(:,ind.NOj),time, state(:,ind.NOi))
+xlabel('time in s')
+ylabel('[NO] in \muM')
+legend('[NO]_n','[NO]_j','[NO]_i','Location','NorthWest')
+
+subplot(4,2,2)
+plot(time, state(:,ind.cGMP))
+%xlabel('time in s')
+ylabel('[cGMP] in \muM')
+
+subplot(4,2,4)
+plot(time,DATA(:,smcoff+flu.Kactivation_i))
+ylabel('K_{activation_i} (dim.less)')
+
+subplot(4,2,6)
+plot(time,DATA(:,smcoff+flu.K2_c))
+%xlabel('time in s')
+ylabel('K_2 and K_5 (dim.less)')
+
+subplot(4,2,8)
+plot(time,1e6*state(:,ind.R))
+xlabel('time in s')
+ylabel('Radius in \mum')
+
+
+
+figure(7)
+set(gcf,'Name','Report2 - NO pathway')
+set(gcf,'Position', [24 62 734 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+   
+subplot(4,2,1)
+% plot( time,DATA(:,inputoff+4));
+% ylabel('wss in Pa')
+[AX3,H56,H67] = plotyy( time,DATA(:,inputoff+4),time,DATA(:,inputoff+3)./1e3);
+set(get(AX3(1),'Ylabel'),'String','wss in Pa') 
+set(get(AX3(2),'Ylabel'),'String','[Glu] in mM s^{-1}') 
+
+subplot(4,2,3)
+plot(time, state(:,ind.eNOS_act))
+%xlabel('time in s')
+ylabel('[eNOS_{act}]_j in \muM')
+
+subplot(4,2,5)
+plot(time, state(:,ind.NOn),time, state(:,ind.NOj),time, state(:,ind.NOi))
+%xlabel('time in s')
+ylabel('[NO] in \muM')
+legend('[NO]_n','[NO]_j','[NO]_i','Location','NorthWest')
+
+subplot(4,2,7)
+plot(time, state(:,ind.cGMP))
+xlabel('time in s')
+ylabel('[cGMP] in \muM')
+
+subplot(4,2,2)
+plot(time,DATA(:,smcoff+flu.Kactivation_i))
+%xlabel('time in s')
+ylabel('K_{activation_i} (dim.less)')
+
+subplot(4,2,4)
+plot(time,DATA(:,smcoff+flu.K2_c))
+%xlabel('time in s')
+ylabel('K_2 and K_5 (dim.less)')
+
+subplot(4,2,6)
+plot(time,1e6*state(:,ind.R))
+xlabel('time in s')
+ylabel('Radius in \mum')
+
+
+figure(8)
+set(gcf,'Name','Report3 - NO pathway')
+set(gcf,'Position', [24 62 734 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+   
+subplot(4,2,1)
+[AX1,H34,H45] = plotyy( time,DATA(:,inputoff+4),time,DATA(:,inputoff+3)./1e3);
+set(get(AX1(1),'Ylabel'),'String','wss in Pa') 
+set(get(AX1(2),'Ylabel'),'String','[Glu] in mM s^{-1}') 
+
+subplot(4,2,3)
+plot(time, state(:,ind.eNOS_act))
+%xlabel('time in s')
+ylabel('[eNOS_{act}]_j in \muM')
+
+subplot(4,2,5)
+plot(time, state(:,ind.nNOS_act))
+%xlabel('time in s')
+ylabel('[nNOS_{act}]_n in \muM')
+
+subplot(4,2,7)
+plot(time, state(:,ind.NOn),time, state(:,ind.NOj),time, state(:,ind.NOi))
+xlabel('time in s')
+ylabel('[NO] in \muM')
+legend('[NO]_n','[NO]_j','[NO]_i','Location','NorthWest')
+
+subplot(4,2,2)
+plot(time, state(:,ind.cGMP))
+% xlabel('time in s')
+ylabel('[cGMP] in \muM')
+
+subplot(4,2,4)
+plot(time,DATA(:,smcoff+flu.Kactivation_i))
+%xlabel('time in s')
+ylabel('K_{activation_i} (dim.less)')
+
+subplot(4,2,6)
+plot(time,DATA(:,smcoff+flu.K2_c))
+%xlabel('time in s')
+ylabel('K_2 and K_5 (dim.less)')
+
+subplot(4,2,8)
+plot(time,1e6*state(:,ind.R))
+xlabel('time in s')
+ylabel('Radius in \mum')
+
+
+
+
+
+
+figure(9)
+set(gcf,'Name','Report4 - NO pathway')
+set(gcf,'Position', [24 62 734 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+   
+subplot(4,2,1)
+plot(time,DATA(:,smcoff+flu.Kactivation_i))
+ylabel('K_{activation_i} (dim.less)')
+
+
+subplot(4,2,3)
+plot(time, state(:,ind.w_i))
+ylabel('w_i')
+
+subplot(4,2,5)
+plot(time,DATA(:,smcoff+flu.J_K_i))
+ylabel('J_{K_i}')
+
+subplot(4,2,7)
+plot(time, state(:,ind.v_i))
+ylabel('v_i')
+
+subplot(4,2,2)
+plot(time,DATA(:,smcoff+flu.J_VOCC_i))
+ylabel('J_{VOCC_i}')
+
+subplot(4,2,4)
+plot(time,state(:,ind.Ca_i))
+ylabel('Ca_i in \mu M')
+
+subplot(4,2,6)
+plot(time,DATA(:,smcoff+flu.K1_c))
+ylabel('K_1 and K_6 (dim.less)')
+
+subplot(4,2,8)
+plot(time,1e6*state(:,ind.R))
+xlabel('time in s')
+ylabel('Radius in \mum')
+
