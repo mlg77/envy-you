@@ -3,7 +3,9 @@ classdef Astrocyte < handle
     %% Michelle Edit
     % Date: 3/2/15 
     % Changes include: Comment out all the equations and constants that
-    % shouldnt be used.
+    %       shouldnt be used.
+    % Date: 10/2/2015
+    % Changes include: Put equations in that have been checked.
     
     properties
         params
@@ -43,13 +45,13 @@ classdef Astrocyte < handle
             
             w_k = u(idx.w_k, :);
             % ----------------------------------------------------------------------
-%             i_k = u(idx.i_k, :);
-%             c_k = u(idx.c_k, :);
-%             h_k = u(idx.h_k, :);
-%             s_k = u(idx.s_k, :);
-%             eet_k = u(idx.eet_k, :);
+            i_k = u(idx.i_k, :);
+            c_k = u(idx.c_k, :);
+            h_k = u(idx.h_k, :);
+            s_k = u(idx.s_k, :);
+            eet_k = u(idx.eet_k, :);
             du = zeros(size(u));
-            
+
             % Scaling
             R_s = p.R_tot - R_k;
             
@@ -66,9 +68,12 @@ classdef Astrocyte < handle
             HCO3_k = N_HCO3_k ./ R_k;
             
             % Scaling ODE
-            du(idx.R_k, :) = p.L_p * ( ...
-                Na_k + K_k + Cl_k + HCO3_k - ...
-                Na_s - Cl_s - K_s - HCO3_s + p.X_k ./ R_k);
+            du(idx.R_k, :) = p.L_p * ( ...      % Orgional
+                Na_k + K_k + Cl_k + HCO3_k + p.X_k ./ R_k - ...
+                Na_s - Cl_s - K_s - HCO3_s );
+%             du(idx.R_k, :) = p.L_p * ( ...
+%                 (Na_k + K_k - Cl_k - HCO3_k - p.X_k ./ R_k) - ...
+%                 (Na_s - Cl_s + K_s - HCO3_s) );
             
             % Nernst potentials
             E_K_k = p.R_g * p.T / (p.z_K * p.F) * log(K_s ./ K_k);
@@ -107,31 +112,36 @@ classdef Astrocyte < handle
             
             
             % --------------------------------------------------------------------
-%             J_IP3 = p.J_max * (...
-%                 i_k ./ (i_k + p.K_I) .* ...
-%                 c_k ./ (c_k + p.K_act) .* h_k).^3 .* (1 - c_k ./ s_k);
-%             J_ER_leak = p.P_L * (1 - c_k ./ s_k);
-%             
-%             J_pump = p.V_max * c_k.^2 ./ (c_k.^2 + p.k_pump^2);
+            J_IP3 = p.J_max * (...
+                i_k ./ (i_k + p.K_I) .* ...
+                c_k ./ (c_k + p.K_act) .* h_k).^3 .* (1 - c_k ./ s_k);
+            J_ER_leak = p.P_L * (1 - c_k ./ s_k);
             
+            J_pump = p.V_max * c_k.^2 ./ (c_k.^2 + p.k_pump^2);
+         
             % Other equations
-%             B_cyt = 1 ./ (1 + p.BK_end + p.K_ex * p.B_ex ./ ...
-%                 (p.K_ex + c_k).^2);
-%             G = (self.input_rho(t) + p.delta) ./ ...
-%                 (p.K_G + self.input_rho(t) + p.delta);
-%             
-%             v_3 = p.v_5 / 2 * tanh((c_k - p.Ca_3) / p.Ca_4);
-            
-%             
-%             w_inf = 0.5 * ...
-%                 (1 + tanh((v_k + p.eet_shift * eet_k - v_3) / p.v_4));
-%             
-%             phi_w = p.psi_w * cosh((v_k - v_3) / (2*p.v_4));
-            %% Change to the w inf and phi_w equations
+            B_cyt = 1 ./ (1 + p.BK_end + p.K_ex * p.B_ex ./ ...
+                (p.K_ex + c_k).^2);
+            G = (self.input_rho(t) + p.delta) ./ ...
+                (p.K_G + self.input_rho(t) + p.delta); %%%%%%%%%%%%%%%%%%%
+%             G = 0;
+            %% Changed V_3 Equation
+            v_3 = -p.v_5 / 2 * tanh((c_k - p.Ca_3) / p.Ca_4)+p.v_7;
             w_inf = 0.5 * ...
-                (1 + tanh((v_k + p.v_6) / p.v_4));
+                (1 + tanh((v_k + p.eet_shift * eet_k - v_3) / p.v_4));
             
-            phi_w = p.psi_w * cosh((v_k + p.v_6) / (2*p.v_4));
+            phi_w = p.psi_w * cosh((v_k - v_3) / (2*p.v_4));
+            %% Slowly introduce equatioins
+%             w_inf = 0.5 * ...
+%                 (1 + tanh((v_k + (-v_3)) / p.v_4));
+%             
+%             phi_w = p.psi_w * cosh((v_k + (-v_3)) / (2*p.v_4));
+
+            %% Change to the w inf and phi_w equations Orgional
+%             w_inf = 0.5 * ...
+%                 (1 + tanh((v_k + p.v_6) / p.v_4));
+%             
+%             phi_w = p.psi_w * cosh((v_k + p.v_6) / (2*p.v_4));
             %%
             
             % Right-hand sides
@@ -144,19 +154,25 @@ classdef Astrocyte < handle
             du(idx.N_Cl_k, :) = du(idx.N_Na_k, :) + du(idx.N_K_k, :) - ...
                 du(idx.N_HCO3_k, :);
             % --------------------------------------------------------------------
-%             du(idx.c_k, :) = B_cyt .* (J_IP3 - J_pump + J_ER_leak);
-%             du(idx.s_k, :) = -1 / p.VR_ER_cyt * du(idx.c_k, :);
-%             du(idx.h_k, :) = p.k_on * (p.K_inh - (c_k + p.K_inh) .* h_k);
-%             du(idx.i_k, :) = p.r_h * G - p.k_deg * i_k;
-%             
-%             du(idx.eet_k, :) = p.V_eet * max(c_k - p.c_k_min, 0) - ...
-%                 p.k_eet * eet_k;
-            du(idx.w_k, :) = phi_w .* (w_inf - w_k);
+            du(idx.c_k, :) = B_cyt .* (J_IP3 - J_pump + J_ER_leak);
+            du(idx.s_k, :) = -1 / p.VR_ER_cyt * du(idx.c_k, :);
+            % du(idx.s_k, :) = 0;
+            du(idx.h_k, :) = p.k_on * (p.K_inh - (c_k + p.K_inh) .* h_k);
+            du(idx.i_k, :) = p.r_h * G - p.k_deg * i_k;
             
-            du(idx.K_p, :) = J_BK_k ./ (R_k * p.VR_pa) + J_KIR_i ./ ...
-                p.VR_ps;
+            du(idx.eet_k, :) = p.V_eet * max(c_k - p.c_k_min, 0) - ...
+                p.k_eet * eet_k;
+            du(idx.w_k, :) = phi_w .* (w_inf - w_k);
+            %%
+%             du(idx.K_p, :) = J_BK_k ./ (R_k * p.VR_pa) + J_KIR_i ./ ... %%%%%%%%%%%% Orgional
+%                 p.VR_ps;
+%             du(idx.K_p, :) = J_BK_k ./ (R_k * p.VR_pa ) - J_KIR_i ./ ... %%%%%%%%%%%%%%%%%%%%%%%%% Negative term
+%                  p.VR_ps;
+            du(idx.K_p, :) = J_BK_k ./ (R_k * p.VR_pa ) + J_KIR_i ./ ... %%%%%%%%%%%%%%%%%%%%%%%%% added add term
+                 p.VR_ps - 0.05*(K_p - 3e3);
+     %%
             du(idx.N_K_s, :) = p.k_C * self.input_f(t) - ...
-                du(idx.N_K_k, :) + J_BK_k;
+                du(idx.N_K_k, :) - J_BK_k; % Make J_BK_k a negative
             du(idx.N_Na_s, :) = -p.k_C * self.input_f(t) - ...
                 du(idx.N_Na_k, :);
             du(idx.N_HCO3_s, :) = -du(idx.N_HCO3_k, :);
@@ -168,15 +184,16 @@ classdef Astrocyte < handle
                Uout(self.idx_out.K_s, :) = K_s;
                Uout(self.idx_out.K_p, :) = K_p;
                Uout(self.idx_out.J_BK_k, :) = J_BK_k;
-%                Uout(self.idx_out.rho, :) = self.input_rho(t);
-%                Uout(self.idx_out.B_cyt, :) = B_cyt;               
-%                Uout(self.idx_out.G, :) = G;               
-%                Uout(self.idx_out.v_3, :) = v_3;
+               % ---------------------------------------------------------------
+               Uout(self.idx_out.rho, :) = self.input_rho(t);
+               Uout(self.idx_out.B_cyt, :) = B_cyt;               
+               Uout(self.idx_out.G, :) = G;               
+               Uout(self.idx_out.v_3, :) = v_3;
                Uout(self.idx_out.w_inf, :) = w_inf;
                Uout(self.idx_out.phi_w, :) = phi_w;
-%                Uout(self.idx_out.J_IP3, :) = J_IP3;
-%                Uout(self.idx_out.J_pump, :) = J_pump;
-%                Uout(self.idx_out.J_ER_leak, :) = J_ER_leak;
+               Uout(self.idx_out.J_IP3, :) = J_IP3;
+               Uout(self.idx_out.J_pump, :) = J_pump;
+               Uout(self.idx_out.J_ER_leak, :) = J_ER_leak;
                
                varargout = {Uout};
             end
@@ -225,11 +242,12 @@ idx.N_Na_s = 7;
 idx.N_K_s = 8;
 idx.N_HCO3_s = 9;
 idx.w_k = 10;
-% idx.i_k = 11;
-% idx.c_k = 12;
-% idx.h_k = 13;
-% idx.s_k = 14;
-% idx.eet_k = 15;
+% -----------------------------------------------------------------------------
+idx.i_k = 11;
+idx.c_k = 12;
+idx.h_k = 13;
+idx.s_k = 14;
+idx.eet_k = 15;
 end
 function [idx, n] = output_indices()
 idx.ft = 1;
@@ -265,24 +283,24 @@ parser.addParameter('alpha', 2);
 parser.addParameter('beta', 5);
 parser.addParameter('delta_t', 10); %s
 % -------------------------------------------------------------------------------
-% parser.addParameter('Amp', 0.7);
-% parser.addParameter('base', 0.1);
-% parser.addParameter('theta_L', 1);
-% parser.addParameter('theta_R', 1);
+parser.addParameter('Amp', 0.7);
+parser.addParameter('base', 0.1);
+parser.addParameter('theta_L', 1);
+parser.addParameter('theta_R', 1);
 
 % Synpatic cleft
 parser.addParameter('k_C', 7.35e-5); %uM m s^-1
 
 % Astrocyte
 % --------------------------------------------------------------------------------
-% parser.addParameter('VR_ER_cyt', 0.185)
-% parser.addParameter('k_on', 2); %uM s^-1
-% parser.addParameter('K_inh', 0.1); %uM
-% parser.addParameter('r_h', 4.8); % uM
-% parser.addParameter('k_deg', 1.25); % s^-1
-% parser.addParameter('V_eet', 72); % uM
-% parser.addParameter('k_eet', 7.2); % uM
-% parser.addParameter('c_k_min', 0.1); % uM
+parser.addParameter('VR_ER_cyt', 0.185)
+parser.addParameter('k_on', 2); %uM s^-1
+parser.addParameter('K_inh', 0.1); %uM
+parser.addParameter('r_h', 4.8); % uM
+parser.addParameter('k_deg', 1.25); % s^-1
+parser.addParameter('V_eet', 72); % uM
+parser.addParameter('k_eet', 7.2); % uM
+parser.addParameter('c_k_min', 0.1); % uM
 
 % Perivascular space
 parser.addParameter('VR_pa', 0.001);
@@ -323,8 +341,8 @@ parser.addParameter('delta', 1.235e-2); %THIS MAY BE WRONG
 parser.addParameter('K_G', 8.82); %uM
 parser.addParameter('v_4', 14.5e-3); %V
 parser.addParameter('v_5', 8e-3); %V
-%% ----------------------------------------------------------------------------------
-% parser.addParameter('v_6', -15e-3); %V
+%% --------------------------------------------------------------------------------
+parser.addParameter('v_7', -15e-3); %V
 parser.addParameter('v_6', 22e-3); %V
 %%
 parser.addParameter('psi_w', 2.664); %s^-1
@@ -358,9 +376,11 @@ u0(idx.N_HCO3_s) = 0.432552e-3;
 u0(idx.K_p) = 3e3;
 u0(idx.w_k) = 0.1815e-3;
 % ----------------------------------------------------------------------------------
-% u0(idx.c_k) = 0.05e-3;
-% u0(idx.s_k) = 0.1e-3;
-% u0(idx.h_k) = 0.1e-3;
-% u0(idx.i_k) = 0.01e-3;
-% u0(idx.eet_k) = 0.1e-3;
+u0(idx.c_k) = 0.05e-3;
+%u0(idx.c_k) = 0.1;
+
+u0(idx.s_k) = 0.1e-3;
+u0(idx.h_k) = 0.1e-3;
+u0(idx.i_k) = 0.01e-3;
+u0(idx.eet_k) = 0.1e-3;
 end
